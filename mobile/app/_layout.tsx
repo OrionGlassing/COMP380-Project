@@ -1,24 +1,18 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack>
+      <Stack.Screen name="index" /> {/*this is the homepage */}
+      <Stack.Screen name="sign-up" />
+      <Stack.Screen name="create-account" />
+      <Stack.Screen name="account" />
+      <Stack.Screen name="customize-profile" />
+      <Stack.Screen name="explore" />
+      <Stack.Screen name="cookbook" />
+      <Stack.Screen name="create-recipe" />
+      <Stack.Screen name="recipe-loading" />
+      <Stack.Screen name="recipe" />
+    </Stack>
   );
-}
+};
