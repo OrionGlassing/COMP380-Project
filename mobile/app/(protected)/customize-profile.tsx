@@ -1,8 +1,8 @@
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
-import textStyles from "../constants/text-styles";
+import textStyles from "../../constants/text-styles";
 
-export default function SignUp() {
+export default function CustomizeProfile() {
   return (
     <View
       style={{
@@ -12,7 +12,7 @@ export default function SignUp() {
       }}
     >
       <Text style={textStyles.standard}>
-        Welcome to /app/create-recipe, the page to generate a new recipe.
+        Welcome to /app/customize-profile, here the user can edit profile settings.
       </Text>
       <Link href={"./"} style={textStyles.link}>
         /app/index

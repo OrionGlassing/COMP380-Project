@@ -1,6 +1,6 @@
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
-import textStyles from "../constants/text-styles";
+import textStyles from "../../constants/text-styles";
 
 export default function SignUp() {
   return (
@@ -12,7 +12,7 @@ export default function SignUp() {
       }}
     >
       <Text style={textStyles.standard}>
-        Welcome to /app/cookbook, the page to view and manage the users personal cookbook.
+        Welcome to /app/recipe-loading, the loading screen while the recipe generates.
       </Text>
       <Link href={"./"} style={textStyles.link}>
         /app/index

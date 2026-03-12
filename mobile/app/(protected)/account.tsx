@@ -1,8 +1,8 @@
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
-import textStyles from "../constants/text-styles";
+import textStyles from "../../constants/text-styles";
 
-export default function CustomizeProfile() {
+export default function Account() {
   return (
     <View
       style={{
@@ -12,7 +12,7 @@ export default function CustomizeProfile() {
       }}
     >
       <Text style={textStyles.standard}>
-        Welcome to /app/customize-profile, here the user can edit profile settings.
+        Welcome to /app/account, here the user can manage their account.
       </Text>
       <Link href={"./"} style={textStyles.link}>
         /app/index

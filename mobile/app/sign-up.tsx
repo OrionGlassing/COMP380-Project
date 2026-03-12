@@ -1,8 +1,12 @@
+import { useContext, } from "react";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 import textStyles from "../constants/text-styles";
+import { AuthContext } from "@/utils/authContext";
 
 export default function SignUp() {
+  const authContext = useContext(AuthContext);
+
   return (
     <View
       style={{

@@ -1,6 +1,6 @@
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
-import textStyles from "../constants/text-styles";
+import textStyles from "../../constants/text-styles";
 
 export default function Index() {
   return (

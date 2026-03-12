@@ -1,18 +1,28 @@
 import { Stack } from "expo-router";
+import { AuthContext, AuthProvider } from "@/utils/authContext";
+import { useContext } from "react";
 
 export default function RootLayout() {
+  const authState = useContext(AuthContext);
+
   return (
-    <Stack>
-      <Stack.Screen name="index" /> {/*this is the homepage */}
-      <Stack.Screen name="sign-up" />
-      <Stack.Screen name="create-account" />
-      <Stack.Screen name="account" />
-      <Stack.Screen name="customize-profile" />
-      <Stack.Screen name="explore" />
-      <Stack.Screen name="cookbook" />
-      <Stack.Screen name="create-recipe" />
-      <Stack.Screen name="recipe-loading" />
-      <Stack.Screen name="recipe" />
-    </Stack>
+    <AuthProvider>
+        <Stack>
+          <Stack.Protected guard={authState.isLoggedIn}>
+            <Stack.Screen
+              name="protected"
+              options={{
+                headerShown: false,
+                animation: "none",
+              }}
+            />
+          </Stack.Protected>
+
+          <Stack.Protected guard={!authState.isLoggedIn}>
+            <Stack.Screen name="sign-up" />
+            <Stack.Screen name="create-account" />
+          </Stack.Protected>
+      </Stack>
+    </AuthProvider>
   );
 };

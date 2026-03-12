@@ -1,8 +1,8 @@
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
-import textStyles from "../constants/text-styles";
+import textStyles from "../../constants/text-styles";
 
-export default function Account() {
+export default function SignUp() {
   return (
     <View
       style={{
@@ -12,7 +12,7 @@ export default function Account() {
       }}
     >
       <Text style={textStyles.standard}>
-        Welcome to /app/account, here the user can manage their account.
+        Welcome to /app/explore, the page to view public recipes.
       </Text>
       <Link href={"./"} style={textStyles.link}>
         /app/index
