@@ -1,6 +1,6 @@
 # Frontend Directory
 
-# Frontend Dependencies:
+# Frontend Tools / Dependencies:
    zustand:
       - https://zustand.docs.pmnd.rs/learn/getting-started/introduction
       - Used for state management. Sharing info from one place anywhere else in the code.

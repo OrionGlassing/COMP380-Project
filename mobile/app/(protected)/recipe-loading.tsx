@@ -1,22 +1,30 @@
-import { Link } from "expo-router";
+import { router } from "expo-router";
 import { Text, View } from "react-native";
 import textStyles from "../../constants/text-styles";
+import SimpleButton from "@/components/simpleButton";
 
 export default function SignUp() {
   return (
     <View
       style={{
         flex: 1,
+        flexDirection: "column",
+        gap: 15,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#1f1f1f"
       }}
     >
       <Text style={textStyles.standard}>
-        Welcome to /app/recipe-loading, the loading screen while the recipe generates.
+        Welcome to /app/recipe-loading, the loading screen while the recipe generates.{"\n"}
+        This page will automatically transition to the next page, but for now it's manual.
       </Text>
-      <Link href={"./"} style={textStyles.link}>
-        /app/index
-      </Link>
+      <SimpleButton
+        label="Proceed"
+        onPress={() => {
+          router.replace("/recipe");
+        }}
+      />
     </View>
   );
 }

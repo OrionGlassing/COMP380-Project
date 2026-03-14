@@ -16,6 +16,7 @@ export default function SignUp() {
         gap: 15,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#1f1f1f"
       }}
     >
       <Text style={textStyles.standard}>

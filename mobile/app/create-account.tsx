@@ -12,8 +12,11 @@ export default function CreateAccount() {
     <View
       style={{
         flex: 1,
+        flexDirection: "column",
+        gap: 15,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#1f1f1f"
       }}
     >
       <Text style={textStyles.standard}>
@@ -22,12 +25,6 @@ export default function CreateAccount() {
         Back = Return to /app/sign-up
       </Text>
       <SimpleButton label="Create Account" onPress={logIn} />
-      <SimpleButton
-        label="Back"
-        onPress={() => {
-          router.dismissTo("/sign-up")
-        }}
-      />
     </View>
   );
 }
