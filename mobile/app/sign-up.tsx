@@ -1,26 +1,42 @@
-import { useContext, } from "react";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { Text, View } from "react-native";
 import textStyles from "../constants/text-styles";
-import { AuthContext } from "@/utils/authContext";
+import SimpleButton from "../components/simpleButton";
+import { useAuthStore } from "@/utils/authStore";
 
 export default function SignUp() {
-  const authContext = useContext(AuthContext);
+  const router = useRouter();
+  const { logIn } = useAuthStore();
 
   return (
     <View
       style={{
         flex: 1,
+        flexDirection: "column",
+        gap: 15,
         justifyContent: "center",
         alignItems: "center",
       }}
     >
       <Text style={textStyles.standard}>
-        Welcome to /app/sign-up, here the user can 3rd party auth, login, or create account.
+        Welcome to /app/sign-up, here the user can 3rd party auth, login, or create account.{"\n"}
+        Log In = Proceed to the app{"\n"}
+        Create Account = Visit create account page
       </Text>
-      <Link href={"./"} style={textStyles.link}>
-        /app/index
-      </Link>
+      <SimpleButton 
+        label="Log In"
+        onPress={() => {
+          logIn();
+          router.replace("/");
+        }}
+      />
+      <SimpleButton
+        label="Create Account"
+        onPress={() => {
+          console.log("Trying!")
+          router.push("/create-account");
+        }}
+      />
     </View>
   );
 }

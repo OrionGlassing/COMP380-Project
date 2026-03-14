@@ -1,8 +1,7 @@
-import { useContext, } from "react";
 import { Redirect, Stack } from "expo-router";
-import { AuthContext } from "@/utils/authContext";
 
 export default function ProtectedLayout() {
+  
   return (
     <Stack>
       <Stack.Screen name="index" /> {/*this is the homepage */}
