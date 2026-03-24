@@ -1,4 +1,6 @@
+import Login from "./(auth)/Login";
+import { StyleSheet } from "react-native";
 
 export default function Index() {
-  return <h1>Hello world</h1>;
+  return <Login/>;
 }
