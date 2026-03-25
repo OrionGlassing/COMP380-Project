@@ -1,23 +1,19 @@
-import AppleBtn from "@/src/components/AppleBtn";
-import CreateAccountBtn from "@/src/components/CreateAcountBtn";
-import Divider from "@/src/components/Divider";
-import GoogleBtn from "@/src/components/GoogleBtn";
-import HelpBtn from "@/src/components/HelpBtn";
-import LoginForm from "@/src/components/LoginForm";
-import Logo from "@/src/components/Logo";
+import AppleBtn from "@/src/components/auth/AppleBtn";
+import CreateAccountBtn from "@/src/components/auth/CreateAcountBtn";
+import GoogleBtn from "@/src/components/auth/GoogleBtn";
+import HelpBtn from "@/src/components/auth/HelpBtn";
+import LoginForm from "@/src/components/auth/LoginForm";
+import Divider from "@/src/components/ui/Divider";
+import Logo from "@/src/components/ui/Logo";
+import { router } from "expo-router";
 import { View, Text, StyleSheet } from "react-native";
 
 export default function Login() {
   return (
     <View style={styles.pageContainer}>
       <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Logo />
-          <View>
-            <Text style={styles.title}>coKITCHEN</Text>
-          </View>
-        </View>
-        <Text style={styles.title2}>Sign In</Text>
+        <Logo/>
+        <Text style={styles.title}>Sign In</Text>
         <View style={styles.btnContainer}>
           <GoogleBtn />
           <AppleBtn />
@@ -25,7 +21,7 @@ export default function Login() {
         <Divider />
         <LoginForm />
         <Divider />
-        <CreateAccountBtn />
+        <CreateAccountBtn onPress={() => router.replace("/(auth)/CreateAccount")}/>
         <HelpBtn />
       </View>
     </View>
@@ -42,31 +38,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 10,
     padding: 15,
+
     backgroundColor: "#22333B",
+
     borderRadius: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
+    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
     maxWidth: 400,
     width: "100%",
     alignSelf: "center",
   },
   title: {
-    fontSize: 22,
-  },
-  title2: {
     color: "white",
     fontSize: 26,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    gap: 10,
-    borderRadius: 15,
-    backgroundColor: "#F2F4F3",
   },
   btnContainer: {
     flexDirection: "row",

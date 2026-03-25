@@ -1,9 +1,12 @@
 import { TouchableOpacity, StyleSheet, Text } from "react-native";
 
-export default function CreateAccountBtn(){
+interface Props{
+  onPress: () => void;
+}
+export default function CreateAccountBtn({onPress}: Props){
     return <TouchableOpacity
           style={styles.container}
-          onPress={() => console.log("pressed")}
+          onPress={onPress}
         >
           <Text style={styles.text}>Create New Account</Text>
         </TouchableOpacity>
