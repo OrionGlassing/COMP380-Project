@@ -1,28 +1,31 @@
-import AppleBtn from "@/src/components/auth/AppleBtn";
-import CreateAccountBtn from "@/src/components/auth/CreateAcountBtn";
-import GoogleBtn from "@/src/components/auth/GoogleBtn";
+import AppleBtn from "@/src/components/auth/SocialButtons/AppleBtn";
+import SignUpBtn from "@/src/components/auth/SignUpBtn";
+import GoogleBtn from "@/src/components/auth/SocialButtons/GoogleBtn";
 import HelpBtn from "@/src/components/auth/HelpBtn";
 import LoginForm from "@/src/components/auth/LoginForm";
 import Divider from "@/src/components/ui/Divider";
 import Logo from "@/src/components/ui/Logo";
 import { router } from "expo-router";
 import { View, Text, StyleSheet } from "react-native";
+import Button from "@/src/components/ui/Button";
 
 export default function Login() {
   return (
     <View style={styles.pageContainer}>
       <View style={styles.container}>
-        <Logo/>
+        <Logo />
         <Text style={styles.title}>Sign In</Text>
-        <View style={styles.btnContainer}>
+        <View style={styles.socialBtnContainer}>
           <GoogleBtn />
           <AppleBtn />
         </View>
         <Divider />
         <LoginForm />
         <Divider />
-        <CreateAccountBtn onPress={() => router.replace("/(auth)/CreateAccount")}/>
-        <HelpBtn />
+        <Button label={"SignUp"} onPress={() => router.replace("/(auth)/SignUp")} />
+        <View style={styles.helpBtn}>
+          <Button label={"Help"} onPress={() => router.replace("/(auth)/Help")} />
+        </View>
       </View>
     </View>
   );
@@ -51,10 +54,15 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 26,
   },
-  btnContainer: {
+  socialBtnContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     gap: 10,
   },
+
+  helpBtn: {
+    flex: 1,
+    alignItems: "center",
+  }
 });

@@ -1,6 +1,24 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+} from "react-native";
+import { useState } from "react";
+import Button from "../ui/Button";
 
 export default function LoginForm() {
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = () => {
+    if (!password.trim() || !email.trim()) {
+      setError("All field are required.");
+      return;
+    }
+    setError("");
+  };
   return (
     <View style={styles.formContainer}>
       <TextInput
@@ -8,11 +26,18 @@ export default function LoginForm() {
         placeholder="Email"
         keyboardType="email-address"
         autoCapitalize="none"
+        value={email}
+        onChangeText={setEmail}
       />
-      <TextInput style={styles.input} placeholder="Password" secureTextEntry={true} />
-        <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btnText}>LogIn</Text>
-        </TouchableOpacity>
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry={true}
+        value={password}
+        onChangeText={setPassword}
+      />
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+      <Button label={"Login"} onPress={handleLogin} />
     </View>
   );
 }
@@ -22,7 +47,7 @@ const styles = StyleSheet.create({
     gap: 10,
     padding: 30,
     borderRadius: 15,
-    flexDirection:"column",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#A9927D",
@@ -36,18 +61,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 
-  btn: {
-    backgroundColor: "#F2F4F3",
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    padding: 10,
-    alignItems: "center",
-    width: "50%",
-  },
-
-  btnText: {
+  error: {
     fontSize: 15,
-    fontWeight: "bold",
+    color: "red",
   }
 });
