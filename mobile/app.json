@@ -44,7 +44,8 @@
           {
             "assets": ["assets/Logo.svg"]
           }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
