@@ -2,8 +2,15 @@ import { router } from "expo-router";
 import { Text, View } from "react-native";
 import textStyles from "../../constants/text-styles";
 import SimpleButton from "@/components/simpleButton";
+import LabeledSlider from "@/components/sliders/LabeledSlider";
+import { useCustomizeProfileStore } from "@/utils/data-stores/customizeProfileStore";
 
 export default function CustomizeProfile() {
+  //Import customize profile store data (one-by-one for efficient rendering)
+  const difficultyIndex = useCustomizeProfileStore((state) => state.difficultyIndex);
+  const setDifficulty = useCustomizeProfileStore((state) => state.setDifficulty);
+
+
   return (
     <View
       style={{
@@ -18,14 +25,17 @@ export default function CustomizeProfile() {
       <Text style={textStyles.standard}>
         Welcome to /app/customize-profile, here the user can edit profile settings.
       </Text>
-      <SimpleButton
-        label="Save and Exit"
-        onPress={() => {
-          router.dismissTo("/account");
-        }}
+      <LabeledSlider
+          enabled={true}
+          label="Difficulty"
+          stepLabels={['None', 'Low', 'Medium', 'High', 'Max']}
+          index={difficultyIndex}
+          callBack={(selectedValue: string, index: number) => {
+            setDifficulty(selectedValue, index)
+          }}
       />
       <SimpleButton
-        label="Cancel"
+        label="Save and Exit"
         onPress={() => {
           router.dismissTo("/account");
         }}

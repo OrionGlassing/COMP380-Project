@@ -34,7 +34,6 @@ export default function SignUp() {
       <SimpleButton
         label="Create Account"
         onPress={() => {
-          console.log("Trying!")
           router.push("/create-account");
         }}
       />
