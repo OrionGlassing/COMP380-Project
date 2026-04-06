@@ -16,11 +16,11 @@ const sliderStyles = StyleSheet.create({
         marginBottom: 20,
     },
     textLabel: {
-        fontSize: 16,
-        color: "#ffff",
+        fontSize: 20,
+        color: '#ffff',
+        fontWeight: 500,
         textAlign: 'left',
-        marginBottom: 4,
-        fontWeight: '600',
+        marginBottom: 10,
     },
     stepLabel: {
         marginTop: 4,

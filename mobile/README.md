@@ -1,4 +1,5 @@
 # Frontend Tools / Dependencies:
+
 Logic:
    zustand:
       - https://zustand.docs.pmnd.rs/learn/getting-started/introduction
@@ -21,6 +22,11 @@ Components:
    React Native Community Slider:
       - https://www.npmjs.com/package/@react-native-community/slider
       - Slider component
+   Expo checkbox:
+      - https://docs.expo.dev/versions/latest/sdk/checkbox/
+      - Simple checkbox component.
+      - Being used purely as a visual component, no current responsible for any logic.
+   
 
 
 # Data Architecture: 

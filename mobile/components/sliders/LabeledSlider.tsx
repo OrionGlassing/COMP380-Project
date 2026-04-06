@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, } from 'react';
+import React, { FC, useCallback, } from 'react';
 import { View, Text, } from 'react-native';
 import Slider, { MarkerProps } from '@react-native-community/slider';
 import sliderStyles from '@/constants/slider-styles';

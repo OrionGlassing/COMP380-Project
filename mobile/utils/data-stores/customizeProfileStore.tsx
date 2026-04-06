@@ -3,6 +3,10 @@ import { persist, createJSONStorage } from "zustand/middleware" //save state to 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface CustomizeProfileState {
+    //Diet Checklist
+    dietList_Example: boolean;
+    setDietList_Example: (val: boolean) => void;
+
     //Difficuly Slider
     difficultyValue: string;
     difficultyIndex: number;
@@ -13,6 +17,12 @@ interface CustomizeProfileState {
 export const useCustomizeProfileStore = create(     //zustand creates a store
     persist<CustomizeProfileState>(                 //persist saves to device storage
         (set) => ({                                 //set is zustand's internal update function
+            //Diet Checklist
+            dietList_Example: false,
+            setDietList_Example: (val) => set((state) => ({
+                dietList_Example: val,
+            })),
+
             //Difficulty Slider
             difficultyValue: '',    //Default values will be read from database
             difficultyIndex: 0,

@@ -4,6 +4,7 @@ import textStyles from "../../constants/text-styles";
 import SimpleButton from "@/components/simpleButton";
 import LabeledSlider from "@/components/sliders/LabeledSlider";
 import { useCustomizeProfileStore } from "@/utils/data-stores/customizeProfileStore";
+import DietCheckList from "@/components/checklist/dietCheckList";
 
 export default function CustomizeProfile() {
   //Import customize profile store data (one-by-one for efficient rendering)
@@ -16,7 +17,7 @@ export default function CustomizeProfile() {
       style={{
         flex: 1,
         flexDirection: "column",
-        gap: 15,
+        gap: 20,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#1f1f1f"
@@ -27,13 +28,14 @@ export default function CustomizeProfile() {
       </Text>
       <LabeledSlider
           enabled={true}
-          label="Difficulty"
+          label="Difficulty:"
           stepLabels={['None', 'Low', 'Medium', 'High', 'Max']}
           index={difficultyIndex}
           callBack={(selectedValue: string, index: number) => {
             setDifficulty(selectedValue, index)
           }}
       />
+      <DietCheckList />
       <SimpleButton
         label="Save and Exit"
         onPress={() => {
