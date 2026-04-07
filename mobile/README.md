@@ -25,7 +25,7 @@ Components:
    Expo checkbox:
       - https://docs.expo.dev/versions/latest/sdk/checkbox/
       - Simple checkbox component.
-      - Being used purely as a visual component, no current responsible for any logic.
+      - Being used purely as a visual component, not currently responsible for any logic.
    
 
 
