@@ -13,10 +13,13 @@ Logic:
 
 UI:
    React Native Size Matters:
-         - https://github.com/nirsky/react-native-size-matters
-         - The UI will not scale across different sized devices without manually
-         correcting for the differences.
-         - This library claims to make device scaling much easier.
+      - https://github.com/nirsky/react-native-size-matters
+      - The UI will not scale across different sized devices without manually
+      correcting for the differences.
+      - This library claims to make device scaling much easier.
+   React Native Safe Area Context:
+      - https://docs.expo.dev/versions/latest/sdk/safe-area-context/
+
          
 Components:
    React Native Community Slider:
@@ -26,6 +29,7 @@ Components:
       - https://docs.expo.dev/versions/latest/sdk/checkbox/
       - Simple checkbox component.
       - Being used purely as a visual component, not currently responsible for any logic.
+   
    
 
 

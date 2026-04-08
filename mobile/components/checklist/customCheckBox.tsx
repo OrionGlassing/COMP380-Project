@@ -1,5 +1,5 @@
 import { Checkbox } from 'expo-checkbox'
-import checklistStyles from '@/constants/checklist-styles';
+import { StyleSheet } from "react-native";
 import { theme } from '@/constants/theme';
 
 
@@ -12,7 +12,7 @@ const CheckBox = ({enabled, isChecked, }: Props) => {
 
     return (
         <Checkbox
-            style={checklistStyles.checkBox}
+            style={checkBoxStyles.checkBox}
             value={isChecked}
             color={
                     isChecked ? 
@@ -24,3 +24,9 @@ const CheckBox = ({enabled, isChecked, }: Props) => {
 };
 
 export default CheckBox;
+
+const checkBoxStyles = StyleSheet.create({
+    checkBox: {
+        margin: 8,
+    },
+});

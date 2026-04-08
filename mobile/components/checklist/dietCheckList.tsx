@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, StyleSheet } from 'react-native';
 import CheckableItem from './checkableItem';
-import checklistStyles from '@/constants/checklist-styles';
 import { useCustomizeProfileStore } from '@/utils/data-stores/customizeProfileStore';
+import { theme } from '@/constants/theme';
 
 const DietCheckList = () => {
     const dietList_Example = useCustomizeProfileStore((state) => state.dietList_Example);
@@ -38,9 +38,38 @@ const DietCheckList = () => {
                     />
                 )}
             />
-        </View> 
+            </View> 
         </View>
     );
 };
 
 export default DietCheckList;
+
+const checklistStyles = StyleSheet.create({
+    checkListContainer: {
+        alignSelf: 'stretch',
+        flexDirection: 'column',
+        paddingHorizontal: '5%',
+        gap: 10,
+    },
+    windowContainer: {
+        alignSelf: 'center',
+        height: 250, 
+        width: '100%',
+        backgroundColor: '#2a2a2a',
+        borderRadius: 12,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#444',
+        overflow: 'hidden', 
+    },
+    listContent: {
+        paddingBottom: 20, 
+    },
+    checkListHeaderText: {
+        fontSize: 20,
+        color: '#ffff',
+        fontWeight: 500,
+        textAlign: 'left',
+    },
+});

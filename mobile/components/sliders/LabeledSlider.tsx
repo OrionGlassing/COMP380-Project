@@ -1,9 +1,8 @@
 import React, { FC, useCallback, } from 'react';
-import { View, Text, } from 'react-native';
-import Slider, { MarkerProps } from '@react-native-community/slider';
-import sliderStyles from '@/constants/slider-styles';
+import { View, Text, StyleSheet, } from 'react-native';
+import Slider, { MarkerProps, SliderProps } from '@react-native-community/slider';
 
-interface Props {
+interface Props extends SliderProps {
     enabled: boolean;
     label: string;
     stepLabels: string[];   // e.g. ['None', 'Low', 'Medium', 'High', 'Max']
@@ -11,7 +10,14 @@ interface Props {
     callBack: (selectedValue: string, selectedIndex: number) => void;
 }
 
-const LabeledSlider = ({ enabled, label, stepLabels, index, callBack }: Props) => {
+const LabeledSlider = ({
+    enabled,
+    label,
+    stepLabels,
+    index,
+    callBack,
+    ...rest
+}: Props) => {
 
     const StepMarker: FC<MarkerProps> = useCallback(({ stepMarked, index }) => {
         return (
@@ -53,3 +59,40 @@ const LabeledSlider = ({ enabled, label, stepLabels, index, callBack }: Props) =
 };
 
 export default LabeledSlider;
+
+const sliderStyles = StyleSheet.create({
+    container: {
+        alignSelf: 'stretch',
+        flexDirection: 'column',
+        paddingHorizontal: '5%',
+    },
+    stepsContainer: {
+        alignItems: 'center',
+        marginTop: 20, 
+    },
+    slider: {
+        opacity: 1,
+        marginHorizontal: 0,
+        marginBottom: 20,
+    },
+    textLabel: {
+        fontSize: 20,
+        color: '#ffff',
+        fontWeight: 500,
+        textAlign: 'left',
+        marginBottom: 10,
+    },
+    stepLabel: {
+        marginTop: 4,
+        fontSize: 12,
+        textAlign: 'center',
+        color: '#8e8e93', 
+    },
+    stepLabelSelected: {
+        marginTop: 4,
+        fontSize: 12,
+        textAlign: 'center',
+        color: '#007AFF', 
+        fontWeight: 'bold',
+    },
+});

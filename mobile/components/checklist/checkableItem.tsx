@@ -1,5 +1,5 @@
 import CheckBox from "./customCheckBox";
-import checklistStyles from "@/constants/checklist-styles";
+import { StyleSheet } from "react-native";
 import { theme } from "@/constants/theme";
 import { Text, View, Pressable } from "react-native";
 
@@ -39,3 +39,26 @@ const CheckableItem = ({enabled, label, isChecked, callBack, }: Props) => {
 };
 
 export default CheckableItem;
+
+const checklistStyles = StyleSheet.create({
+    checkItemContainer: {
+        alignSelf: 'stretch',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    checkItemPressable: {
+        flexDirection: 'row', 
+        alignItems: 'center',
+        alignSelf: 'flex-start', 
+        gap: 10,
+    },
+    checkItemTextNotChecked: {
+        fontSize: 15,
+        color: theme.colors.grey,
+    },
+    checkItemTextChecked: {
+        fontSize: 15,
+        color: '#ffff',
+        fontWeight: 500,
+    },
+});
