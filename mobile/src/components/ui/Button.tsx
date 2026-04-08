@@ -1,11 +1,15 @@
-import { TouchableOpacity, Text, StyleSheet } from "react-native";
-
+import { Pressable, Text, StyleSheet } from "react-native";
 interface Props {
-    label: string;
-    onPress: () => void;
+  label: string;
+  onPress: () => void;
 }
-export default function Button({label, onPress}: Props){
-    return<TouchableOpacity style={styles.btn} onPress={onPress}><Text style={styles.btnText}>{label}</Text></TouchableOpacity>
+
+export default function Button({ label, onPress }: Props) {
+  return (
+    <Pressable style={styles.btn} onPress={onPress}>
+      <Text style={styles.btnText}>{label}</Text>
+    </Pressable>
+  );
 }
 const styles = StyleSheet.create({
     btn: {
@@ -21,5 +25,6 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 15,
     fontWeight: "bold",
+    color: "#000000",
   },
 });

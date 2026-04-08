@@ -1,4 +1,4 @@
-import SignUpForm from "@/src/components/auth/SignUpForm";
+import SignUpForm from "@/src/components/Login/SignUpForm";
 import Logo from "@/src/components/ui/Logo";
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";

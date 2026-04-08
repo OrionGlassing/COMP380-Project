@@ -1,8 +1,4 @@
 import { Stack } from "expo-router";
-
-export default function RootLayout() {
-  return <Stack screenOptions={{headerShown: false}}/>;
-}
 import { useAuthStore } from "@/utils/authStore";
 
 export default function RootLayout() {
@@ -20,8 +16,7 @@ export default function RootLayout() {
           />
         </Stack.Protected>
         <Stack.Protected guard={!isLoggedIn}>
-          <Stack.Screen name="sign-up" />
-          <Stack.Screen name="create-account" />
+          <Stack.Screen name="SignUp" />
         </Stack.Protected>
     </Stack>
   );

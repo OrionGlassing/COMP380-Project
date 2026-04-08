@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { Text, View } from "react-native";
-import textStyles from "../../constants/text-styles";
+import textStyles from "../../src/constant/text-styles";
 
 export default function SignUp() {
   return (
@@ -11,11 +11,11 @@ export default function SignUp() {
         gap: 15,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#1f1f1f"
+        backgroundColor: "#1f1f1f",
       }}
     >
       <Text style={textStyles.standard}>
-        Welcome to /app/cookbook, the page to view and manage the users personal cookbook.
+        Welcome to /app/explore, the page to view public recipes.
       </Text>
     </View>
   );

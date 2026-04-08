@@ -1,15 +1,14 @@
-import AppleBtn from "@/src/components/auth/SocialButtons/AppleBtn";
-import SignUpBtn from "@/src/components/auth/SignUpBtn";
-import GoogleBtn from "@/src/components/auth/SocialButtons/GoogleBtn";
-import HelpBtn from "@/src/components/auth/HelpBtn";
-import LoginForm from "@/src/components/auth/LoginForm";
+import AppleBtn from "@/src/components/Login/SocialButtons/AppleBtn";
+import GoogleBtn from "@/src/components/Login/SocialButtons/GoogleBtn";
+import LoginForm from "@/src/components/Login/LoginForm";
 import Divider from "@/src/components/ui/Divider";
 import Logo from "@/src/components/ui/Logo";
-import { router } from "expo-router";
 import { View, Text, StyleSheet } from "react-native";
 import Button from "@/src/components/ui/Button";
+import { useRouter } from "expo-router";
 
 export default function Login() {
+  const router = useRouter();
   return (
     <View style={styles.pageContainer}>
       <View style={styles.container}>
@@ -22,9 +21,15 @@ export default function Login() {
         <Divider />
         <LoginForm />
         <Divider />
-        <Button label={"SignUp"} onPress={() => router.replace("/(auth)/SignUp")} />
+        <Button
+          label={"SignUp"}
+          onPress={() => router.push("/(login)/SignUp")}
+        />
         <View style={styles.helpBtn}>
-          <Button label={"Help"} onPress={() => router.replace("/(auth)/Help")} />
+          <Button
+            label={"Help"}
+            onPress={() => router.replace("/(login)/Help")}
+          />
         </View>
       </View>
     </View>
@@ -62,7 +67,7 @@ const styles = StyleSheet.create({
   },
 
   helpBtn: {
-    flex: 1,
     alignItems: "center",
-  }
+    marginTop: 10,
+  },
 });

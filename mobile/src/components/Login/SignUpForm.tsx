@@ -4,11 +4,15 @@ import { useState } from "react";
 import { useRouter } from "expo-router";
 
 import Button from "../ui/Button";
+import { useAuthStore } from "@/utils/authStore";
 
 export default function SignUpForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+
+  const { logIn } = useAuthStore();
+  const router = useRouter();
 
   const handleSignUp = () => {
     if (!password || !confirmPassword) {
@@ -20,6 +24,8 @@ export default function SignUpForm() {
       setError("Passwords dont Match");
       return;
     }
+    logIn();
+    router.push("/")
     setError("");
   };
   return (

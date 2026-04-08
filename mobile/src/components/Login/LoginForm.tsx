@@ -6,17 +6,24 @@ import {
 } from "react-native";
 import { useState } from "react";
 import Button from "../ui/Button";
+import { useAuthStore } from "@/utils/authStore";
+import { useRouter } from "expo-router";
 
 export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
+  const {logIn} = useAuthStore();
+  const router = useRouter();
+
   const handleLogin = () => {
     if (!password.trim() || !email.trim()) {
       setError("All field are required.");
       return;
     }
+    logIn();
+    router.replace("/");
     setError("");
   };
   return (
