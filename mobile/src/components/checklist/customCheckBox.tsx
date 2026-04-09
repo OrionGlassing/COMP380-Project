@@ -1,6 +1,6 @@
 import { Checkbox } from 'expo-checkbox'
 import { StyleSheet } from "react-native";
-import { theme } from '@/constants/theme';
+import { theme } from '@/src/constants/theme';
 
 
 interface Props {

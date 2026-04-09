@@ -2,7 +2,7 @@ import React from 'react';
 import { View, FlatList, Text, StyleSheet } from 'react-native';
 import CheckableItem from './checkableItem';
 import { useCustomizeProfileStore } from '@/utils/data-stores/customizeProfileStore';
-import { theme } from '@/constants/theme';
+import { theme } from '@/src/constants/theme';
 
 const DietCheckList = () => {
     const dietList_Example = useCustomizeProfileStore((state) => state.dietList_Example);

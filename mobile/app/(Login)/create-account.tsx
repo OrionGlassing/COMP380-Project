@@ -1,7 +1,7 @@
 import { Link, useRouter } from "expo-router";
 import { Text, View } from "react-native";
-import textStyles from "../constants/text-styles";
-import SimpleButton from "@/components/simpleButton";
+import textStyles from "@/src/constants/text-styles";
+import SimpleButton from "@/src/components/simpleButton";
 import { useAuthStore } from "@/utils/authStore";
 
 export default function CreateAccount() {

@@ -1,7 +1,6 @@
 import { router } from "expo-router";
 import { Text, View } from "react-native";
-import textStyles from "@/src/constants/text-styles";
-import SimpleButton from "@/src/components/simpleButton";
+import textStyles from "../../src/constant/text-styles";
 
 export default function SignUp() {
   return (
@@ -12,18 +11,13 @@ export default function SignUp() {
         gap: 15,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#1f1f1f"
+        backgroundColor: "#1f1f1f",
       }}
     >
       <Text style={textStyles.standard}>
-        Welcome to /app/create-recipe, the page to generate a new recipe.
+        Welcome to /app/recipe, the page that displays the recipe data, and
+        allows customizing and saving.
       </Text>
-      <SimpleButton
-        label="Let's Cook"
-        onPress={() => {
-          router.replace("/recipe-loading");
-        }}
-      />
     </View>
   );
 }

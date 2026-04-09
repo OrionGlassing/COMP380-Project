@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { Text, View } from "react-native";
-import textStyles from "../../constants/text-styles";
+import textStyles from "@/src/constants/text-styles";
 
 export default function SignUp() {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextInput, View, StyleSheet, TextInputProps } from 'react-native';
-import { theme } from '@/constants/theme';
+import { theme } from '@/src/constants/theme';
 
 interface Props extends Omit<TextInputProps, 'onChangeText'> {
     value: string;

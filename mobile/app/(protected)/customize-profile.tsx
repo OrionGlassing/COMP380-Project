@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { router } from "expo-router";
 import { Text, View } from "react-native";
-import textStyles from "../../constants/text-styles";
-import SimpleButton from "@/components/simpleButton";
-import LabeledSlider from "@/components/sliders/LabeledSlider";
+import textStyles from "@/src/constants/text-styles";
+import SimpleButton from "@/src/components/simpleButton";
+import LabeledSlider from "@/src/components/sliders/LabeledSlider";
 import { useCustomizeProfileStore } from "@/utils/data-stores/customizeProfileStore";
-import DietCheckList from "@/components/checklist/dietCheckList";
-import CustomTextInput from "@/components/textbox/TextBox";
+import DietCheckList from "@/src/components/checklist/dietCheckList";
+import CustomTextInput from "@/src/components/textbox/TextBox";
 
 export default function CustomizeProfile() {
   //Import customize profile store data (one-by-one for efficient rendering)

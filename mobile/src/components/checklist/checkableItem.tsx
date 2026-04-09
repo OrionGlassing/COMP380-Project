@@ -1,6 +1,6 @@
 import CheckBox from "./customCheckBox";
 import { StyleSheet } from "react-native";
-import { theme } from "@/constants/theme";
+import { theme } from "@/src/constants/theme";
 import { Text, View, Pressable } from "react-native";
 
 interface Props {

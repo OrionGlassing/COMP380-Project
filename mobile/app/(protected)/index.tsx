@@ -1,7 +1,7 @@
 import { Link, router } from "expo-router";
 import { Text, View } from "react-native";
-import textStyles from "../../constants/text-styles";
-import SimpleButton from "@/components/simpleButton";
+import textStyles from "@/src/constants/text-styles";
+import SimpleButton from "@/src/components/simpleButton";
 
 export default function Index() {
   return (
