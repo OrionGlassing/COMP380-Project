@@ -1,20 +1,16 @@
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TextInput, StyleSheet } from "react-native";
 import { useState } from "react";
 import Button from "../ui/Button";
 import { useAuthStore } from "@/utils/authStore";
 import { useRouter } from "expo-router";
+import Icon from "../ui/Icon";
 
 export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
-  const {logIn} = useAuthStore();
+  const { logIn } = useAuthStore();
   const router = useRouter();
 
   const handleLogin = () => {
@@ -26,23 +22,39 @@ export default function LoginForm() {
     router.replace("/");
     setError("");
   };
+
+  const inputProps = {
+    style: styles.inputText,
+    placeholderTextColor: "black",
+  } as const;
+
+  const inputContainerProps = {
+    style: styles.input,
+  } as const;
   return (
     <View style={styles.formContainer}>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry={true}
-        value={password}
-        onChangeText={setPassword}
-      />
+      <View {...inputContainerProps}>
+        <Icon name="mail-outline" />
+        <TextInput
+          {...inputProps}
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
+      </View>
+
+      <View {...inputContainerProps}>
+        <Icon name="lock-closed-outline" />
+        <TextInput
+          {...inputProps}
+          placeholder="Confirm Password"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword}
+        />
+      </View>
       {error ? <Text style={styles.error}>{error}</Text> : null}
       <Button label={"Login"} onPress={handleLogin} />
     </View>
@@ -61,15 +73,22 @@ const styles = StyleSheet.create({
   },
 
   input: {
+    flexDirection: "row",
     backgroundColor: "white",
     borderRadius: 15,
     padding: 10,
     fontSize: 15,
     width: "100%",
+    gap: 15,
   },
 
+  inputText: {
+    flex: 1,
+    color: "black",
+    fontSize: 15,
+  },
   error: {
     fontSize: 15,
-    color: "red",
-  }
+    color: "black",
+  },
 });

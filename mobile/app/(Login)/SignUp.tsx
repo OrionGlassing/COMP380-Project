@@ -12,11 +12,15 @@ export default function SignUp() {
         <View style={styles.arrow}>
           <Arrow
             type={"arrow-back"}
-            onPress={() => router.replace("/(auth)/Login")}
+            onPress={() => router.push("/(login)/Welcome")}
           />
         </View>
         <Logo />
-        <Text style={styles.title}>Sign-Up</Text>
+        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.text}>
+          Create an account to get access to our recipe app. Where youll be able
+          to discover really special recipes.
+        </Text>
         <SignUpForm />
       </View>
     </View>
@@ -49,6 +53,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "white",
+  },
+
+  text: {
+    fontSize: 15,
+    textAlign: "center",
     color: "white",
   },
 });

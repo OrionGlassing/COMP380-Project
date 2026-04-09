@@ -16,6 +16,6 @@ export default function Arrow({ type, onPress }: Props) {
 const styles = StyleSheet.create({
   arrow: {
     fontSize: 24,
-    color: "white",
+    color: "black",
   },
 });

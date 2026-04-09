@@ -6,30 +6,35 @@ import Logo from "@/src/components/ui/Logo";
 import { View, Text, StyleSheet } from "react-native";
 import Button from "@/src/components/ui/Button";
 import { useRouter } from "expo-router";
+import Arrow from "@/src/components/ui/Arrow";
 
 export default function Login() {
   const router = useRouter();
   return (
     <View style={styles.pageContainer}>
       <View style={styles.container}>
+        <View style={styles.arrow}>
+          <Arrow
+            type={"arrow-back"}
+            onPress={() => router.push("/(login)/Welcome")}
+          />
+        </View>
         <Logo />
-        <Text style={styles.title}>Sign In</Text>
+        <Text style={styles.title}>Log in</Text>
+        <Text style={styles.text}>
+          Enter password and email to securely access the app and manage your
+          services.
+        </Text>
+        <Divider />
+        <LoginForm />
+        <Divider />
+        <Text>Or Continue with Account</Text>
         <View style={styles.socialBtnContainer}>
           <GoogleBtn />
           <AppleBtn />
         </View>
-        <Divider />
-        <LoginForm />
-        <Divider />
-        <Button
-          label={"SignUp"}
-          onPress={() => router.push("/(login)/SignUp")}
-        />
         <View style={styles.helpBtn}>
-          <Button
-            label={"Help"}
-            onPress={() => router.replace("/(login)/Help")}
-          />
+          <Button label={"Help"} onPress={() => router.push("/(login)/Help")} />
         </View>
       </View>
     </View>
@@ -59,6 +64,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 26,
   },
+  text: {
+    textAlign: "center",
+    fontSize: 15,
+    color: "white",
+  },
   socialBtnContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -69,5 +79,8 @@ const styles = StyleSheet.create({
   helpBtn: {
     alignItems: "center",
     marginTop: 10,
+  },
+  arrow: {
+    alignSelf: "flex-start",
   },
 });
