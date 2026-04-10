@@ -5,7 +5,7 @@ export default function RootLayout() {
   const { isLoggedIn } = useAuthStore();
 
   return (
-      <Stack>
+      <Stack screenOptions={{headerShown: false}}>
         <Stack.Protected guard={isLoggedIn}>
           <Stack.Screen
             name="(protected)"

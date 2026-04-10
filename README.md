@@ -10,6 +10,11 @@
     Prerequisites:
     How to run:
 ##Folder Structure
+
+##Design
+app design theme: https://img.freepik.com/free-vector/hand-drawn-colorless-apps_23-2148808890.jpg?semt=ais_hybrid&w=740&q=80
+
+deep sea color palette: https://coolors.co/palette/0d1321-1d2d44-3e5c76-748cab-f0ebd8
     
 # Project Root Directory
 

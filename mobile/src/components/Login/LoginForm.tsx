@@ -18,8 +18,8 @@ export default function LoginForm() {
       setError("All field are required.");
       return;
     }
-    logIn();
-    router.replace("/");
+    //logIn();
+    router.replace("/(home)/Home");
     setError("");
   };
 
