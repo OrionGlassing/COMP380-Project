@@ -6,11 +6,7 @@ const textStyles = StyleSheet.create({
         textAlign: 'center',
         color: "#ffff",
     },
-    link: {
-        fontSize: 15,
-        textDecorationLine: "underline",
-        color: "#0096FF",
-    },
+    
 });
 
 export default textStyles;

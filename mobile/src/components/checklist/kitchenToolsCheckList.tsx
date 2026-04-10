@@ -4,28 +4,29 @@ import CheckableItem from './checkableItem';
 import { useCustomizeProfileStore } from '@/utils/data-stores/customizeProfileStore';
 import { theme } from '@/src/constants/theme';
 
-const DietCheckList = () => {
 
-    const dietOptions = useCustomizeProfileStore((state) => state.dietOptions);
-    const toggleDiet = useCustomizeProfileStore((state) => state.toggleDiet);
+const KitchenToolsCheckList = () => {
+
+    const kitchenTools = useCustomizeProfileStore((state) => state.kitchenTools);
+    const toggleKitchenTool = useCustomizeProfileStore((state) => state.toggleKitchenTool);
 
     return (
         <View style={checklistStyles.checkListContainer}>
             <Text style={checklistStyles.checkListHeaderText}>
-                Select your diet(s):
+                Select your kitchen tools:
             </Text>
             <View style={checklistStyles.windowContainer}>
                 <ScrollView
                     nestedScrollEnabled={true}
                     contentContainerStyle={checklistStyles.listContent}
                 >
-                    {dietOptions.map(diet => (
+                    {kitchenTools.map(tool => (
                         <CheckableItem
-                            key={diet.id}
+                            key={tool.id}
                             enabled={true}
-                            label={diet.label}
-                            isChecked={diet.isChecked}
-                            callBack={() => toggleDiet(diet.id)}
+                            label={tool.label}
+                            isChecked={tool.isChecked}
+                            callBack={() => toggleKitchenTool(tool.id)}
                         />
                     ))}
             </ScrollView>
@@ -34,7 +35,7 @@ const DietCheckList = () => {
     );
 };
 
-export default DietCheckList;
+export default KitchenToolsCheckList;
 
 const checklistStyles = StyleSheet.create({
     checkListContainer: {

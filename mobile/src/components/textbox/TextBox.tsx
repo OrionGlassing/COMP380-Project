@@ -54,7 +54,6 @@ export default CustomTextInput;
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        marginVertical: 8,
     },
     textInput: {
         backgroundColor: '#2a2a2a',

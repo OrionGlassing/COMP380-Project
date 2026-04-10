@@ -7,7 +7,7 @@ interface Props {
     enabled: boolean;
     label: string;
     isChecked: boolean;
-    callBack: (val: boolean) => void;
+    callBack: () => void;
 }
 
 
@@ -18,7 +18,7 @@ const CheckableItem = ({enabled, label, isChecked, callBack, }: Props) => {
             <Pressable
                 disabled={!enabled}
                 onPress={() => {
-                    callBack(!isChecked);
+                    callBack();
                 }}
                 style={checklistStyles.checkItemPressable}
             >

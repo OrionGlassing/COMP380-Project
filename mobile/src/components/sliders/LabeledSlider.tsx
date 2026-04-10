@@ -64,7 +64,6 @@ const sliderStyles = StyleSheet.create({
     container: {
         alignSelf: 'stretch',
         flexDirection: 'column',
-        paddingHorizontal: '5%',
     },
     stepsContainer: {
         alignItems: 'center',
@@ -73,7 +72,7 @@ const sliderStyles = StyleSheet.create({
     slider: {
         opacity: 1,
         marginHorizontal: 0,
-        marginBottom: 20,
+        marginBottom: 25,
     },
     textLabel: {
         fontSize: 20,
