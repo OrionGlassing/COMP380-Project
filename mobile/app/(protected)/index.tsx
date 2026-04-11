@@ -39,7 +39,7 @@ export default function Index() {
       <SimpleButton
         label="New Recipe"
         onPress={() => {
-          router.push("/create-recipe");
+          router.push("/create-new-recipe");
         }}
       />
     </View>

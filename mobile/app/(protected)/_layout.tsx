@@ -9,9 +9,9 @@ export default function ProtectedLayout() {
       <Stack.Screen name="customize-profile" />
       <Stack.Screen name="explore" />
       <Stack.Screen name="cookbook" />
-      <Stack.Screen name="create-recipe" />
-      <Stack.Screen name="recipe-loading" />
-      <Stack.Screen name="recipe" />
+      <Stack.Screen name="create-new-recipe" />
+      <Stack.Screen name="loading-recipe" />
+      <Stack.Screen name="recipe/1" />
     </Stack>
   );
 };

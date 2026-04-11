@@ -1,12 +1,39 @@
 import { create } from "zustand" //in memory state management
 import { persist, createJSONStorage } from "zustand/middleware" //save state to device storage
+import { CheckListEntry } from "@/src/types/dataTypes";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export interface CheckListEntry {
-    id: string;
-    label: string;
-    isChecked: boolean;
-}
+//
+// Notes
+//
+/*
+This zustand store contains all of the user profile settings page data.
+
+This data is owned by the database, so when the user opens the customize profile page we 
+will want to set this data with a fetch request. 
+
+Some of the data fields are set up here in the front end, and some are dynamically retireved from the backend:
+
+    - Things like the text boxes have their data mirrored between frontend and backend.
+        - They both know what the data managed by that component looks like (just a string).
+
+    - The checkbox components do NOT know what fields they will manage.
+
+        - These work by recieving an array from the backend, and then dynamically 
+        displaying however many fields were recieved in that array.
+        (They both need to share the same type for the element in the array (CheckListEntry))
+
+        - This makes it really easy to manage larger data fields, because we do not 
+        need to sync the frontend and database, the database tells the frontend everything.
+
+        - When a change is made, for example removing an option or adding a new one, 
+        one change to the database keeps the whole app synced.
+
+The data is stored on the device using the persist middlware so that the app 
+is still capable of working offline.
+    - Data may get out of sync, but the database will be regularly sending the frontend
+    the true values, so this isn't a big deal for now.
+*/
 
 interface UserProfileDatabaseResponse {
     difficulty: number;

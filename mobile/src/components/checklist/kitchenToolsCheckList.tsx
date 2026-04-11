@@ -24,6 +24,7 @@ const KitchenToolsCheckList = () => {
                         <CheckableItem
                             key={tool.id}
                             enabled={true}
+                            shouldCrossOut={false}
                             label={tool.label}
                             isChecked={tool.isChecked}
                             callBack={() => toggleKitchenTool(tool.id)}

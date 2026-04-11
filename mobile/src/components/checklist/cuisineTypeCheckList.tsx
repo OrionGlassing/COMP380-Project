@@ -1,32 +1,33 @@
 import React from 'react';
 import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import CheckableItem from './checkableItem';
-import { useCustomizeProfileStore } from '@/utils/data-stores/customizeProfileStore';
+import { useCreateNewRecipeStore } from '@/utils/data-stores/createNewRecipeStore';
 import { theme } from '@/src/constants/theme';
 
-const DietCheckList = () => {
 
-    const dietOptions = useCustomizeProfileStore((state) => state.dietOptions);
-    const toggleDiet = useCustomizeProfileStore((state) => state.toggleDiet);
+const CuisineTypeCheckList = () => {
+
+    const cuisineTypeOptions = useCreateNewRecipeStore((state) => state.cuisineTypeOptions);
+    const toggleCuisineOption = useCreateNewRecipeStore((state) => state.toggleCuisineOption);
 
     return (
         <View style={checklistStyles.checkListContainer}>
             <Text style={checklistStyles.checkListHeaderText}>
-                Select your diet(s):
+                Select cuisine:
             </Text>
             <View style={checklistStyles.windowContainer}>
                 <ScrollView
                     nestedScrollEnabled={true}
                     contentContainerStyle={checklistStyles.listContent}
                 >
-                    {dietOptions.map(diet => (
+                    {cuisineTypeOptions.map(type => (
                         <CheckableItem
-                            key={diet.id}
+                            key={type.id}
                             enabled={true}
                             shouldCrossOut={false}
-                            label={diet.label}
-                            isChecked={diet.isChecked}
-                            callBack={() => toggleDiet(diet.id)}
+                            label={type.label}
+                            isChecked={type.isChecked}
+                            callBack={() => toggleCuisineOption(type.id)}
                         />
                     ))}
             </ScrollView>
@@ -35,7 +36,7 @@ const DietCheckList = () => {
     );
 };
 
-export default DietCheckList;
+export default CuisineTypeCheckList;
 
 const checklistStyles = StyleSheet.create({
     checkListContainer: {

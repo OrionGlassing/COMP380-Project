@@ -5,13 +5,14 @@ import { Text, View, Pressable } from "react-native";
 
 interface Props {
     enabled: boolean;
+    shouldCrossOut: boolean;
     label: string;
     isChecked: boolean;
     callBack: () => void;
 }
 
 
-const CheckableItem = ({enabled, label, isChecked, callBack, }: Props) => {
+const CheckableItem = ({enabled, shouldCrossOut, label, isChecked, callBack, }: Props) => {
 
     return (
         <View style={checklistStyles.checkItemContainer}>
@@ -29,7 +30,10 @@ const CheckableItem = ({enabled, label, isChecked, callBack, }: Props) => {
                     />
                 </View>
                 <Text
-                    style={isChecked ? checklistStyles.checkItemTextChecked : checklistStyles.checkItemTextNotChecked}
+                    style={isChecked ?
+                        (shouldCrossOut ? checklistStyles.checkItemTextCrossedOut : checklistStyles.checkItemTextChecked)
+                        : (shouldCrossOut ? checklistStyles.checkItemTextNotCrossedOut : checklistStyles.checkItemTextNotChecked)
+                        }
                 >
                     {label}
                 </Text>
@@ -56,9 +60,19 @@ const checklistStyles = StyleSheet.create({
         fontSize: 15,
         color: theme.colors.grey,
     },
+    checkItemTextNotCrossedOut: {
+        fontSize: 15,
+        color: '#ffff',
+    },
     checkItemTextChecked: {
         fontSize: 15,
         color: '#ffff',
         fontWeight: 500,
+    },
+    checkItemTextCrossedOut: {
+        fontSize: 15,
+        color: theme.colors.grey,
+        fontWeight: 500,
+        textDecorationLine: 'line-through',
     },
 });

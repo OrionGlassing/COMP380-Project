@@ -39,13 +39,13 @@ export default function CustomizeProfile() {
     <SafeAreaView style={styles.screen}>
     <ScrollView contentContainerStyle={styles.contentContainer}>
 
-      <Text style={styles.textHeader}>
+      <Text style={textStyles.Header}>
         Diet & Restrictions
       </Text>
 
       <DietCheckList />
 
-      <Text style={styles.textLabel}>
+      <Text style={[textStyles.Label, {marginBottom: -10}]}>
         Describe your diet:
       </Text>
       <CustomTextInput
@@ -56,7 +56,7 @@ export default function CustomizeProfile() {
         keyboardType='default'
       />
 
-      <Text style={styles.textLabel}>
+      <Text style={[textStyles.Label, {marginBottom: -10}]}>
         List your food allergies:
       </Text>
       <CustomTextInput
@@ -67,11 +67,11 @@ export default function CustomizeProfile() {
         keyboardType='default'
       />
 
-      <Text style={styles.textHeader}>
+      <Text style={textStyles.Header}>
         Food Preferences
       </Text>
 
-      <Text style={styles.textLabel}>
+      <Text style={[textStyles.Label, {marginBottom: -10}]}>
         What are some ingredients you love?
       </Text>
       <CustomTextInput
@@ -82,7 +82,7 @@ export default function CustomizeProfile() {
         keyboardType='default'
       />
 
-      <Text style={styles.textLabel}>
+      <Text style={[textStyles.Label, {marginBottom: -10}]}>
         What are some ingredients you hate?
       </Text>
       <CustomTextInput
@@ -93,7 +93,7 @@ export default function CustomizeProfile() {
         keyboardType='default'
       />
 
-      <Text style={styles.textHeader}>
+      <Text style={textStyles.Header}>
         Cooking
       </Text>
 
@@ -133,20 +133,5 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center",
       paddingHorizontal: '5%'
-    },
-    textHeader: {
-      alignSelf: 'center',
-      fontSize: 32,
-      fontWeight: 500,
-      textDecorationLine: 'underline',
-      color: "#ffff",
-    },
-    textLabel: {
-      alignSelf: 'flex-start',
-      fontSize: 20,
-      color: '#ffff',
-      fontWeight: 500,
-      textAlign: 'left',
-      marginBottom: -10,
     },
 });
