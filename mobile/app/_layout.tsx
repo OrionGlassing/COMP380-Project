@@ -8,7 +8,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Protected guard={isLoggedIn}>
           <Stack.Screen
-            name="(protected)"
+            name="(home)"
             options={{
               headerShown: false,
               animation: "none",
