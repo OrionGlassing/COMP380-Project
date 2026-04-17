@@ -11,25 +11,25 @@ export default function Home() {
       <Button
         label="Manage Account"
         onPress={() => {
-          router.push("/(home)/account");
+          router.push("/account");
         }}
       />
       <Button
         label="Explore Page"
         onPress={() => {
-          router.push("/(home)/explore");
+          router.push("/explore");
         }}
       />
       <Button
         label="My Cookbook"
         onPress={() => {
-          router.push("/(home)/cookbook");
+          router.push("/cookbook");
         }}
       />
       <Button
         label="New Recipe"
         onPress={() => {
-          router.push("/(home)/create-recipe");
+          router.push("/create-recipe");
         }}
       />
     </View>

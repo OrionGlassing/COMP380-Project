@@ -31,7 +31,7 @@ export const useAuthStore = create(         //zustand creates a store
         }),
         {                                   //define the persist config
             name: "auth-store",
-            storage: createJSONStorage(() => ({
+            storage: createJSONStorage(() => ({ //using expo secure store functions
                 setItem,
                 getItem,
                 removeItem: deleteItemAsync,
