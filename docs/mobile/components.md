@@ -1,6 +1,6 @@
 # Components
 
-## Auth Components
+## Login Components
 
 ### Social Buttons
 - `AppleButton.tsx` : Sign in with Apple
@@ -10,6 +10,9 @@
 - `LoginForm.tsx` : Handles login input and validation
 - `SignUpForm.tsx` : Handles sign up input and validation
 
+## Home Components
+`SearchBar.tsx` : Search bar to look for a specific recipe
+
 ## Reusable UI Components
 `Accordion.tsx` : A dropdown component that shows and hides content when pressed 
 `AccountBtn.tsx` : Top navigation account button 
@@ -18,3 +21,4 @@
 `Divider.tsx` : Horizontal line separator 
 `Icon.tsx` : Wrapper around `@expo/vector-icons` 
 `Logo.tsx` : App logo component 
+`Filter.tsx` : Filter button that hides and shows a dropdown menu

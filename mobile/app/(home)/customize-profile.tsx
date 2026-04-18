@@ -22,13 +22,13 @@ export default function CustomizeProfile() {
       <Button
         label="Save and Exit"
         onPress={() => {
-          router.dismissTo("/account");
+          router.dismissTo("/Account");
         }}
       />
       <Button
         label="Cancel"
         onPress={() => {
-          router.dismissTo("/account");
+          router.dismissTo("/Account");
         }}
       />
     </View>

@@ -24,7 +24,7 @@ export default function SignUp() {
       <Button
         label="Proceed"
         onPress={() => {
-          router.replace("/recipe");
+          router.replace("/Recipe");
         }}
       />
     </View>

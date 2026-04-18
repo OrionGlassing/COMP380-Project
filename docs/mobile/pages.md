@@ -23,6 +23,13 @@ The Sign Up page serves as a starting point for new users. Here the new user inp
 _include pic_
 
 ---
+## Help
+
+Important page where helpful information will be displayed to guide the user in case questions about the app arise.
+
+The things that it will include are...
+
+---
 
 ## Home
 
@@ -32,6 +39,7 @@ _include pic_
 
 ---
 
-## Help
-
-_Currently a work in progress_
+## Explore
+WORK IN PROGRESS ...
+---
+##

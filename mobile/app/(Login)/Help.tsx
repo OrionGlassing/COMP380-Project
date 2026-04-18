@@ -45,10 +45,11 @@ const styles = StyleSheet.create({
     gap: 15,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#1f1f1f",
+    backgroundColor: "#F0EBD8",
   },
   arrow: {
     alignSelf: "flex-start",
+    padding: 15,
   },
 
   card: {},
