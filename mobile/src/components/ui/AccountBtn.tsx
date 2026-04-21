@@ -7,13 +7,13 @@ interface Props {
 export default function AccountBtn({onPress}: Props) {
   return (
     <Pressable style={styles.button} onPress={onPress}>
-      <Icon name="person-outline" size={40} />
+      <Icon name="person-outline" size={40} color="white" />
     </Pressable>
   );
 }
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "black",
+    backgroundColor: "#3E5C76",
 
     flexDirection: "column",
     justifyContent: "center",

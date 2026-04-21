@@ -5,20 +5,22 @@ export default function RootLayout() {
   const { isLoggedIn } = useAuthStore();
 
   return (
-      <Stack screenOptions={{headerShown: false}}>
-        <Stack.Protected guard={isLoggedIn}>
-          <Stack.Screen
-            name="(home)"
-            options={{
-              headerShown: false,
-              animation: "none",
-            }}
-          />
-        </Stack.Protected>
-        <Stack.Protected guard={!isLoggedIn}>
-          <Stack.Screen name="sign-up" />
-          <Stack.Screen name="create-account" />
-        </Stack.Protected>
+    //with your version of expo:
+    //   <Stack screenOptions={{headerShown: false}}>
+    //     //if not logged in (home) pages are guarded
+    //     <Stack.Protected guard={isLoggedIn}>
+    //       <Stack.Screen name="(home)"/>
+    //     </Stack.Protected>
+    //     //if not logged in (login) pages are still accesible
+    //     <Stack.Protected guard={!isLoggedIn}>
+    //       <Stack.Screen name="(login)"/>
+    //     </Stack.Protected>
+    // </Stack>
+    //with my version of expo:
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="(home)" />
+      <Stack.Screen name="(login)" />
     </Stack>
   );
 };

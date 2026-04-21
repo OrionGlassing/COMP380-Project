@@ -28,7 +28,7 @@ export default function Login() {
         <Divider />
         <LoginForm />
         <Divider />
-        <Text>Or Continue with Account</Text>
+        <Text style={styles.text}>Or Continue with Account</Text>
         <View style={styles.socialBtnContainer}>
           <GoogleBtn />
           <AppleBtn />
@@ -43,7 +43,7 @@ export default function Login() {
 const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    backgroundColor: "#5E503F",
+    backgroundColor: "#F0EBD8",
     padding: 20,
     justifyContent: "center",
   },
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     gap: 10,
     padding: 15,
 
-    backgroundColor: "#22333B",
+    backgroundColor: "#748CAB",
 
     borderRadius: 15,
     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",

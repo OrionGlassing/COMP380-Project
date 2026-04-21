@@ -21,9 +21,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     gap: 10,
     borderRadius: 15,
-    backgroundColor: "#F2F4F3",
+    backgroundColor: "#0D1321",
   },
   title: {
     fontSize: 22,
+    color: "white",
+    padding: 10,
   },
 });

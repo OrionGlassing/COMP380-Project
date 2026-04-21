@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - **Node.js** : required to run the project
-- **Expo CLI** :  required to start the development server
+- **Expo CLT** :  required to start the development server
 
 ## How To Run
 

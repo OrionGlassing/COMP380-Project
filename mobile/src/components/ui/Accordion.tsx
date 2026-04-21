@@ -24,7 +24,7 @@ export default function Accordion({ title, children }: AccordionProps) {
 }
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#9fb15d",
+    backgroundColor: "#748CAB",
     borderRadius: 15,
     width: 300,
     overflow: "hidden",
