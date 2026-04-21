@@ -24,13 +24,13 @@ export default function LoginForm() {
       return;
     }
     logIn();
-    router.replace("/");
+    router.replace("/(home)/Home");
     setError("");
   };
 
   const inputProps = {
     style: styles.inputText,
-    placeholderTextColor: "black",
+    placeholderTextColor: "white",
   } as const;
 
   const inputContainerProps = {
@@ -74,12 +74,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#A9927D",
+    backgroundColor: "#3E5C76",
   },
 
   input: {
     flexDirection: "row",
-    backgroundColor: "white",
+    backgroundColor: "#1D2D44",
     borderRadius: 15,
     padding: 10,
     fontSize: 15,
@@ -89,11 +89,11 @@ const styles = StyleSheet.create({
 
   inputText: {
     flex: 1,
-    color: "black",
+    color: "white",
     fontSize: 15,
   },
   error: {
     fontSize: 15,
-    color: "black",
+    color: "white",
   },
 });

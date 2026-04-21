@@ -1,16 +1,3 @@
-#CoKitchen
-    CoKitchen is a recipe app designed to make recipe creation, management, and cooking easier. It convines AI and and user interactions to customize and create recipes that better serve the users likes and dislikes.
-##Tech Stack
-    React Native / Expo
-    TypeScript
-    Firebase
-    Python
-    [comment]: <>(add important stack info)
-##Getting Started
-    Prerequisites:
-    How to run:
-##Folder Structure
-    
 # Project Root Directory
 
     Here is included both the backend files in Django and the Expo Go application for the 

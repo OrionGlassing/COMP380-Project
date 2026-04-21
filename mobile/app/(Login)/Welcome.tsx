@@ -18,12 +18,18 @@ export default function Welcome() {
       </Text>
       <Button
         label={"Get Started"}
-        onPress={() => router.replace("/(login)/SignUp")}
+        onPress={() => {
+          console.log("pressed");
+          router.replace("/(login)/SignUp");
+        }}
       />
       <Text>Already have an account?</Text>
       <Button
         label={"Login"}
-        onPress={() => router.replace("/(login)/Login")}
+        onPress={() => {
+          console.log("pressed");
+          router.replace("/(login)/Login");
+        }}
       />
     </View>
   );
@@ -36,18 +42,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 30,
-    backgroundColor: "#5E503F",
+    backgroundColor: "#F0EBD8",
   },
   textTitle: {
     fontSize: 25,
-    color: "white",
+    color: "black",
   },
 
   text: {
     padding: 10,
     margin: 10,
     maxWidth: 300,
-    color: "white",
+    color: "black",
     fontSize: 15,
     textAlign: "center",
   },
