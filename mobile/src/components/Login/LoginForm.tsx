@@ -1,4 +1,9 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+} from "react-native";
 import { useState } from "react";
 import Button from "../ui/Button";
 import { useAuthStore } from "@/utils/authStore";

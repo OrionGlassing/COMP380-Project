@@ -1,11 +1,12 @@
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import { Text, View } from "react-native";
 import textStyles from "@/src/constants/text-styles";
 import SimpleButton from "@/src/components/simpleButton";
 import { useAuthStore } from "@/utils/authStore";
 
-export default function Account() {
-  const { logOut } = useAuthStore();
+export default function SignUp() {
+  const router = useRouter();
+  const { logIn } = useAuthStore();
 
   return (
     <View
@@ -19,19 +20,21 @@ export default function Account() {
       }}
     >
       <Text style={textStyles.standard}>
-        Welcome to /app/account, here the user can manage their account.
+        Welcome to /app/sign-up, here the user can 3rd party auth, login, or create account.{"\n"}
+        Log In = Proceed to the app{"\n"}
+        Create Account = Visit create account page
       </Text>
-      <SimpleButton
-        label="Customize Profile"
+      <SimpleButton 
+        label="Log In"
         onPress={() => {
-          router.push("/customize-profile");
+          logIn();
+          router.replace("/");
         }}
       />
       <SimpleButton
-        label="Sign Out"
+        label="Create Account"
         onPress={() => {
-          logOut();
-          router.replace("/sign-up");
+          router.push("/create-account");
         }}
       />
     </View>

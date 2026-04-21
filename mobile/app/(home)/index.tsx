@@ -1,12 +1,9 @@
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import { Text, View } from "react-native";
 import textStyles from "@/src/constants/text-styles";
 import SimpleButton from "@/src/components/simpleButton";
-import { useAuthStore } from "@/utils/authStore";
 
-export default function Account() {
-  const { logOut } = useAuthStore();
-
+export default function Index() {
   return (
     <View
       style={{
@@ -19,19 +16,30 @@ export default function Account() {
       }}
     >
       <Text style={textStyles.standard}>
-        Welcome to /app/account, here the user can manage their account.
+        Welcome to /app/index, this is the landing page by expo convention.
       </Text>
       <SimpleButton
-        label="Customize Profile"
+        label="Manage Account"
         onPress={() => {
-          router.push("/customize-profile");
+          router.push("/account");
         }}
       />
       <SimpleButton
-        label="Sign Out"
+        label="Explore Page"
         onPress={() => {
-          logOut();
-          router.replace("/sign-up");
+          router.push("/explore");
+        }}
+      />
+      <SimpleButton
+        label="My Cookbook"
+        onPress={() => {
+          router.push("/cookbook");
+        }}
+      />
+      <SimpleButton
+        label="New Recipe"
+        onPress={() => {
+          router.push("/create-new-recipe");
         }}
       />
     </View>
