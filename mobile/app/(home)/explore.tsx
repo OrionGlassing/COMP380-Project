@@ -2,7 +2,7 @@ import Arrow from "@/src/components/ui/Arrow";
 import Logo from "@/src/components/ui/Logo";
 import SearchBar from "@/src/components/home/SearchBar";
 import { router } from "expo-router";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import textStyles from "@/src/constants/text-styles";
 
 export default function Explore() {

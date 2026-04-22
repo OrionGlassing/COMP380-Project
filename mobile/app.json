@@ -43,7 +43,7 @@
       [
         "expo-asset",
           {
-            "assets": ["assets/Logo.svg"]
+            "assets": ["assets/logo/Logo.svg"]
           }
       ],
       "expo-secure-store"
