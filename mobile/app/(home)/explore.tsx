@@ -4,6 +4,8 @@ import SearchBar from "@/src/components/home/SearchBar";
 import { router } from "expo-router";
 import { Text, View, StyleSheet } from "react-native";
 import textStyles from "@/src/constants/text-styles";
+import Filter from "@/src/components/ui/Filter";
+import RecipeCard from "@/src/components/recipe-cards/recipeCard";
 
 export default function Explore() {
   return (
@@ -28,7 +30,7 @@ export default function Explore() {
           />
         </View>
         <View>
-          <Text>Display cards</Text>
+          <RecipeCard ID={'5'} />
         </View>
       </View>
       <View style={styles.options}>

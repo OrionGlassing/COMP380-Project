@@ -12,7 +12,7 @@ export default function SignUp() {
         <View style={styles.arrow}>
           <Arrow
             type={"arrow-back"}
-            onPress={() => router.push("/(login)/Welcome")}
+            onPress={() => router.push("/Welcome")}
           />
         </View>
         <Logo />

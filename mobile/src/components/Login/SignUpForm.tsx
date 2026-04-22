@@ -31,7 +31,7 @@ export default function SignUpForm() {
       return;
     }
     logIn();
-    router.push("/(login)/UserProfile");
+    router.push("/UserProfile");
     setError("");
   };
 

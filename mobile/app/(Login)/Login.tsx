@@ -16,7 +16,7 @@ export default function Login() {
         <View style={styles.arrow}>
           <Arrow
             type={"arrow-back"}
-            onPress={() => router.push("/(login)/Welcome")}
+            onPress={() => router.push("/Welcome")}
           />
         </View>
         <Logo />
@@ -34,7 +34,7 @@ export default function Login() {
           <AppleBtn />
         </View>
         <View style={styles.helpBtn}>
-          <Button label={"Help"} onPress={() => router.push("/(login)/Help")} />
+          <Button label={"Help"} onPress={() => router.push("/Help")} />
         </View>
       </View>
     </View>
