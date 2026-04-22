@@ -38,7 +38,14 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      [
+        "expo-asset",
+          {
+            "assets": ["assets/Logo.svg"]
+          }
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
