@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { Text, View } from "react-native";
 import textStyles from "@/src/constants/text-styles";
+import Arrow from "@/src/components/ui/Arrow";
 
 export default function SignUp() {
   return (
@@ -18,6 +19,10 @@ export default function SignUp() {
         Welcome to /app/cookbook, the page to view and manage the users personal
         cookbook.
       </Text>
+      <Arrow
+        type={"arrow-back"}
+        onPress={() => router.back()}
+      />
     </View>
   );
 }

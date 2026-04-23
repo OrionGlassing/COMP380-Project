@@ -13,7 +13,7 @@ export default function Explore() {
       <View style={styles.nav}>
         <Arrow
             type={"arrow-back"}
-            onPress={() => router.push("/(home)/Home")}
+            onPress={() => router.back()}
           />
         <Logo />
       </View>

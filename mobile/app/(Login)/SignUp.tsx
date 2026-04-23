@@ -12,15 +12,11 @@ export default function SignUp() {
         <View style={styles.arrow}>
           <Arrow
             type={"arrow-back"}
-            onPress={() => router.push("/Welcome")}
+            onPress={() => router.dismissTo("/Login")}
           />
         </View>
         <Logo />
-        <Text style={styles.title}>Create Account</Text>
-        <Text style={styles.text}>
-          Create an account to get access to our recipe app. Where youll be able
-          to discover really special recipes.
-        </Text>
+        <Text style={styles.title}>New Account</Text>
         <SignUpForm />
       </View>
     </View>

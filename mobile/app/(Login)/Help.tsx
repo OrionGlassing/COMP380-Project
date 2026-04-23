@@ -9,7 +9,7 @@ export default function Help() {
       <View style={styles.arrow}>
         <Arrow
           type={"arrow-back"}
-          onPress={() => router.push("/Login")}
+          onPress={() => router.back()}
         />
       </View>
       <Accordion title="Getting Started">

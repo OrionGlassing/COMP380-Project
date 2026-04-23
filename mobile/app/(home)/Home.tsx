@@ -53,7 +53,7 @@ export default function Home() {
         </View>
         <Button
           label="New Recipe"
-          onPress={() => router.push("/create-recipe")}
+          onPress={() => router.push("/create-new-recipe")}
         />
       </View>
     </View>

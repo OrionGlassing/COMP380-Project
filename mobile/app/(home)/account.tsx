@@ -3,9 +3,10 @@ import { Text, View } from "react-native";
 import textStyles from "@/src/constants/text-styles";
 import SimpleButton from "@/src/components/simpleButton";
 import { useAuthStore } from "@/utils/authStore";
+import Arrow from "@/src/components/ui/Arrow";
 
 export default function Account() {
-  const { logOut } = useAuthStore();
+  const logOut = useAuthStore((state) => state.logOut);
 
   return (
     <View
@@ -31,8 +32,12 @@ export default function Account() {
         label="Sign Out"
         onPress={() => {
           logOut();
-          router.replace("/SignUp");
+          router.replace("/");
         }}
+      />
+      <Arrow
+        type={"arrow-back"}
+        onPress={() => router.back()}
       />
     </View>
   );

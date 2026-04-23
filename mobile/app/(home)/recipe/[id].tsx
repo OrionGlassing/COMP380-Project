@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import textStyles from "@/src/constants/text-styles";
@@ -6,6 +6,7 @@ import { useRecipeStore } from "@/utils/data-stores/recipeStore";
 import CheckableItem from "@/src/components/checklist/checkableItem";
 import SimpleButton from "@/src/components/simpleButton";
 import { useEffect, useState } from "react";
+import Arrow from "@/src/components/ui/Arrow";
 
 //
 // Notes:
@@ -64,6 +65,11 @@ export default function ID() {
     return (
         <SafeAreaView style={styles.screen}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
+
+        <Arrow
+            type={"arrow-back"}
+            onPress={() => router.back()}
+        />
 
         <Text style={textStyles.Header}>
             {recipe.title}

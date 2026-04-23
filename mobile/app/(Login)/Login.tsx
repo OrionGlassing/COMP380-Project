@@ -13,26 +13,16 @@ export default function Login() {
   return (
     <View style={styles.pageContainer}>
       <View style={styles.container}>
-        <View style={styles.arrow}>
-          <Arrow
-            type={"arrow-back"}
-            onPress={() => router.push("/Welcome")}
-          />
-        </View>
         <Logo />
-        <Text style={styles.title}>Log in</Text>
-        <Text style={styles.text}>
-          Enter password and email to securely access the app and manage your
-          services.
-        </Text>
-        <Divider />
-        <LoginForm />
-        <Divider />
-        <Text style={styles.text}>Or Continue with Account</Text>
         <View style={styles.socialBtnContainer}>
           <GoogleBtn />
           <AppleBtn />
         </View>
+        <Divider />
+        <LoginForm />
+        <Divider />
+        <Button label={"Create Account"} onPress={() => {router.push("/SignUp")}} />
+        <Divider />
         <View style={styles.helpBtn}>
           <Button label={"Help"} onPress={() => router.push("/Help")} />
         </View>

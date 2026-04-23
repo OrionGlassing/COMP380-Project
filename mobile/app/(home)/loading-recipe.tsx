@@ -5,6 +5,7 @@ import SimpleButton from "@/src/components/simpleButton";
 import { theme } from "@/src/constants/theme";
 import { useEffect } from "react";
 import { useCreateNewRecipeStore } from "@/utils/data-stores/createNewRecipeStore";
+import Arrow from "@/src/components/ui/Arrow";
 
 //
 // Notes:
@@ -40,6 +41,11 @@ export default function LoadingRecipe() {
     <View
       style={styles.screen}
     >
+      {/* If something goes wrong, we will give the user a back button to leave the page.*/}
+      <Arrow
+        type={"arrow-back"}
+        onPress={() => router.replace('/create-new-recipe')}
+      />
       <ActivityIndicator size="large" color={theme.colors.primary} />
       <Text style={textStyles.standard}>
         Loading...

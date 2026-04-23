@@ -12,25 +12,33 @@ import Icon from "../ui/Icon";
 
 export default function LoginForm() {
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [error, setError] = useState("");
 
-  const { logIn } = useAuthStore();
+  const logIn = useAuthStore((state) => state.logIn);
   const router = useRouter();
 
-  const handleLogin = () => {
-    if (!password.trim() || !email.trim()) {
+  const handleLogin = async () => {
+    if (!password.trim() || !username.trim()) {
       setError("All field are required.");
+      setPassword("");
       return;
     }
-    logIn();
-    router.replace("/(home)/Home");
+    
+    try {
+      await logIn(username, password);
+      router.replace("/");
+    } catch (error) {
+      setError("Log in failed. Confirm username and password.");
+      setPassword("");
+    }
+
     setError("");
   };
 
   const inputProps = {
     style: styles.inputText,
-    placeholderTextColor: "white",
+    placeholderTextColor: "lightgrey",
   } as const;
 
   const inputContainerProps = {
@@ -39,14 +47,14 @@ export default function LoginForm() {
   return (
     <View style={styles.formContainer}>
       <View {...inputContainerProps}>
-        <Icon name="mail-outline" />
+        <Icon name="person-outline" />
         <TextInput
           {...inputProps}
-          placeholder="Email"
+          placeholder="Username"
           keyboardType="email-address"
           autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
+          value={username}
+          onChangeText={setUsername}
         />
       </View>
 
@@ -54,7 +62,7 @@ export default function LoginForm() {
         <Icon name="lock-closed-outline" />
         <TextInput
           {...inputProps}
-          placeholder="Confirm Password"
+          placeholder="Password"
           secureTextEntry={true}
           value={password}
           onChangeText={setPassword}
