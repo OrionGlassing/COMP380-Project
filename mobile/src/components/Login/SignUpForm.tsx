@@ -8,36 +8,44 @@ import { useAuthStore } from "@/utils/authStore";
 import Icon from "../ui/Icon";
 
 export default function SignUpForm() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { logIn } = useAuthStore();
+  const createNewAccount = useAuthStore((state) => state.createNewAccount);
   const router = useRouter();
 
-  const handleSignUp = () => {
-    if (!password.trim() || !email.trim()) {
+  const handleSignUp = async () => {
+    if (!username.trim() || !email.trim() || !password.trim()  || !confirmPassword.trim) {
       setError("All field are required.");
-      return;
-    }
-     if (!password || !confirmPassword) {
-      setError("All Fields Must Be Filled.");
       return;
     }
 
     if (password !== confirmPassword) {
       setError("Passwords dont Match");
+      setPassword("");
+      setConfirmPassword("");
       return;
     }
-    logIn();
-    router.push("/");
+    
+    try {
+      await createNewAccount(username, email, password);
+      router.replace("/");
+    } catch (error) {
+      //We may add a return type from the createNewAccount function
+      //So that we can tell the user what went wrong
+        //Ex: Username taken, email already exists, etc.
+      setError("Log in failed. Confirm username and password.");
+    }
+
     setError("");
   };
 
   const inputProps = {
     style: styles.inputText,
-    placeholderTextColor: "black",
+    placeholderTextColor: "lightgrey",
   } as const;
 
   const inputContainerProps = {
@@ -50,9 +58,11 @@ export default function SignUpForm() {
         <Icon name="person-outline" />
         <TextInput
           {...inputProps}
-          placeholder="UserName"
+          placeholder="New Username"
           keyboardType="default"
           autoCapitalize="none"
+          value={username}
+          onChangeText={setUsername}
         />
       </View>
       <View {...inputContainerProps}>
@@ -71,7 +81,7 @@ export default function SignUpForm() {
         <Icon name="lock-open-outline" />
         <TextInput
           {...inputProps}
-          placeholder="Password"
+          placeholder="New Password"
           secureTextEntry={true}
           value={password}
           onChangeText={setPassword}
@@ -88,7 +98,7 @@ export default function SignUpForm() {
         />
       </View>
       {error ? <Text style={styles.error}>{error}</Text> : null}
-      <Button label={"Create"} onPress={handleSignUp} />
+      <Button label={"Create Account"} onPress={handleSignUp} />
     </View>
   );
 }
@@ -101,12 +111,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#A9927D",
+    backgroundColor: "#3E5C76",
   },
 
   input: {
     flexDirection: "row",
-    backgroundColor: "white",
+    backgroundColor: "#1D2D44",
     borderRadius: 15,
     padding: 10,
     fontSize: 15,
@@ -116,7 +126,7 @@ const styles = StyleSheet.create({
 
   inputText: {
     flex: 1,
-    color: "black",
+    color: "white",
     fontSize: 15,
   },
 
@@ -138,5 +148,6 @@ const styles = StyleSheet.create({
   error: {
     fontSize: 15,
     fontWeight: "bold",
+    color: "white",
   },
 });

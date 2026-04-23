@@ -1,4 +1,9 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+} from "react-native";
 import { useState } from "react";
 import Button from "../ui/Button";
 import { useAuthStore } from "@/utils/authStore";
@@ -7,25 +12,33 @@ import Icon from "../ui/Icon";
 
 export default function LoginForm() {
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [error, setError] = useState("");
 
-  const { logIn } = useAuthStore();
+  const logIn = useAuthStore((state) => state.logIn);
   const router = useRouter();
 
-  const handleLogin = () => {
-    if (!password.trim() || !email.trim()) {
+  const handleLogin = async () => {
+    if (!password.trim() || !username.trim()) {
       setError("All field are required.");
+      setPassword("");
       return;
     }
-    logIn();
-    router.replace("/");
+    
+    try {
+      await logIn(username, password);
+      router.replace("/");
+    } catch (error) {
+      setError("Log in failed. Confirm username and password.");
+      setPassword("");
+    }
+
     setError("");
   };
 
   const inputProps = {
     style: styles.inputText,
-    placeholderTextColor: "black",
+    placeholderTextColor: "lightgrey",
   } as const;
 
   const inputContainerProps = {
@@ -34,14 +47,14 @@ export default function LoginForm() {
   return (
     <View style={styles.formContainer}>
       <View {...inputContainerProps}>
-        <Icon name="mail-outline" />
+        <Icon name="person-outline" />
         <TextInput
           {...inputProps}
-          placeholder="Email"
+          placeholder="Username"
           keyboardType="email-address"
           autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
+          value={username}
+          onChangeText={setUsername}
         />
       </View>
 
@@ -49,7 +62,7 @@ export default function LoginForm() {
         <Icon name="lock-closed-outline" />
         <TextInput
           {...inputProps}
-          placeholder="Confirm Password"
+          placeholder="Password"
           secureTextEntry={true}
           value={password}
           onChangeText={setPassword}
@@ -69,12 +82,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#A9927D",
+    backgroundColor: "#3E5C76",
   },
 
   input: {
     flexDirection: "row",
-    backgroundColor: "white",
+    backgroundColor: "#1D2D44",
     borderRadius: 15,
     padding: 10,
     fontSize: 15,
@@ -84,11 +97,11 @@ const styles = StyleSheet.create({
 
   inputText: {
     flex: 1,
-    color: "black",
+    color: "white",
     fontSize: 15,
   },
   error: {
     fontSize: 15,
-    color: "black",
+    color: "white",
   },
 });

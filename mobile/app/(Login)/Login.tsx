@@ -13,28 +13,18 @@ export default function Login() {
   return (
     <View style={styles.pageContainer}>
       <View style={styles.container}>
-        <View style={styles.arrow}>
-          <Arrow
-            type={"arrow-back"}
-            onPress={() => router.push("/(login)/Welcome")}
-          />
-        </View>
         <Logo />
-        <Text style={styles.title}>Log in</Text>
-        <Text style={styles.text}>
-          Enter password and email to securely access the app and manage your
-          services.
-        </Text>
-        <Divider />
-        <LoginForm />
-        <Divider />
-        <Text>Or Continue with Account</Text>
         <View style={styles.socialBtnContainer}>
           <GoogleBtn />
           <AppleBtn />
         </View>
+        <Divider />
+        <LoginForm />
+        <Divider />
+        <Button label={"Create Account"} onPress={() => {router.push("/SignUp")}} />
+        <Divider />
         <View style={styles.helpBtn}>
-          <Button label={"Help"} onPress={() => router.push("/(login)/Help")} />
+          <Button label={"Help"} onPress={() => router.push("/Help")} />
         </View>
       </View>
     </View>
@@ -43,7 +33,7 @@ export default function Login() {
 const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    backgroundColor: "#5E503F",
+    backgroundColor: "#F0EBD8",
     padding: 20,
     justifyContent: "center",
   },
@@ -52,7 +42,7 @@ const styles = StyleSheet.create({
     gap: 10,
     padding: 15,
 
-    backgroundColor: "#22333B",
+    backgroundColor: "#748CAB",
 
     borderRadius: 15,
     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",

@@ -12,15 +12,11 @@ export default function SignUp() {
         <View style={styles.arrow}>
           <Arrow
             type={"arrow-back"}
-            onPress={() => router.push("/(login)/Welcome")}
+            onPress={() => router.dismissTo("/Login")}
           />
         </View>
         <Logo />
-        <Text style={styles.title}>Create Account</Text>
-        <Text style={styles.text}>
-          Create an account to get access to our recipe app. Where youll be able
-          to discover really special recipes.
-        </Text>
+        <Text style={styles.title}>New Account</Text>
         <SignUpForm />
       </View>
     </View>
@@ -33,7 +29,7 @@ const styles = StyleSheet.create({
 
   pageContainer: {
     flex: 1,
-    backgroundColor: "#5E503F",
+    backgroundColor: "#F0EBD8",
     padding: 20,
     justifyContent: "center",
   },
@@ -42,7 +38,7 @@ const styles = StyleSheet.create({
     gap: 10,
     padding: 15,
 
-    backgroundColor: "#22333B",
+    backgroundColor: "#748CAB",
 
     borderRadius: 15,
     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",

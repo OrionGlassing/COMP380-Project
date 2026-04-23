@@ -1,0 +1,138 @@
+import { router, useLocalSearchParams } from "expo-router";
+import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import textStyles from "@/src/constants/text-styles";
+import { useRecipeStore } from "@/utils/data-stores/recipeStore";
+import CheckableItem from "@/src/components/checklist/checkableItem";
+import SimpleButton from "@/src/components/simpleButton";
+import { useEffect, useState } from "react";
+import Arrow from "@/src/components/ui/Arrow";
+
+//
+// Notes:
+//
+/*
+This page is responsible for dynamically showcasing recipe data.
+
+It works by taking an id as an input in the page path: /recipe/{id} (ex: recipe/1)
+Then with useLocalSearchParams(), we can get that id and use it here on this page.
+
+The page will use the recipe id to request the recipe data from the zustand store. 
+    - The zustand store will manage the recipe data. 
+And once it has gotten the data, it then displays it.
+
+While the data is loading, the page wants to display loading animations.
+    - I think a good option is to use react-native-shimmer-placeholder
+
+*/
+
+export default function ID() {
+    //Global state from zustand store
+    const { id } = useLocalSearchParams<{ id: string }>();
+    const recipe = useRecipeStore((state) => state.recipes[id]);
+    const fetchRecipeById = useRecipeStore((state) => state.fetchRecipeById);
+
+    //Local state management for the dynamic ingredients array
+    const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
+    const toggleIngredient = (index: number) => {
+        setCheckedItems((prevState) => ({
+            ...prevState,
+            [index]: !prevState[index] 
+        }));
+    };
+
+    //As soon as the page opens, get the recipe data from the zustand store
+    useEffect(() => {
+        fetchRecipeById(id);
+    }, [id]);
+
+    //Recipe is undefined when it is not loaded
+    if (!recipe) {
+        //Here we can render the loading screen version of the page
+        return (
+            <SafeAreaView style={styles.screen}>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+
+            
+
+            </ScrollView>
+            </SafeAreaView>
+        );
+    }
+
+    //Now the recipe is loaded, we can render the normal version of the page
+
+    return (
+        <SafeAreaView style={styles.screen}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+
+        <Arrow
+            type={"arrow-back"}
+            onPress={() => router.back()}
+        />
+
+        <Text style={textStyles.Header}>
+            {recipe.title}
+        </Text>
+
+        <Text style={[textStyles.Label, {marginBottom: -10}]}>
+            Ingredients:
+        </Text>
+        <View style={styles.ingredientsContainer}>
+            {recipe.ingredients.map((ingredientString, index) => (
+                <CheckableItem
+                    key={`ingredient-${index}`} 
+                    enabled={true}
+                    shouldCrossOut={true} 
+                    label={ingredientString}
+                    isChecked={!!checkedItems[index]} 
+                    callBack={() => toggleIngredient(index)}
+                />
+            ))}
+        </View>
+
+        <Text style={[textStyles.Label, {marginBottom: -10}]}>
+            Steps:
+        </Text>
+        <Text style={textStyles.longForm}>
+            {recipe.steps}
+        </Text>
+
+        <SimpleButton
+            label="Customize Recipe"
+            onPress={() => {
+            console.log("This does nothing yet.")
+            }}
+        />
+
+        <SimpleButton
+            label="Add to Cookbook"
+            onPress={() => {
+            console.log("This does nothing yet.")
+            }}
+        />
+
+        </ScrollView>
+        </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+    screen: {
+      flex: 1,
+      flexDirection: "column",
+      backgroundColor: "#1f1f1f",
+    },
+    contentContainer: {
+      flexDirection: "column",
+      gap: 20,
+      justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: '8%'
+    },
+    ingredientsContainer: {
+        alignSelf: 'stretch',
+        gap: 0,
+    },
+    
+});
