@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from "react-native";
 import HorizontalMenu from "../ui/HorizontalMenu";
 import Icon from "../ui/Icon";
@@ -12,28 +13,34 @@ import Divider from "../ui/Divider";
 import Button from "../ui/Button";
 
 export default function UserProfileForm() {
-  const [selected, setSelected] = useState(false);
+  const [allergyNone, setAllergyNone] = useState(false);
   const [add, setAdd] = useState(false);
 
-  const handleSave = () => {
-
-  };
+  const handleSave = () => {};
   return (
-    <View>
+    <ScrollView>
       <Divider>DIET & RESTRICTIONS</Divider>
       <Text>Select your diet:</Text>
       <HorizontalMenu />
       <Text>Food allergies?</Text>
       <View>
         <TouchableOpacity
-          style={[styles.btn, selected && styles.btnActive]}
-          onPress={() => setSelected(!selected)}
+          style={[styles.btn, allergyNone && styles.btnActive]}
+          onPress={() => {
+            setAllergyNone(true);
+            setAdd(false);
+          }}
         >
-          <Text style={[styles.text, selected && styles.textActive]}>None</Text>
+          <Text style={[styles.text, allergyNone && styles.textActive]}>
+            None
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.btn, selected && styles.btnActive]}
-          onPress={() => setAdd(!add)}
+          style={[styles.btn, add && styles.btnActive]}
+          onPress={() => {
+            setAdd(!add);
+            setAllergyNone(false);
+          }}
         >
           <Icon name="add-outline" />
           <Text style={[styles.text, add && styles.textActive]}>Add</Text>
@@ -55,7 +62,7 @@ export default function UserProfileForm() {
         placeholder="Specify ingredients..."
         placeholderTextColor="#aaa"
       />
-      <Text>Describe some ingridients you hate:</Text>
+      <Text>Describe some ingredients you hate:</Text>
       <TextInput
         style={styles.input}
         placeholder="Specify ingredients..."
@@ -68,7 +75,7 @@ export default function UserProfileForm() {
       <Text>Select available kitchen tools: </Text>
       <Button label={"Exit"} onPress={() => {}}></Button>
       <Button label={"Save and Exit"} onPress={handleSave}></Button>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({

@@ -24,14 +24,14 @@ export default function Account() {
       <SimpleButton
         label="Customize Profile"
         onPress={() => {
-          router.push("/Customize-profile");
+          router.push("/customize-profile");
         }}
       />
       <SimpleButton
         label="Sign Out"
         onPress={() => {
           logOut();
-          router.replace("/(login)/SignUp");
+          router.replace("/(login)/signUp");
         }}
       />
     </View>

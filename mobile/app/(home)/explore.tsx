@@ -4,6 +4,7 @@ import SearchBar from "@/src/components/home/SearchBar";
 import { router } from "expo-router";
 import { Text, View, StyleSheet } from "react-native";
 import textStyles from "@/src/constants/text-styles";
+import Filter from "@/src/components/ui/Filter";
 
 export default function Explore() {
   return (
@@ -11,7 +12,7 @@ export default function Explore() {
       <View style={styles.nav}>
         <Arrow
             type={"arrow-back"}
-            onPress={() => router.push("/(home)/Home")}
+            onPress={() => router.push("/(home)/home")}
           />
         <Logo />
       </View>
@@ -24,7 +25,7 @@ export default function Explore() {
           <Text>New Picks: </Text>
           <Arrow
             type={"arrow-forward"}
-            onPress={() => router.push("/(home)/NewPicks")}
+            onPress={() => router.push("/(home)/newPicks")}
           />
         </View>
         <View>
@@ -36,7 +37,7 @@ export default function Explore() {
           <Text>Popular Right Now: </Text>
           <Arrow
             type={"arrow-forward"}
-            onPress={() => router.push("/(home)/PopularRightNow")}
+            onPress={() => router.push("/(home)/popularRightNow")}
           />
         </View>
         <Text>Display cards</Text>
@@ -46,7 +47,7 @@ export default function Explore() {
           <Text>Your Favorites: </Text>
           <Arrow
             type={"arrow-forward"}
-            onPress={() => router.push("/(home)/YourFavorites")}
+            onPress={() => router.push("/(home)/yourFavorites")}
           />
         </View>
         <Text>Display cards</Text>

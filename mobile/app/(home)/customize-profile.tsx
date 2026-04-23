@@ -112,7 +112,7 @@ export default function CustomizeProfile() {
       <SimpleButton
         label="Save and Exit"
         onPress={() => {
-          router.dismissTo("/Account");
+          router.dismissTo("/account");
         }}
       />
 

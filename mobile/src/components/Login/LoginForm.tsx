@@ -24,7 +24,7 @@ export default function LoginForm() {
       return;
     }
     logIn();
-    router.replace("/(home)/Home");
+    router.replace("/(home)/home");
     setError("");
   };
 

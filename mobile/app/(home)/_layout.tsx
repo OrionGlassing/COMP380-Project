@@ -4,7 +4,7 @@ export default function ProtectedLayout() {
   
   return (
     <Stack>
-      <Stack.Screen name="index" /> {/*this is the homepage */}
+      <Stack.Screen name="index" />
       <Stack.Screen name="account" />
       <Stack.Screen name="customize-profile" />
       <Stack.Screen name="explore" />

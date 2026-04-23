@@ -21,7 +21,7 @@ export default function SignUp() {
       <Button
         label="Let's Cook"
         onPress={() => {
-          router.replace("/Recipe-loading");
+          router.replace("/recipe-loading");
         }}
       />
     </View>
