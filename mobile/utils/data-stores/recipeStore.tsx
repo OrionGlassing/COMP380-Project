@@ -33,10 +33,15 @@ interface RecipeStore {
 }
 
 const testRecipeData: Recipe = {
-    id: "dontusethisid",
-    title: "My New Recipe",
-    ingredients: ['one', 'two', 'three'],
-    steps: "First take ingredient one and then add it with ingredient two. Then bake that for a bit. Finally, add ingredient three on top."
+    id: "testID",
+    title: "Test Recipe",
+    ingredients: ['Test Ingredient #1 - 2 cups',
+        'Test Ingredient #2 - 1/2 cup',
+        'Test Ingredient #3 - x2',
+        'Test Ingredient #4 - 3 Tbsp.',
+        'Test Ingredient #5 - 1 tsp.',
+    ],
+    steps: "1. Example step one...\n2. Example step two...\n3. Example step three...\n4. Example step four...\n5. Example step five...\n"
 };
 
 export const useRecipeStore = create(     //zustand creates a store
@@ -47,7 +52,7 @@ export const useRecipeStore = create(     //zustand creates a store
 
             fetchRecipeById: async (id: string) => {
             // Check if this recipe id is already saved
-            if (get().recipes[id]) return;
+            //if (get().recipes[id]) return;
             
             /* When we have the API link, we can actually use this section
             try {

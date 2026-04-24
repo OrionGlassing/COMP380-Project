@@ -108,7 +108,7 @@ export default function ID() {
         <Text style={[textStyles.Label, {marginBottom: -10}]}>
             Steps:
         </Text>
-        <Text style={textStyles.longForm}>
+        <Text style={[textStyles.longForm, {alignSelf: 'flex-start', lineHeight: 30,}]}>
             {recipe.steps}
         </Text>
 

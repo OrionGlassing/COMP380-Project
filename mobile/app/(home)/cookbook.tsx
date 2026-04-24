@@ -4,6 +4,8 @@ import textStyles from "@/src/constants/text-styles";
 import Arrow from "@/src/components/ui/Arrow";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import PageHeader from "@/src/components/ui/PageHeader";
+import SearchBar from "@/src/components/home/SearchBar";
+import Filter from "@/src/components/ui/Filter";
 
 export default function SignUp() {
   //ui
@@ -21,6 +23,10 @@ export default function SignUp() {
 
       <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
 
+        <View style={styles.searchRow}>
+          <SearchBar />
+          <Filter />
+        </View>
 
       </View>
       </ScrollView>
@@ -42,4 +48,9 @@ const styles = StyleSheet.create({
       paddingHorizontal: '5%',
       paddingTop: '5%',
     },
+    searchRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
 });

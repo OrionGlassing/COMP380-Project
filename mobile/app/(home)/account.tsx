@@ -25,9 +25,6 @@ export default function Account() {
 
         <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
 
-        <Text style={textStyles.standard}>
-          Welcome to /app/account, here the user can manage their account.
-        </Text>
         <SimpleButton
           label="Customize Profile"
           onPress={() => {

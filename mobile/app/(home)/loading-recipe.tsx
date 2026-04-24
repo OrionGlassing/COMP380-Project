@@ -36,7 +36,7 @@ export default function LoadingRecipe() {
   useEffect(() => {
     setTimeout(() => {
         handleCreateNewRecipe();
-      }, 10000);
+      }, 5000);
   }, []);
 
   //ui

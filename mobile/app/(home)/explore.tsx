@@ -29,6 +29,7 @@ export default function Explore() {
         <SearchBar />
         <Filter />
       </View>
+
       <View style={styles.options}>
         <View style={styles.optionsNav}>
           <Text>New Picks: </Text>
@@ -37,9 +38,11 @@ export default function Explore() {
             onPress={() => router.push("/(home)/NewPicks")}
           />
         </View>
-        <View>
+        <View style={styles.scrollContainer} >
+          <RecipeCard ID={'5'} />
           <RecipeCard ID={'5'} />
         </View>
+          
       </View>
       <View style={styles.options}>
         <View style={styles.optionsNav}>
@@ -49,7 +52,10 @@ export default function Explore() {
             onPress={() => router.push("/(home)/PopularRightNow")}
           />
         </View>
-        <Text>Display cards</Text>
+        <View style={styles.scrollContainer} >
+          <RecipeCard ID={'5'} />
+          <RecipeCard ID={'5'} />
+        </View>
       </View>
       <View style={styles.options}>
         <View style={styles.optionsNav}>
@@ -59,7 +65,10 @@ export default function Explore() {
             onPress={() => router.push("/(home)/YourFavorites")}
           />
         </View>
-        <Text>Display cards</Text>
+        <View style={styles.scrollContainer} >
+          <RecipeCard ID={'5'} />
+          <RecipeCard ID={'5'} />
+        </View>
       </View>
 
     </View>
@@ -81,23 +90,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: '5%',
     paddingTop: '5%',
   },
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "stretch",
-    gap: 15,
-    padding: 15,
-    backgroundColor: "#F0EBD8",
+  scrollContainer: {
+    flexDirection: 'row',
+    gap: 20,
+
   },
   nav: {
+    width: '100%',
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 15,
+    backgroundColor: "black",
   },
 
   options: {
+    width: '100%',
     gap: 20,
   },
 
