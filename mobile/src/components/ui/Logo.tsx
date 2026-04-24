@@ -1,4 +1,4 @@
-import CoKitchenLogo from "@/assets/logo/Logo.svg";
+import CoKitchenLogo from "@/assets/logo/CoKitchenLogo.svg";
 import { View, Text, StyleSheet } from "react-native";
 
 export default function Logo() {
