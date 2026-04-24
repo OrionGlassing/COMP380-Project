@@ -8,6 +8,7 @@
     "scheme": "mobile",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "platforms": ["android", "ios"],
     "ios": {
       "supportsTablet": true
     },
@@ -29,24 +30,24 @@
     "plugins": [
       "expo-router",
       [
-        "expo-splash-screen",
+        "react-native-bootsplash",
         {
-          "image": "./assets/logo/coKitchen_logo.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
-          "dark": {
-            "backgroundColor": "#000000"
-          }
+          "logo": "./assets/logo/Logo.svg",
+          "logoWidth": 100,
+          "background": "#f5fcff",
+          "assetsOutput": "./assets/bootsplash"
         }
       ],
       [
         "expo-asset",
-          {
-            "assets": ["assets/logo/Logo.svg"]
-          }
+        {
+          "assets": [
+            "assets/logo/Logo.svg"
+          ]
+        }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "react-native-bootsplash"
     ],
     "experiments": {
       "typedRoutes": true,

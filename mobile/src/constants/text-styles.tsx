@@ -6,6 +6,11 @@ const textStyles = StyleSheet.create({
         textAlign: 'center',
         color: "#ffff",
     },
+    bigText: {
+      fontSize: 32,
+      textAlign: 'center',
+      color: "#ffff",
+    },
     Header: {
       alignSelf: 'center',
       fontSize: 32,
