@@ -18,7 +18,7 @@ export default function SignUpForm() {
   const router = useRouter();
 
   const handleSignUp = async () => {
-    if (!username.trim() || !email.trim() || !password.trim()  || !confirmPassword.trim) {
+    if (!username.trim() || !email.trim() || !password.trim()  || !confirmPassword.trim()) {
       setError("All field are required.");
       return;
     }
@@ -32,12 +32,12 @@ export default function SignUpForm() {
     
     try {
       await createNewAccount(username, email, password);
-      router.replace("/");
+      router.replace("/(Login)/Login");
     } catch (error) {
       //We may add a return type from the createNewAccount function
       //So that we can tell the user what went wrong
         //Ex: Username taken, email already exists, etc.
-      setError("Log in failed. Confirm username and password.");
+      setError("Account creation failed. Confirm username and password.");
     }
 
     setError("");

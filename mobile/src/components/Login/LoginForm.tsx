@@ -32,8 +32,6 @@ export default function LoginForm() {
       setError("Log in failed. Confirm username and password.");
       setPassword("");
     }
-
-    setError("");
   };
 
   const inputProps = {
@@ -50,7 +48,7 @@ export default function LoginForm() {
         <Icon name="person-outline" />
         <TextInput
           {...inputProps}
-          placeholder="Username"
+          placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
           value={username}
