@@ -1,6 +1,8 @@
 import React, { FC, useCallback, } from 'react';
 import { View, Text, StyleSheet, } from 'react-native';
 import Slider, { MarkerProps, SliderProps } from '@react-native-community/slider';
+import textStyles from '@/src/constants/text-styles';
+import { theme } from '@/src/constants/theme';
 
 interface Props extends SliderProps {
     enabled: boolean;
@@ -35,7 +37,7 @@ const LabeledSlider = ({
 
     return (
         <View style={sliderStyles.container}>
-            <Text style={sliderStyles.textLabel}>{label}</Text>
+            <Text style={[textStyles.sectionLabel, {marginBottom: 10}]}>{label}</Text> 
             <Slider
                 disabled={!enabled} 
                 minimumValue={0}
@@ -50,9 +52,9 @@ const LabeledSlider = ({
                     callBack(selectedValue, index);
                 }} 
                 style={sliderStyles.slider}
-                maximumTrackTintColor='#ffffff'
-                minimumTrackTintColor='#007AFF'
-                thumbTintColor='#007AFF'
+                maximumTrackTintColor={theme.colors.grey_dark}
+                minimumTrackTintColor={theme.colors.blue}
+                thumbTintColor={theme.colors.blue}
             />
         </View>
     );
@@ -83,15 +85,15 @@ const sliderStyles = StyleSheet.create({
     },
     stepLabel: {
         marginTop: 4,
-        fontSize: 12,
+        fontSize: 13,
         textAlign: 'center',
-        color: '#8e8e93', 
+        color: theme.colors.black, 
     },
     stepLabelSelected: {
         marginTop: 4,
-        fontSize: 12,
+        fontSize: 13,
         textAlign: 'center',
-        color: '#007AFF', 
+        color: theme.colors.blue, 
         fontWeight: 'bold',
     },
 });

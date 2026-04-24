@@ -52,14 +52,15 @@ export default function Account() {
 const styles = StyleSheet.create({
     screen: {
       flex: 1,
-      backgroundColor: "#1f1f1f",
+      backgroundColor: "#F0EBD8",
     },
     contentContainer: {
       flex: 1,
       flexDirection: "column",
       gap: 20,
-      justifyContent: "center",
+      //justifyContent: "center",
       alignItems: "center",
       paddingHorizontal: '5%',
+      paddingTop: '5%',
     },
 });

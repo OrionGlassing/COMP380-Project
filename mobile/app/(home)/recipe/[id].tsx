@@ -1,12 +1,13 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import textStyles from "@/src/constants/text-styles";
 import { useRecipeStore } from "@/utils/data-stores/recipeStore";
 import CheckableItem from "@/src/components/checklist/checkableItem";
 import SimpleButton from "@/src/components/simpleButton";
 import { useEffect, useState } from "react";
 import Arrow from "@/src/components/ui/Arrow";
+import PageHeader from "@/src/components/ui/PageHeader";
 
 //
 // Notes:
@@ -46,30 +47,43 @@ export default function ID() {
         fetchRecipeById(id);
     }, [id]);
 
+    //ui
+    const insets = useSafeAreaInsets();
+
     //Recipe is undefined when it is not loaded
     if (!recipe) {
         //Here we can render the loading screen version of the page
         return (
-            <SafeAreaView style={styles.screen}>
-            <ScrollView contentContainerStyle={styles.contentContainer}>
+            <View style={styles.screen}>
+            <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
+
+                <PageHeader 
+                logoText="CoKitchen"
+                backButtonEnabled={true}
+                profileButtonEnabled={true}
+                />
+
+            <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
 
             
-
+            </View>
             </ScrollView>
-            </SafeAreaView>
+            </View>
         );
     }
 
     //Now the recipe is loaded, we can render the normal version of the page
-
     return (
-        <SafeAreaView style={styles.screen}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View style={styles.screen}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
 
-        <Arrow
-            type={"arrow-back"}
-            onPress={() => router.back()}
-        />
+            <PageHeader 
+            logoText="CoKitchen"
+            backButtonEnabled={true}
+            profileButtonEnabled={true}
+            />
+
+        <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
 
         <Text style={textStyles.Header}>
             {recipe.title}
@@ -112,23 +126,25 @@ export default function ID() {
             }}
         />
 
+        </View>
         </ScrollView>
-        </SafeAreaView>
+        </View>
   );
 }
 
 const styles = StyleSheet.create({
     screen: {
       flex: 1,
-      flexDirection: "column",
-      backgroundColor: "#1f1f1f",
+      backgroundColor: "#F0EBD8",
     },
     contentContainer: {
+      flex: 1,
       flexDirection: "column",
       gap: 20,
-      justifyContent: "center",
+      //justifyContent: "center",
       alignItems: "center",
-      paddingHorizontal: '8%'
+      paddingHorizontal: '10%',
+      paddingTop: '5%',
     },
     ingredientsContainer: {
         alignSelf: 'stretch',

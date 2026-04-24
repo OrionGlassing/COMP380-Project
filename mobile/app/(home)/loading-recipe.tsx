@@ -1,11 +1,12 @@
 import { router } from "expo-router";
-import { Text, View, StyleSheet, ActivityIndicator, } from "react-native";
+import { Text, View, StyleSheet, ActivityIndicator, ScrollView, } from "react-native";
 import textStyles from "@/src/constants/text-styles";
 import SimpleButton from "@/src/components/simpleButton";
 import { theme } from "@/src/constants/theme";
 import { useEffect } from "react";
 import { useCreateNewRecipeStore } from "@/utils/data-stores/createNewRecipeStore";
 import Arrow from "@/src/components/ui/Arrow";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 //
 // Notes:
@@ -33,34 +34,45 @@ export default function LoadingRecipe() {
 
   //As soon as the page opens, use the zustand store to communicate with the backend
   useEffect(() => {
-      handleCreateNewRecipe();
+    setTimeout(() => {
+        handleCreateNewRecipe();
+      }, 10000);
   }, []);
 
+  //ui
+  const insets = useSafeAreaInsets();
 
   return (
-    <View
-      style={styles.screen}
-    >
+      <View style={styles.screen}>
+      <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
+
+      <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
+
       {/* If something goes wrong, we will give the user a back button to leave the page.*/}
-      <Arrow
-        type={"arrow-back"}
-        onPress={() => router.replace('/create-new-recipe')}
-      />
+
       <ActivityIndicator size="large" color={theme.colors.primary} />
       <Text style={textStyles.standard}>
-        Loading...
+        Crafting something delicious...
       </Text>
+    </View>
+
+    </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
     screen: {
-        flex: 1,
-        flexDirection: "column",
-        gap: 15,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#1f1f1f"
+      flex: 1,
+      backgroundColor: "#F0EBD8",
+    },
+    contentContainer: {
+      flex: 1,
+      flexDirection: "column",
+      gap: 20,
+      justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: '5%',
+      paddingTop: '5%',
     },
 });

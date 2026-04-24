@@ -41,7 +41,7 @@ const CustomTextInput = ({
                 onChangeText={onChangeText}
                 multiline={isMultiline}
                 placeholder={placeholder}
-                placeholderTextColor="#888888"
+                placeholderTextColor={theme.colors.grey_dark}
                 textAlignVertical={isMultiline ? 'top' : 'center'}
                 {...rest}
             />
@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     textInput: {
-        backgroundColor: '#2a2a2a',
-        color: '#ffffff',
+        backgroundColor: theme.colors.yellow_bright,
+        color: '#000000',
         borderRadius: 8,
         paddingHorizontal: 12,
         paddingVertical: 10,
         borderWidth: 1,
-        borderColor: '#444',
+        borderColor: theme.colors.black,
         fontSize: 16,
     },
     singleLine: {

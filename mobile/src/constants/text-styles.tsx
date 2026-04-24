@@ -1,35 +1,49 @@
 import { StyleSheet } from "react-native";
+import { theme } from "./theme";
 
 const textStyles = StyleSheet.create({
     standard: {
-        fontSize: 20,
-        textAlign: 'center',
-        color: "#ffff",
+      fontSize: 20,
+      textAlign: 'center',
+      color: theme.colors.black,
     },
-    bigText: {
+    small: {
+      fontSize: 15,
+      color: theme.colors.black,
+    },
+    big: {
       fontSize: 32,
       textAlign: 'center',
-      color: "#ffff",
+      fontWeight: 500,
+      color: theme.colors.black,
     },
     Header: {
       alignSelf: 'center',
       fontSize: 32,
       fontWeight: 500,
       textDecorationLine: 'underline',
-      color: "#ffff",
+      color: theme.colors.black,
     },
     Label: {
       alignSelf: 'flex-start',
       fontSize: 21,
-      color: '#ffff',
+      color: theme.colors.black,
       fontWeight: 700,
       textAlign: 'left',
     },
     longForm: {
         textAlign: 'left',
         fontSize: 18,
-        color: "#ffff",
-    }
+        color: theme.colors.black,
+        fontWeight: 400,
+        letterSpacing: 0.2,
+    },
+    sectionLabel: {
+        fontSize: 20,
+        color: theme.colors.black,
+        fontWeight: 500,
+        textAlign: 'left',
+    },
 });
 
 export default textStyles;

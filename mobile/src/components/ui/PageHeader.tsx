@@ -30,10 +30,8 @@ const PageHeader = ({ logoText, backButtonEnabled, profileButtonEnabled }: Props
             </View>
             <View style={styles.logoContainer}>
                 <View style={styles.logoOutline}>
-                    <CoKitchenLogo width={45} height={45}/>
-                    <View style={styles.textContainer} >
-                        <Text style={styles.title}>{logoText}</Text>
-                    </View>
+                    {/*<CoKitchenLogo width={35} height={35}/>*/}
+                    <Text style={styles.title}>{logoText}</Text>
                 </View>
             </View>
             <View style={styles.profileContainer}>
@@ -53,7 +51,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         height: 150,
-        backgroundColor: 'grey', //theme.colors...
+        backgroundColor: theme.colors.yellow_dark,
         boxShadow: [{
             offsetX: 0,
             offsetY: 1,
@@ -76,14 +74,15 @@ const styles = StyleSheet.create({
     logoOutline: {
         width: '100%',
         height: '70%',
-        backgroundColor: 'darkgrey', //theme.colors...
+        backgroundColor: theme.colors.yellow_bright,
         borderRadius: 12,
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
         gap: 10,
         padding: 10,
         overflow: 'hidden',
+        /*
         boxShadow: [{
             offsetX: 0,
             offsetY: 1,
@@ -92,11 +91,8 @@ const styles = StyleSheet.create({
             color: 'rgba(0,0,0,0.4)',
             //inset: true, 
         }],
-    },
-    textContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        */
+        
     },
     profileContainer: {
         flex: 1,
@@ -104,9 +100,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        fontSize: 28,
+        fontSize: 32,
         fontWeight: 'bold',
-        color: 'white', //theme.colors...
+        color: theme.colors.yellow_dark,
         textAlign: 'center',
+        letterSpacing: 0.3,
     },
 });

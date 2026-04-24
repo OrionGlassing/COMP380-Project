@@ -16,8 +16,8 @@ const CheckBox = ({enabled, isChecked, }: Props) => {
             value={isChecked}
             color={
                     isChecked ? 
-                    (enabled ? theme.colors.primary : theme.colors.grey) :
-                    (enabled ? '#ffff' : theme.colors.grey)
+                    (enabled ? theme.colors.blue : theme.colors.grey_dark) :
+                    (enabled ? theme.colors.black : theme.colors.grey_dark)
             }
         />
     );

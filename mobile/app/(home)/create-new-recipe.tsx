@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCreateNewRecipeStore } from "@/utils/data-stores/createNewRecipeStore";
 import LabeledSlider from "@/src/components/sliders/LabeledSlider";
 import CustomTextInput from "@/src/components/textbox/TextBox";
@@ -10,6 +10,7 @@ import RecipeTypeCheckList from "@/src/components/checklist/recipeTypeCheckList"
 import CuisineTypeCheckList from "@/src/components/checklist/cuisineTypeCheckList";
 import SeasonTypeCheckList from "@/src/components/checklist/seasonTypeCheckList";
 import Arrow from "@/src/components/ui/Arrow";
+import PageHeader from "@/src/components/ui/PageHeader";
 
 export default function CreateNewRecipe() {
 
@@ -29,14 +30,20 @@ export default function CreateNewRecipe() {
     const recipeDescription = useCreateNewRecipeStore((state) => state.recipeDescription);
     const setRecipeDescription = useCreateNewRecipeStore((state) => state.setRecipeDescription);
 
-  return (
-    <SafeAreaView style={styles.screen}>
-    <ScrollView contentContainerStyle={styles.contentContainer}>
+  //ui
+    const insets = useSafeAreaInsets();
 
-      <Arrow
-        type={"arrow-back"}
-        onPress={() => router.back()}
-      />
+  return (
+      <View style={styles.screen}>
+      <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
+
+        <PageHeader 
+          logoText="New Recipe"
+          backButtonEnabled={true}
+          profileButtonEnabled={true}
+        />
+
+      <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
 
       <Text style={textStyles.Header}>
         General Options
@@ -110,22 +117,24 @@ export default function CreateNewRecipe() {
         }}
       />
 
-    </ScrollView>
-    </SafeAreaView>
+      </View>
+      </ScrollView>
+      </View>
   );
 }
 
 const styles = StyleSheet.create({
     screen: {
       flex: 1,
-      flexDirection: "column",
-      backgroundColor: "#1f1f1f",
+      backgroundColor: "#F0EBD8",
     },
     contentContainer: {
+      flex: 1,
       flexDirection: "column",
       gap: 20,
-      justifyContent: "center",
+      //justifyContent: "center",
       alignItems: "center",
-      paddingHorizontal: '5%'
+      paddingHorizontal: '5%',
+      paddingTop: '5%',
     },
 });

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { router } from "expo-router";
 import { ScrollView, Text, View, StyleSheet, } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import textStyles from "@/src/constants/text-styles";
 import SimpleButton from "@/src/components/simpleButton";
 import LabeledSlider from "@/src/components/sliders/LabeledSlider";
@@ -9,6 +9,7 @@ import { useCustomizeProfileStore } from "@/utils/data-stores/customizeProfileSt
 import DietCheckList from "@/src/components/checklist/dietCheckList";
 import CustomTextInput from "@/src/components/textbox/TextBox";
 import KitchenToolsCheckList from '@/src/components/checklist/kitchenToolsCheckList';
+import PageHeader from '@/src/components/ui/PageHeader';
 
 export default function CustomizeProfile() {
   //Fetch the data for this page from the database
@@ -35,9 +36,20 @@ export default function CustomizeProfile() {
   const cookingExperienceIndex = useCustomizeProfileStore((state) => state.cookingExperienceIndex);
   const setCookingExperience = useCustomizeProfileStore((state) => state.setCookingExperience);
 
+  //ui
+  const insets = useSafeAreaInsets();
+
   return (
-    <SafeAreaView style={styles.screen}>
-    <ScrollView contentContainerStyle={styles.contentContainer}>
+      <View style={styles.screen}>
+      <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
+
+        <PageHeader 
+          logoText="User Profile"
+          backButtonEnabled={false}
+          profileButtonEnabled={false}
+        />
+
+      <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
 
       <Text style={textStyles.Header}>
         Diet & Restrictions
@@ -45,7 +57,7 @@ export default function CustomizeProfile() {
 
       <DietCheckList />
 
-      <Text style={[textStyles.Label, {marginBottom: -10}]}>
+      <Text style={[textStyles.sectionLabel, {marginBottom: -10, alignSelf: 'flex-start',}]}>
         Describe your diet:
       </Text>
       <CustomTextInput
@@ -56,7 +68,7 @@ export default function CustomizeProfile() {
         keyboardType='default'
       />
 
-      <Text style={[textStyles.Label, {marginBottom: -10}]}>
+      <Text style={[textStyles.sectionLabel, {marginBottom: -10, alignSelf: 'flex-start',}]}>
         List your food allergies:
       </Text>
       <CustomTextInput
@@ -71,7 +83,7 @@ export default function CustomizeProfile() {
         Food Preferences
       </Text>
 
-      <Text style={[textStyles.Label, {marginBottom: -10}]}>
+      <Text style={[textStyles.sectionLabel, {marginBottom: -10, alignSelf: 'flex-start',}]}>
         What are some ingredients you love?
       </Text>
       <CustomTextInput
@@ -82,7 +94,7 @@ export default function CustomizeProfile() {
         keyboardType='default'
       />
 
-      <Text style={[textStyles.Label, {marginBottom: -10}]}>
+      <Text style={[textStyles.sectionLabel, {marginBottom: -10, alignSelf: 'flex-start',}]}>
         What are some ingredients you hate?
       </Text>
       <CustomTextInput
@@ -116,22 +128,24 @@ export default function CustomizeProfile() {
         }}
       />
 
+    </View>
     </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
     screen: {
       flex: 1,
-      flexDirection: "column",
-      backgroundColor: "#1f1f1f",
+      backgroundColor: "#F0EBD8",
     },
     contentContainer: {
+      flex: 1,
       flexDirection: "column",
       gap: 20,
-      justifyContent: "center",
+      //justifyContent: "center",
       alignItems: "center",
-      paddingHorizontal: '5%'
+      paddingHorizontal: '5%',
+      paddingTop: '5%',
     },
 });

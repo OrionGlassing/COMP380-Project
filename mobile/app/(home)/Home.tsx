@@ -2,16 +2,27 @@ import AccountBtn from "@/src/components/ui/AccountBtn";
 import Button from "@/src/components/ui/Button";
 import Icon from "@/src/components/ui/Icon";
 import Logo from "@/src/components/ui/Logo";
+import PageHeader from "@/src/components/ui/PageHeader";
 import { router } from "expo-router";
-import { View, StyleSheet, Text, Image } from "react-native";
+import { View, StyleSheet, Text, Image, ScrollView } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Home() {
+  //ui
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={styles.container}>
-      <View style={styles.topNav}>
-        <Logo />
-        <AccountBtn onPress={() => router.push("/account")} />
-      </View>
+      <View style={styles.screen}>
+      <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
+
+        <PageHeader 
+          logoText="CoKitchen"
+          backButtonEnabled={false}
+          profileButtonEnabled={true}
+        />
+
+      <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
+      
       <View style={styles.card}>
         <Image
           source={require("@/assets/cards/Variety-Food-Image.png")}
@@ -56,11 +67,26 @@ export default function Home() {
           onPress={() => router.push("/create-new-recipe")}
         />
       </View>
-    </View>
+      </View>
+        
+      </ScrollView>
+      </View>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: "#F0EBD8",
+  },
+  contentContainer: {
+    flex: 1,
+    flexDirection: "column",
+    gap: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: '5%',
+  },
   container: {
     flex: 1,
     flexDirection: "column",

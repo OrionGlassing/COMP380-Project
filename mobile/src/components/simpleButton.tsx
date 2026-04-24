@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Pressable, } from 'react-native';
+import { theme } from '../constants/theme';
 
 
 interface Props {
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 25,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#0066ff",
+        backgroundColor: theme.colors.blue,
     },
     text: {
         fontSize: 18,
