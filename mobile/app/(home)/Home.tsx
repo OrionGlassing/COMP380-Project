@@ -10,7 +10,7 @@ export default function Home() {
     <View style={styles.container}>
       <View style={styles.topNav}>
         <Logo />
-        <AccountBtn onPress={() => router.push("/(home)/account")} />
+        <AccountBtn onPress={() => router.push("/account")} />
       </View>
       <View style={styles.card}>
         <Image
@@ -23,7 +23,7 @@ export default function Home() {
         </View>
         <Button
           label="Browse Recipes"
-          onPress={() => router.push("/(home)/explore")}
+          onPress={() => router.push("/explore")}
         />
       </View>
 
@@ -38,7 +38,7 @@ export default function Home() {
         </View>
         <Button
           label="My Cookbook"
-          onPress={() => router.push("/(home)/cookbook")}
+          onPress={() => router.push("/cookbook")}
         />
       </View>
 
@@ -53,7 +53,7 @@ export default function Home() {
         </View>
         <Button
           label="New Recipe"
-          onPress={() => router.push("/(home)/create-recipe")}
+          onPress={() => router.push("/create-new-recipe")}
         />
       </View>
     </View>

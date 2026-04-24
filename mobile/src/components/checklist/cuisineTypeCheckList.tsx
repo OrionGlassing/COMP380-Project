@@ -2,7 +2,6 @@ import React from 'react';
 import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import CheckableItem from './checkableItem';
 import { useCreateNewRecipeStore } from '@/utils/data-stores/createNewRecipeStore';
-import { theme } from '@/src/constants/theme';
 
 
 const CuisineTypeCheckList = () => {

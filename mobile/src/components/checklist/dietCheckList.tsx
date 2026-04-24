@@ -2,7 +2,6 @@ import React from 'react';
 import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import CheckableItem from './checkableItem';
 import { useCustomizeProfileStore } from '@/utils/data-stores/customizeProfileStore';
-import { theme } from '@/src/constants/theme';
 
 const DietCheckList = () => {
 

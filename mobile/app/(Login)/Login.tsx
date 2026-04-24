@@ -6,35 +6,24 @@ import Logo from "@/src/components/ui/Logo";
 import { View, Text, StyleSheet } from "react-native";
 import Button from "@/src/components/ui/Button";
 import { useRouter } from "expo-router";
-import Arrow from "@/src/components/ui/Arrow";
 
 export default function Login() {
   const router = useRouter();
   return (
     <View style={styles.pageContainer}>
       <View style={styles.container}>
-        <View style={styles.arrow}>
-          <Arrow
-            type={"arrow-back"}
-            onPress={() => router.push("/(login)/welcome")}
-          />
-        </View>
         <Logo />
-        <Text style={styles.title}>Log in</Text>
-        <Text style={styles.text}>
-          Enter password and email to securely access the app and manage your
-          services.
-        </Text>
-        <Divider />
-        <LoginForm />
-        <Divider />
-        <Text style={styles.text}>Or Continue with Account</Text>
         <View style={styles.socialBtnContainer}>
           <GoogleBtn />
           <AppleBtn />
         </View>
+        <Divider />
+        <LoginForm />
+        <Divider />
+        <Button label={"Create Account"} onPress={() => {router.push("/signUp")}} />
+        <Divider />
         <View style={styles.helpBtn}>
-          <Button label={"Help"} onPress={() => router.push("/(login)/help")} />
+          <Button label={"Help"} onPress={() => router.push("/help")} />
         </View>
       </View>
     </View>

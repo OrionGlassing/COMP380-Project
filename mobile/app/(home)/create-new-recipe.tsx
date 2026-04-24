@@ -9,6 +9,7 @@ import SimpleButton from "@/src/components/simpleButton";
 import RecipeTypeCheckList from "@/src/components/checklist/recipeTypeCheckList";
 import CuisineTypeCheckList from "@/src/components/checklist/cuisineTypeCheckList";
 import SeasonTypeCheckList from "@/src/components/checklist/seasonTypeCheckList";
+import Arrow from "@/src/components/ui/Arrow";
 
 export default function CreateNewRecipe() {
 
@@ -31,6 +32,11 @@ export default function CreateNewRecipe() {
   return (
     <SafeAreaView style={styles.screen}>
     <ScrollView contentContainerStyle={styles.contentContainer}>
+
+      <Arrow
+        type={"arrow-back"}
+        onPress={() => router.back()}
+      />
 
       <Text style={textStyles.Header}>
         General Options

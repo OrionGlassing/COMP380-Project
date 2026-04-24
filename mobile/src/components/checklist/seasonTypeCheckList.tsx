@@ -13,7 +13,7 @@ const SeasonTypeCheckList = () => {
     return (
         <View style={checklistStyles.checkListContainer}>
             <Text style={checklistStyles.checkListHeaderText}>
-                Select recipe type:
+                Select a season:
             </Text>
             <View style={checklistStyles.windowContainer}>
                 <ScrollView
