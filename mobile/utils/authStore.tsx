@@ -1,87 +1,90 @@
 import { create } from "zustand";   //in memory state management
 import { persist, createJSONStorage } from "zustand/middleware"; //save state to device storage
 import { getItem, setItem, deleteItemAsync } from "expo-secure-store";
+import { Platform } from "react-native";
+import * as SecureStore from "expo-secure-store";
 
 interface UserState {
-    isLoggedIn: boolean;                //Frontend only (manages routing to app or login pages)
-    hasCompletedTutorial: boolean;      //Frontend only (manages routing to app or tutorial flow)
-    userID: string | null;              //Users account ID to locate them in the database (backend)
-    token: string | null;               //Ticket for backend/database requests (backend)
+    isLoggedIn: boolean;
+    hasCompletedTutorial: boolean;
+    userID: string | null;
+    token: string | null;
+    hydrated: boolean;
     logIn: (username: string, password: string) => Promise<void>;
-    createNewAccount: (username:string, email: string, password: string) => Promise<void>;
+    createNewAccount: (username: string, email: string, password: string) => Promise<void>;
     logOut: () => void;
     completeTutorial: () => void;
-};
+    setHydrated: (value: boolean) => void;
+}
 
-export const useAuthStore = create(         //zustand creates a store
-    persist<UserState>(                     //persist saves to device storage
-        (set) => ({                         //set is zustand's internal update function
-            isLoggedIn: false,
-            hasCompletedTutorial: false,
-            userID: null,
-            token: null,
+const storage = createJSONStorage(() => ({
+  getItem: async (name: string) => {
+    if (Platform.OS === "web") {
+      return localStorage.getItem(name);
+    }
+    return await SecureStore.getItemAsync(name);
+  },
+  setItem: async (name: string, value: string) => {
+    if (Platform.OS === "web") {
+      localStorage.setItem(name, value);
+      return;
+    }
+    await SecureStore.setItemAsync(name, value);
+  },
+  removeItem: async (name: string) => {
+    if (Platform.OS === "web") {
+      localStorage.removeItem(name);
+      return;
+    }
+    await SecureStore.deleteItemAsync(name);
+  },
+}));
 
-            logIn: async (username, password) => {
-                try {
+export const useAuthStore = create<UserState>()(
+  persist(
+    (set) => ({
+      isLoggedIn: false,
+      hasCompletedTutorial: false,
+      userID: null,
+      token: null,
+      hydrated: false,
 
-                    //
-                    //Backend login operation goes here.
-                    //
+      setHydrated: (value) => set({ hydrated: value }),
 
-                    set({
-                        isLoggedIn: true,
-                        hasCompletedTutorial: true,
-                        //userID: 
-                        //token: 
-                    });
-                } catch (error) {
-                    console.error("Login failed: ", error);
-                    throw error;
-                }
-                
-            },
-            createNewAccount: async (username, email, password) => {
-                //The backend should give a specific reason if making a new account fails
-                //So that we can tell the user what went wrong
-                    //Ex: Username taken, email already exists, etc.
+      logIn: async (_username, _password) => {
+        set({
+          isLoggedIn: true,
+          hasCompletedTutorial: true,
+        });
+      },
 
-                try {
+      createNewAccount: async (_username, _email, _password) => {
+        set({
+          isLoggedIn: true,
+          hasCompletedTutorial: false,
+        });
+      },
 
-                    //
-                    //Backend create new user operation goes here.
-                    //
+      logOut: () => {
+        set({
+          isLoggedIn: false,
+          userID: null,
+          token: null,
+        });
+      },
 
-                    set({
-                        isLoggedIn: true,
-                        hasCompletedTutorial: false,
-                        //userID: 
-                        //token: 
-                    });
-                } catch (error) {
-                    console.error("Failed to make new account: ", error);
-                    throw error;
-                }
-            },
-            logOut: () => {
-                set({
-                    isLoggedIn: false,
-                    userID: null,
-                    token: null,
-                });
-            },
-            completeTutorial: () => {
-                set({
-                    hasCompletedTutorial: true,
-                });
-            },
-        }),
-        {                                   //define the persist config
-            name: "auth-store",
-            storage: createJSONStorage(() => ({ //using expo secure store functions
-                setItem,
-                getItem,
-                removeItem: deleteItemAsync,
-            })),
-        },
-    ),
+      completeTutorial: () => {
+        set({
+          hasCompletedTutorial: true,
+        });
+      },
+    }),
+    {
+      name: "auth-store",
+      storage,
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated(true);
+      },
+    }
+  )
 );

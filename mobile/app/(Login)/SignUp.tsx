@@ -12,7 +12,7 @@ export default function SignUp() {
         <View style={styles.arrow}>
           <Arrow
             type={"arrow-back"}
-            onPress={() => router.dismissTo("/Login")}
+            onPress={() => router.dismissTo("/(Login)/Login")}
           />
         </View>
         <Logo />

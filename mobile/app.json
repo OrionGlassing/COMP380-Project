@@ -7,7 +7,6 @@
     "icon": "./assets/logo/coKitchen_logo.png",
     "scheme": "mobile",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
@@ -18,7 +17,6 @@
         "backgroundImage": "./assets/logo/coKitchen_logo.png",
         "monochromeImage": "./assets/logo/coKitchen_logo.png"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.mobile"
     },
