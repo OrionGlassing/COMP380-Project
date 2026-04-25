@@ -2,6 +2,7 @@ import Button from "@/src/components/ui/Button";
 import Logo from "@/src/components/ui/Logo";
 import { useRouter } from "expo-router";
 import { View, Text, StyleSheet } from "react-native";
+//right now this page is being ignored, do we delete it ?
 
 export default function Welcome() {
   const router = useRouter();

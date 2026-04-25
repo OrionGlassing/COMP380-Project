@@ -1,11 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Pressable, } from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
 import Arrow from './Arrow';
-import CoKitchenLogo from "@/assets/logo/Logo.svg";
 import AccountBtn from './AccountBtn';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { theme } from '@/src/constants/theme';
+import CoKitchenLogo from "@/assets/logo/CoKitchenLogo.svg";
 
 
 interface Props {

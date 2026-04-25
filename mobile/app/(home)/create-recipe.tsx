@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { Text, View } from "react-native";
 import Button from "@/src/components/ui/Button";
-import textStyles from "@/src/constants/text-styles";
+import textstyles from "@/src/constants/textstyles";
 
 export default function SignUp() {
   return (
@@ -15,7 +15,7 @@ export default function SignUp() {
         backgroundColor: "#1f1f1f",
       }}
     >
-      <Text style={textStyles.standard}>
+      <Text style={textstyles.body}>
         Welcome to /app/create-recipe, the page to generate a new recipe.
       </Text>
       <Button

@@ -1,56 +1,45 @@
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TextInput, StyleSheet } from "react-native";
 import { useState } from "react";
 import Button from "../ui/Button";
 import { useAuthStore } from "@/utils/authStore";
 import { useRouter } from "expo-router";
 import Icon from "../ui/Icon";
+import { theme } from "@/src/constants/theme";
+import textstyles from "@/src/constants/textstyles";
 
 export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
-
   const logIn = useAuthStore((state) => state.logIn);
   const router = useRouter();
 
   const handleLogin = async () => {
     if (!password.trim() || !username.trim()) {
-      setError("All field are required.");
+      setError("All fields are required.");
       setPassword("");
       return;
     }
-    
     try {
       await logIn(username, password);
       router.replace("/");
     } catch (error) {
-      setError("Log in failed. Confirm username and password.");
+      setError("Login failed. Confirm username and password.");
       setPassword("");
+      return;
     }
-
     setError("");
   };
 
-  const inputProps = {
-    style: styles.inputText,
-    placeholderTextColor: "lightgrey",
-  } as const;
-
-  const inputContainerProps = {
-    style: styles.input,
-  } as const;
   return (
-    <View style={styles.formContainer}>
-      <View {...inputContainerProps}>
-        <Icon name="person-outline" />
+    <View style={styles.form}>
+
+      <View style={styles.inputRow}>
+        <Icon name="person-outline" color={theme.colors.textMuted} />
         <TextInput
-          {...inputProps}
+          style={styles.input}
           placeholder="Username"
+          placeholderTextColor={theme.colors.textMuted}
           keyboardType="email-address"
           autoCapitalize="none"
           value={username}
@@ -58,50 +47,41 @@ export default function LoginForm() {
         />
       </View>
 
-      <View {...inputContainerProps}>
-        <Icon name="lock-closed-outline" />
+      <View style={styles.inputRow}>
+        <Icon name="lock-closed-outline" color={theme.colors.textMuted} />
         <TextInput
-          {...inputProps}
+          style={styles.input}
           placeholder="Password"
-          secureTextEntry={true}
+          placeholderTextColor={theme.colors.textMuted}
+          secureTextEntry
           value={password}
           onChangeText={setPassword}
         />
       </View>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-      <Button label={"Login"} onPress={handleLogin} />
+
+      {error ? <Text style={textstyles.error}>{error}</Text> : null}
+
+      <Button label="Login" onPress={handleLogin} style={{ alignSelf: "stretch" }} />
     </View>
   );
 }
+
 const styles = StyleSheet.create({
-  formContainer: {
-    width: "100%",
-    gap: 10,
-    padding: 30,
-    borderRadius: 15,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#3E5C76",
+  form: {
+    padding: theme.spacing.md,
+    gap: theme.spacing.md,
   },
-
-  input: {
+  inputRow: {
     flexDirection: "row",
-    backgroundColor: "#1D2D44",
-    borderRadius: 15,
-    padding: 10,
-    fontSize: 15,
-    width: "100%",
-    gap: 15,
+    alignItems: "center",
+    backgroundColor: theme.colors.lightinput,
+    borderRadius: theme.borderRadius.sm,
+    padding: theme.spacing.sm,
+    gap: theme.spacing.sm,
   },
-
-  inputText: {
+  input: {
     flex: 1,
-    color: "white",
     fontSize: 15,
-  },
-  error: {
-    fontSize: 15,
-    color: "white",
+    color: theme.colors.text,
   },
 });

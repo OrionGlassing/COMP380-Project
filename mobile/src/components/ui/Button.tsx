@@ -1,31 +1,29 @@
+import textstyles from "@/src/constants/textstyles";
+import { theme } from "@/src/constants/theme";
 import { Pressable, Text, StyleSheet } from "react-native";
+
 interface Props {
   label: string;
   onPress: () => void;
+  style?: object;
 }
 
-export default function Button({ label, onPress }: Props) {
+export default function Button({ label, onPress, style }: Props) {
   return (
-    <Pressable style={styles.btn} onPress={onPress}>
-      <Text style={styles.btnText}>{label}</Text>
+    <Pressable onPress={onPress} style={[styles.container, style]}>
+      <Text style={textstyles.button}>{label}</Text>
     </Pressable>
   );
 }
-const styles = StyleSheet.create({
-    btn: {
-    backgroundColor: "#F2F4F3",
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    padding: 10,
-    alignItems: "center",
-    width: "50%",
-  },
 
-  btnText: {
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "#000000",
-    textAlign: "center",
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: theme.colors.button,
+    borderRadius: theme.borderRadius.sm,
+    padding: theme.spacing.sm,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: theme.spacing.sm,
   },
 });

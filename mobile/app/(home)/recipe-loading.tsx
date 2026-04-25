@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { Text, View } from "react-native";
 import Button from "@/src/components/ui/Button";
-import textStyles from "@/src/constants/text-styles";
+import textstyles from "@/src/constants/textstyles";
 
 export default function SignUp() {
   return (
@@ -15,7 +15,7 @@ export default function SignUp() {
         backgroundColor: "#1f1f1f",
       }}
     >
-      <Text style={textStyles.standard}>
+      <Text style={textstyles.body}>
         Welcome to /app/recipe-loading, the loading screen while the recipe
         generates.{"\n"}
         This page will automatically transition to the next page, but for now
@@ -24,7 +24,7 @@ export default function SignUp() {
       <Button
         label="Proceed"
         onPress={() => {
-          router.replace("/recipe");
+          router.replace("/(home)/recipe/[id]");
         }}
       />
     </View>

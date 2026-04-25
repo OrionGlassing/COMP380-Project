@@ -1,65 +1,41 @@
 import { router } from "expo-router";
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import textStyles from "@/src/constants/text-styles";
-import SimpleButton from "@/src/components/simpleButton";
+import { Text, View } from "react-native";
+import textstyles from "@/src/constants/textstyles";
 import { useAuthStore } from "@/utils/authStore";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { theme } from "@/src/constants/theme";
+import Button from "@/src/components/ui/Button";
 import Arrow from "@/src/components/ui/Arrow";
-import PageHeader from "@/src/components/ui/PageHeader";
+import Logo from "@/src/components/ui/Logo";
 
 export default function Account() {
-  //data
   const logOut = useAuthStore((state) => state.logOut);
-  //ui
-  const insets = useSafeAreaInsets();
 
   return (
-      <View style={styles.screen}>
-      <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
+    <View style={[theme.container.page, { backgroundColor: theme.colors.background, justifyContent: "flex-start", gap: theme.spacing.md }]}>
+      
+      <Arrow type="arrow-back" onPress={() => router.back()} style={{paddingTop: 20}}/>
 
-        <PageHeader 
-          logoText="User Profile"
-          backButtonEnabled={true}
-          profileButtonEnabled={false}
-        />
+      <Logo style={{ alignSelf: "stretch" }} />
 
-        <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
+      <Text style={[textstyles.header]}>
+        Manage your account
+      </Text>
 
-        <Text style={textStyles.standard}>
-          Welcome to /app/account, here the user can manage their account.
-        </Text>
-        <SimpleButton
+      <View style={{ gap: theme.spacing.sm, alignSelf: "stretch" }}>
+        <Button
           label="Customize Profile"
-          onPress={() => {
-            router.push("/customize-profile");
-          }}
+          onPress={() => router.push("/customize-profile")}
+          style={{ alignSelf: "stretch" }}
         />
-        <SimpleButton
+        <Button
           label="Sign Out"
           onPress={() => {
             logOut();
             router.replace("/");
           }}
+          style={{ alignSelf: "stretch", backgroundColor: theme.colors.primary }}
         />
-
-        </View>
-        
-      </ScrollView>
       </View>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-    screen: {
-      flex: 1,
-      backgroundColor: "#1f1f1f",
-    },
-    contentContainer: {
-      flex: 1,
-      flexDirection: "column",
-      gap: 20,
-      justifyContent: "center",
-      alignItems: "center",
-      paddingHorizontal: '5%',
-    },
-});

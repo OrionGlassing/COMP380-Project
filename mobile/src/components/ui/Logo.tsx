@@ -1,31 +1,31 @@
 import CoKitchenLogo from "@/assets/logo/CoKitchenLogo.svg";
+import textstyles from "@/src/constants/textstyles";
+import { theme } from "@/src/constants/theme";
 import { View, Text, StyleSheet } from "react-native";
 
-export default function Logo() {
+interface Props {
+  style?: object;
+  label?: string;
+}
+
+export default function Logo({ style, label = "CoKitchen" }: Props) {
   return (
-    <View style={styles.titleContainer}>
-      <CoKitchenLogo width={100} height={50} />
-      <View>
-        <Text style={styles.title}>coKITCHEN</Text>
-      </View>
+    <View
+      style={[styles.container, style,]}
+    >
+      <CoKitchenLogo width={60} height={60} />
+      <Text style={textstyles.header}>{label}</Text>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    backgroundColor: theme.colors.logo,
+    borderRadius: theme.borderRadius.lg,
+    paddingVertical: theme.spacing.lg,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    gap: 10,
-    borderRadius: 15,
-    backgroundColor: "#0D1321",
-  },
-  title: {
-    fontSize: 22,
-    color: "white",
-    padding: 10,
+    gap: theme.spacing.sm,
   },
 });
