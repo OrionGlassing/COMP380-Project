@@ -10,5 +10,5 @@ export default function Index() {
 
   console.log("index.tsx");
 
-  return <Redirect href={isLoggedIn ? "/(home)/Home" : "/(login)/Login"}/>;
+  return <Redirect href={isLoggedIn ? "/(home)/home" : "/(login)/login"}/>;
 }

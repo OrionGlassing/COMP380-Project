@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 792">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-2 {
+        letter-spacing: 0em;
+      }
+
+      .cls-3 {
+        fill: #36c6f4;
+        stroke-width: .79px;
+      }
+
+      .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8 {
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-3, .cls-4, .cls-8 {
+        stroke: #231f20;
+      }
+
+      .cls-4 {
+        fill: none;
+        stroke-width: .58px;
+      }
+
+      .cls-5 {
+        fill: #fff;
+        stroke-width: .72px;
+      }
+
+      .cls-5, .cls-6, .cls-7 {
+        stroke: #282973;
+      }
+
+      .cls-9 {
+        fill: #101522;
+        font-family: MyriadPro-Regular, 'Myriad Pro';
+        font-size: 50.47px;
+      }
+
+      .cls-6 {
+        fill: #fded19;
+        stroke-width: .66px;
+      }
+
+      .cls-7 {
+        fill: #4cb8e9;
+        stroke-width: .85px;
+      }
+
+      .cls-10 {
+        letter-spacing: 0em;
+      }
+
+      .cls-8 {
+        fill: #309ad6;
+        stroke-width: .73px;
+      }
+    </style>
+  </defs>
+  <g id="Book">
+    <rect class="cls-7" x="165.08" y="222.98" width="30.14" height="298.38" rx="15.07" ry="15.07"/>
+    <path class="cls-6" d="M189.61,226.89h218.33c15.98,0,28.96,12.98,28.96,28.96v257.07h-247.29V226.89h0Z"/>
+    <rect class="cls-5" x="165.08" y="507.82" width="272.04" height="13.53" rx="6.77" ry="6.77"/>
+  </g>
+  <g id="hat">
+    <path class="cls-8" d="M374.95,327.32c0,11.64-11.47,21.45-27.21,24.61v11.49h-83.49v-11.12c-15.76-3.33-27.21-13.25-27.21-24.98,0-13.2,14.5-24.11,33.36-25.91-1.84-2.99-2.86-6.26-2.86-9.69,0-13.98,16.8-25.31,37.54-25.31s37.54,11.34,37.54,25.31c0,3.55-1.09,6.93-3.05,10.01,19.77.93,35.37,12.03,35.37,25.59Z"/>
+    <path class="cls-3" d="M354.03,370.57c0,3.95-3.33,7.15-7.45,7.15h-81.16c-4.12,0-7.46-3.2-7.46-7.15,0-1.97.83-3.76,2.18-5.05,1.35-1.29,3.21-2.09,5.27-2.09h81.16c4.11,0,7.45,3.2,7.45,7.14Z"/>
+    <line class="cls-4" x1="324.48" y1="328.3" x2="324.48" y2="353.24"/>
+    <line class="cls-4" x1="285.92" y1="328.3" x2="285.92" y2="353.24"/>
+  </g>
+  <g id="Title">
+    <text class="cls-9" transform="translate(208.66 452.47) scale(.96 1)"><tspan class="cls-1" x="0" y="0">C</tspan><tspan x="28.72" y="0">o</tspan><tspan class="cls-2" x="56.43" y="0">K</tspan><tspan x="84.29" y="0">i</tspan><tspan class="cls-10" x="96.1" y="0">t</tspan><tspan x="112.51" y="0">chen</tspan></text>
+  </g>
+</svg>

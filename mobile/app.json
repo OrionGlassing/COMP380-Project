@@ -4,7 +4,7 @@
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo/coKitchen_logo.png",
+    "icon": "./assets/logo/CoKitchenImage.png",
     "scheme": "mobile",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -15,9 +15,9 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/logo/coKitchen_logo.png",
-        "backgroundImage": "./assets/logo/coKitchen_logo.png",
-        "monochromeImage": "./assets/logo/coKitchen_logo.png"
+        "foregroundImage": "./assets/logo/CoKitchenImage.png",
+        "backgroundImage": "./assets/logo/CoKitchenImage.png",
+        "monochromeImage": "./assets/logo/CoKitchenImage.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -25,7 +25,7 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/logo/coKitchen_logo.png"
+      "favicon": "./assets/logo/CoKitchenImag.png"
     },
     "plugins": [
       "expo-router",

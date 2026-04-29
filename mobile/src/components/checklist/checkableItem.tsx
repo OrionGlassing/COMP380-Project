@@ -2,7 +2,7 @@ import CheckBox from "./customCheckBox";
 import { StyleSheet } from "react-native";
 import { theme } from "@/src/constants/theme";
 import { Text, View, Pressable } from "react-native";
-import textStyles from "@/src/constants/text-styles";
+import textstyles from "@/src/constants/textstyles";
 
 interface Props {
     enabled: boolean;
@@ -32,8 +32,8 @@ const CheckableItem = ({enabled, shouldCrossOut, label, isChecked, callBack, }: 
                 </View>
                 <Text
                     style={isChecked ?
-                        (shouldCrossOut ? [textStyles.longForm, {textDecorationLine: 'line-through', color: theme.colors.grey_dark}] : checklistStyles.checkItemTextChecked)
-                        : (shouldCrossOut ? textStyles.longForm : checklistStyles.checkItemTextNotChecked)
+                        (shouldCrossOut ? [textstyles.body, {textDecorationLine: 'line-through', color: theme.colors.textMuted}] : checklistStyles.checkItemTextChecked)
+                        : (shouldCrossOut ? textstyles.body : checklistStyles.checkItemTextNotChecked)
                         }
                 >
                     {label}
@@ -56,14 +56,25 @@ const checklistStyles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'flex-start', 
         gap: 10,
+        
     },
     checkItemTextNotChecked: {
         fontSize: 15,
-        color: theme.colors.black,
+        color: theme.colors.text,
+    },
+    checkItemTextNotCrossedOut: {
+        fontSize: 15,
+        color: theme.colors.text,
     },
     checkItemTextChecked: {
         fontSize: 16,
-        color: theme.colors.blue,
+        color: theme.colors.primary,
         fontWeight: 500,
+    },
+    checkItemTextCrossedOut: {
+        fontSize: 15,
+        color: theme.colors.text,
+        fontWeight: 500,
+        textDecorationLine: 'line-through',
     },
 });

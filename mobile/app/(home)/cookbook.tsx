@@ -1,56 +1,31 @@
 import { router } from "expo-router";
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import textStyles from "@/src/constants/text-styles";
+import { Text, View } from "react-native";
 import Arrow from "@/src/components/ui/Arrow";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import PageHeader from "@/src/components/ui/PageHeader";
-import SearchBar from "@/src/components/home/SearchBar";
-import Filter from "@/src/components/ui/Filter";
+import { theme } from "@/src/constants/theme";
+import Logo from "@/src/components/ui/Logo";
+import Divider from "@/src/components/ui/Divider";
+import textstyles from "@/src/constants/textstyles";
 
-export default function SignUp() {
-  //ui
-  const insets = useSafeAreaInsets();
-
+export default function cookbook() {
   return (
-      <View style={styles.screen}>
-      <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
-
-        <PageHeader 
-          logoText="My Cookbook"
-          backButtonEnabled={true}
-          profileButtonEnabled={true}
-        />
-
-      <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
-
-        <View style={styles.searchRow}>
-          <SearchBar />
-          <Filter />
-        </View>
-
+    <View style={theme.container.page}>
+      <View style={[theme.container.component, { paddingTop: 40 }]}>
+        <Arrow type="arrow-back" onPress={() => router.back()} />
+        <Logo style={{ flex: 1 }} />
       </View>
-      </ScrollView>
-      </View>
+      <Text style={textstyles.header}>Manage CookBook</Text>
+      <Divider>My Collection</Divider>
+      <Text style={textstyles.body}> Display cards and options</Text>
+
+      <Divider>Favorites</Divider>
+      <Text style={textstyles.body}>Display favorites recipe cards</Text>
+      <Divider>Disliked</Divider>
+      <Text style={textstyles.body}>Display disliked recipe cards</Text>
+      <Divider>Recently Viewed</Divider>
+      <Text style={textstyles.body}>Display recently viewed recipe cards</Text>
+
+      <Divider>Created</Divider>
+      <Text style={textstyles.body}>Display created viewed recipe cards</Text>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-    screen: {
-      flex: 1,
-      backgroundColor: "#F0EBD8",
-    },
-    contentContainer: {
-      flex: 1,
-      flexDirection: "column",
-      gap: 20,
-      //justifyContent: "center",
-      alignItems: "center",
-      paddingHorizontal: '5%',
-      paddingTop: '5%',
-    },
-    searchRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-});

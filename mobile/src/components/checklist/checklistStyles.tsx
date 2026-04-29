@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { theme } from "@/src/constants/theme";
 
+//constant file?
 const checklistStyles = StyleSheet.create({
     checkListContainer: {
         alignSelf: 'stretch',

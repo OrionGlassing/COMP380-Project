@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Pressable, } from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
 import Arrow from './Arrow';
-import CoKitchenLogo from "@/assets/logo/Logo.svg";
 import AccountBtn from './AccountBtn';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -51,7 +50,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         height: 150,
-        backgroundColor: theme.colors.yellow_dark,
+        backgroundColor: theme.colors.background,
         boxShadow: [{
             offsetX: 0,
             offsetY: 1,
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
     logoOutline: {
         width: '100%',
         height: '70%',
-        backgroundColor: theme.colors.yellow_bright,
+        backgroundColor: theme.colors.primary,
         borderRadius: 12,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 32,
         fontWeight: 'bold',
-        color: theme.colors.yellow_dark,
+        color: theme.colors.darkinput,
         textAlign: 'center',
         letterSpacing: 0.3,
     },

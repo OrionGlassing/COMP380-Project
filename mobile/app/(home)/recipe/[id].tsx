@@ -1,13 +1,22 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
+<<<<<<< HEAD
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import textStyles from "@/src/constants/text-styles";
+=======
+import { SafeAreaView } from "react-native-safe-area-context";
+import textStyles from "@/src/constants/textstyles";
+>>>>>>> Cesar
 import { useRecipeStore } from "@/utils/data-stores/recipeStore";
 import CheckableItem from "@/src/components/checklist/checkableItem";
-import SimpleButton from "@/src/components/simpleButton";
 import { useEffect, useState } from "react";
 import Arrow from "@/src/components/ui/Arrow";
+<<<<<<< HEAD
 import PageHeader from "@/src/components/ui/PageHeader";
+=======
+import textstyles from "@/src/constants/textstyles";
+import Button from "@/src/components/ui/Button";
+>>>>>>> Cesar
 
 //
 // Notes:
@@ -28,20 +37,21 @@ While the data is loading, the page wants to display loading animations.
 */
 
 export default function ID() {
-    //Global state from zustand store
-    const { id } = useLocalSearchParams<{ id: string }>();
-    const recipe = useRecipeStore((state) => state.recipes[id]);
-    const fetchRecipeById = useRecipeStore((state) => state.fetchRecipeById);
+  //Global state from zustand store
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const recipe = useRecipeStore((state) => state.recipes[id]);
+  const fetchRecipeById = useRecipeStore((state) => state.fetchRecipeById);
 
-    //Local state management for the dynamic ingredients array
-    const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
-    const toggleIngredient = (index: number) => {
-        setCheckedItems((prevState) => ({
-            ...prevState,
-            [index]: !prevState[index] 
-        }));
-    };
+  //Local state management for the dynamic ingredients array
+  const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
+  const toggleIngredient = (index: number) => {
+    setCheckedItems((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
+  };
 
+<<<<<<< HEAD
     //As soon as the page opens, get the recipe data from the zustand store
     useEffect(() => {
         fetchRecipeById(id);
@@ -84,55 +94,89 @@ export default function ID() {
             />
 
         <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
+=======
+  //As soon as the page opens, get the recipe data from the zustand store
+  useEffect(() => {
+    fetchRecipeById(id);
+  }, [id]);
 
-        <Text style={textStyles.Header}>
-            {recipe.title}
-        </Text>
+  //Recipe is undefined when it is not loaded
+  if (!recipe) {
+    //Here we can render the loading screen version of the page
+    return (
+      <SafeAreaView style={styles.screen}>
+        <ScrollView
+          contentContainerStyle={styles.contentContainer}
+        ></ScrollView>
+      </SafeAreaView>
+    );
+  }
 
-        <Text style={[textStyles.Label, {marginBottom: -10}]}>
-            Ingredients:
+  //Now the recipe is loaded, we can render the normal version of the page
+>>>>>>> Cesar
+
+  return (
+    <SafeAreaView style={styles.screen}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <Arrow type={"arrow-back"} onPress={() => router.back()} />
+
+        <Text style={textstyles.header}>{recipe.title}</Text>
+
+        <Text style={[textstyles.label, { marginBottom: -10 }]}>
+          Ingredients:
         </Text>
         <View style={styles.ingredientsContainer}>
-            {recipe.ingredients.map((ingredientString, index) => (
-                <CheckableItem
-                    key={`ingredient-${index}`} 
-                    enabled={true}
-                    shouldCrossOut={true} 
-                    label={ingredientString}
-                    isChecked={!!checkedItems[index]} 
-                    callBack={() => toggleIngredient(index)}
-                />
-            ))}
+          {recipe.ingredients.map((ingredientString, index) => (
+            <CheckableItem
+              key={`ingredient-${index}`}
+              enabled={true}
+              shouldCrossOut={true}
+              label={ingredientString}
+              isChecked={!!checkedItems[index]}
+              callBack={() => toggleIngredient(index)}
+            />
+          ))}
         </View>
 
+<<<<<<< HEAD
         <Text style={[textStyles.Label, {marginBottom: -10}]}>
             Steps:
         </Text>
         <Text style={[textStyles.longForm, {alignSelf: 'flex-start', lineHeight: 30,}]}>
             {recipe.steps}
         </Text>
+=======
+        <Text style={[textstyles.label, { marginBottom: -10 }]}>Steps:</Text>
+        <Text style={textStyles.body}>{recipe.steps}</Text>
+>>>>>>> Cesar
 
-        <SimpleButton
-            label="Customize Recipe"
-            onPress={() => {
-            console.log("This does nothing yet.")
-            }}
+        <Button
+          label="Customize Recipe"
+          onPress={() => {
+            console.log("This does nothing yet.");
+          }}
         />
 
-        <SimpleButton
-            label="Add to Cookbook"
-            onPress={() => {
-            console.log("This does nothing yet.")
-            }}
+        <Button
+          label="Add to Cookbook"
+          onPress={() => {
+            console.log("This does nothing yet.");
+          }}
         />
+<<<<<<< HEAD
 
         </View>
         </ScrollView>
         </View>
+=======
+      </ScrollView>
+    </SafeAreaView>
+>>>>>>> Cesar
   );
 }
 
 const styles = StyleSheet.create({
+<<<<<<< HEAD
     screen: {
       flex: 1,
       backgroundColor: "#F0EBD8",
@@ -152,3 +196,22 @@ const styles = StyleSheet.create({
     },
     
 });
+=======
+  screen: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: "#1f1f1f",
+  },
+  contentContainer: {
+    flexDirection: "column",
+    gap: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: "8%",
+  },
+  ingredientsContainer: {
+    alignSelf: "stretch",
+    gap: 0,
+  },
+});
+>>>>>>> Cesar
