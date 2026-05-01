@@ -1,22 +1,14 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
-<<<<<<< HEAD
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
-import textStyles from "@/src/constants/text-styles";
-=======
+import { Text, View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import textStyles from "@/src/constants/textstyles";
->>>>>>> Cesar
 import { useRecipeStore } from "@/utils/data-stores/recipeStore";
 import CheckableItem from "@/src/components/checklist/checkableItem";
 import { useEffect, useState } from "react";
 import Arrow from "@/src/components/ui/Arrow";
-<<<<<<< HEAD
-import PageHeader from "@/src/components/ui/PageHeader";
-=======
 import textstyles from "@/src/constants/textstyles";
 import Button from "@/src/components/ui/Button";
->>>>>>> Cesar
+import { theme } from "@/src/constants/theme";
 
 //
 // Notes:
@@ -51,50 +43,6 @@ export default function ID() {
     }));
   };
 
-<<<<<<< HEAD
-    //As soon as the page opens, get the recipe data from the zustand store
-    useEffect(() => {
-        fetchRecipeById(id);
-    }, [id]);
-
-    //ui
-    const insets = useSafeAreaInsets();
-
-    //Recipe is undefined when it is not loaded
-    if (!recipe) {
-        //Here we can render the loading screen version of the page
-        return (
-            <View style={styles.screen}>
-            <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
-
-                <PageHeader 
-                logoText="CoKitchen"
-                backButtonEnabled={true}
-                profileButtonEnabled={true}
-                />
-
-            <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
-
-            
-            </View>
-            </ScrollView>
-            </View>
-        );
-    }
-
-    //Now the recipe is loaded, we can render the normal version of the page
-    return (
-        <View style={styles.screen}>
-        <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
-
-            <PageHeader 
-            logoText="CoKitchen"
-            backButtonEnabled={true}
-            profileButtonEnabled={true}
-            />
-
-        <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
-=======
   //As soon as the page opens, get the recipe data from the zustand store
   useEffect(() => {
     fetchRecipeById(id);
@@ -104,20 +52,19 @@ export default function ID() {
   if (!recipe) {
     //Here we can render the loading screen version of the page
     return (
-      <SafeAreaView style={styles.screen}>
+      <SafeAreaView style={theme.container.page}>
         <ScrollView
-          contentContainerStyle={styles.contentContainer}
+          contentContainerStyle={theme.container.scrollview}
         ></ScrollView>
       </SafeAreaView>
     );
   }
 
   //Now the recipe is loaded, we can render the normal version of the page
->>>>>>> Cesar
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
+    <SafeAreaView style={theme.container.page}>
+      <ScrollView contentContainerStyle={theme.container.content}>
         <Arrow type={"arrow-back"} onPress={() => router.back()} />
 
         <Text style={textstyles.header}>{recipe.title}</Text>
@@ -125,7 +72,7 @@ export default function ID() {
         <Text style={[textstyles.label, { marginBottom: -10 }]}>
           Ingredients:
         </Text>
-        <View style={styles.ingredientsContainer}>
+        <View style={theme.container.content}>
           {recipe.ingredients.map((ingredientString, index) => (
             <CheckableItem
               key={`ingredient-${index}`}
@@ -138,17 +85,8 @@ export default function ID() {
           ))}
         </View>
 
-<<<<<<< HEAD
-        <Text style={[textStyles.Label, {marginBottom: -10}]}>
-            Steps:
-        </Text>
-        <Text style={[textStyles.longForm, {alignSelf: 'flex-start', lineHeight: 30,}]}>
-            {recipe.steps}
-        </Text>
-=======
         <Text style={[textstyles.label, { marginBottom: -10 }]}>Steps:</Text>
         <Text style={textStyles.body}>{recipe.steps}</Text>
->>>>>>> Cesar
 
         <Button
           label="Customize Recipe"
@@ -163,55 +101,7 @@ export default function ID() {
             console.log("This does nothing yet.");
           }}
         />
-<<<<<<< HEAD
-
-        </View>
-        </ScrollView>
-        </View>
-=======
       </ScrollView>
     </SafeAreaView>
->>>>>>> Cesar
   );
 }
-
-const styles = StyleSheet.create({
-<<<<<<< HEAD
-    screen: {
-      flex: 1,
-      backgroundColor: "#F0EBD8",
-    },
-    contentContainer: {
-      flex: 1,
-      flexDirection: "column",
-      gap: 20,
-      //justifyContent: "center",
-      alignItems: "center",
-      paddingHorizontal: '10%',
-      paddingTop: '5%',
-    },
-    ingredientsContainer: {
-        alignSelf: 'stretch',
-        gap: 0,
-    },
-    
-});
-=======
-  screen: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: "#1f1f1f",
-  },
-  contentContainer: {
-    flexDirection: "column",
-    gap: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: "8%",
-  },
-  ingredientsContainer: {
-    alignSelf: "stretch",
-    gap: 0,
-  },
-});
->>>>>>> Cesar

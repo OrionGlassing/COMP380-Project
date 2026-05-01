@@ -1,4 +1,4 @@
-import { Redirect, Stack } from "expo-router";
+import { Stack } from "expo-router";
 
 export default function ProtectedLayout() {
   return (
@@ -11,11 +11,11 @@ export default function ProtectedLayout() {
       <Stack.Screen name="create-new-recipe" />
       <Stack.Screen name="create-recipe" />
       <Stack.Screen name="loading-recipe" />
-      <Stack.Screen name="newPicks" />
-      <Stack.Screen name="popularRightNow" />
+      <Stack.Screen name="new-picks" />
+      <Stack.Screen name="popular-right-now" />
       <Stack.Screen name="recipe-loading" />
-      <Stack.Screen name="UserProfile" />
-      <Stack.Screen name="yourFavorites" />
+      <Stack.Screen name="user-profile" />
+      <Stack.Screen name="your-favorites" />
       <Stack.Screen name="recipe/[id]" />
     </Stack>
   );

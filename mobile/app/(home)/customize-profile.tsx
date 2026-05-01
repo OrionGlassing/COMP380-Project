@@ -62,7 +62,7 @@ export default function CustomizeProfile() {
   );
 
   //ui
-  const insets = useSafeAreaInsets();
+  //const insets = useSafeAreaInsets();
 
   return (
     <SafeAreaView
@@ -76,7 +76,7 @@ export default function CustomizeProfile() {
 
         <DietCheckList />
 
-        <Text style={[textstyles.label, { marginBottom: -10 }]}>
+        <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text }]}>
           Describe your diet:
         </Text>
         <CustomTextInput
@@ -89,7 +89,7 @@ export default function CustomizeProfile() {
           keyboardType="default"
         />
 
-        <Text style={[textstyles.label, { marginBottom: -10 }]}>
+        <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text  }]}>
           List your food allergies:
         </Text>
         <CustomTextInput
@@ -104,7 +104,7 @@ export default function CustomizeProfile() {
 
         <Text style={textstyles.header}>Food Preferences</Text>
 
-        <Text style={[textstyles.label, { marginBottom: -10 }]}>
+        <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text }]}>
           What are some ingredients you love?
         </Text>
         <CustomTextInput
@@ -117,7 +117,7 @@ export default function CustomizeProfile() {
           keyboardType="default"
         />
 
-        <Text style={[textstyles.label, { marginBottom: -10 }]}>
+        <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text}]}>
           What are some ingredients you hate?
         </Text>
         <CustomTextInput

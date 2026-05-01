@@ -10,7 +10,7 @@ import textstyles from "@/src/constants/textstyles";
 
 export default function Explore() {
   //ui
-  const insets = useSafeAreaInsets();
+  //const insets = useSafeAreaInsets();
 
   return (
     <ScrollView style={theme.container.scrollview}>

@@ -60,11 +60,11 @@ const checklistStyles = StyleSheet.create({
     },
     checkItemTextNotChecked: {
         fontSize: 15,
-        color: theme.colors.text,
+        color: theme.colors.lightinput,
     },
     checkItemTextNotCrossedOut: {
         fontSize: 15,
-        color: theme.colors.text,
+        color: theme.colors.lightinput,
     },
     checkItemTextChecked: {
         fontSize: 16,
@@ -73,7 +73,7 @@ const checklistStyles = StyleSheet.create({
     },
     checkItemTextCrossedOut: {
         fontSize: 15,
-        color: theme.colors.text,
+        color: theme.colors.primary,
         fontWeight: 500,
         textDecorationLine: 'line-through',
     },

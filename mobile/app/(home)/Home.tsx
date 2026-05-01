@@ -9,7 +9,7 @@ import { View, Text, Image, ScrollView } from "react-native";
 
 export default function Home() {
   //ui
-  const insets = useSafeAreaInsets();
+  //const insets = useSafeAreaInsets();
 
   return (
     <ScrollView

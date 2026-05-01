@@ -21,12 +21,12 @@ export default function Login() {
       <Button
         label={"Create Account"}
         onPress={() => {
-          router.push("/signUp");
+          router.push("/SignUp");
         }}
         style={{ width: "90%", alignSelf: "center"}}
       />
       <Divider />
-      <Button label={"Help"} onPress={() => router.push("/help")} style={{ width: "90%", alignSelf: "center"}} />
+      <Button label={"Help"} onPress={() => router.push("/Help")} style={{ width: "90%", alignSelf: "center"}} />
     </View>
   );
 }
