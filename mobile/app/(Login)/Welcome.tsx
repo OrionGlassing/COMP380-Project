@@ -21,7 +21,7 @@ export default function Welcome() {
         label={"Get Started"}
         onPress={() => {
           console.log("pressed");
-          router.replace("/(login)/signUp");
+          router.replace("/(login)/SignUp");
         }}
       />
       <Text>Already have an account?</Text>
@@ -29,7 +29,7 @@ export default function Welcome() {
         label={"Login"}
         onPress={() => {
           console.log("pressed");
-          router.replace("/(login)/login");
+          router.replace("/(login)/Login");
         }}
       />
     </View>
