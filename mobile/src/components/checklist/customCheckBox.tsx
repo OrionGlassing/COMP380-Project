@@ -20,7 +20,7 @@ const CheckBox = ({ enabled, isChecked }: Props) => {
                     ? theme.colors.primary
                     : theme.colors.textMuted
                   : enabled
-                    ? "#ffff"
+                    ? theme.colors.text
                     : theme.colors.textMuted
               }
             />

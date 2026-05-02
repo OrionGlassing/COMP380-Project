@@ -1,14 +1,12 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { Text, View, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { Image } from "expo-image";
 import textStyles from "@/src/constants/textstyles";
 import { useRecipeStore } from "@/utils/data-stores/recipeStore";
 import CheckableItem from "@/src/components/checklist/checkableItem";
 import { useEffect, useState } from "react";
-import Arrow from "@/src/components/ui/Arrow";
-import textstyles from "@/src/constants/textstyles";
-import Button from "@/src/components/ui/Button";
-import { theme } from "@/src/constants/theme";
+import PageHeader from "@/src/components/ui/PageHeader";
 
 //
 // Notes:
@@ -29,79 +27,158 @@ While the data is loading, the page wants to display loading animations.
 */
 
 export default function ID() {
-  //Global state from zustand store
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const recipe = useRecipeStore((state) => state.recipes[id]);
-  const fetchRecipeById = useRecipeStore((state) => state.fetchRecipeById);
+    //Global state from zustand store
+    const { id } = useLocalSearchParams<{ id: string }>();
+    const recipe = useRecipeStore((state) => state.recipes[id]);
+    const fetchRecipeById = useRecipeStore((state) => state.fetchRecipeById);
 
-  //Local state management for the dynamic ingredients array
-  const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
-  const toggleIngredient = (index: number) => {
-    setCheckedItems((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index],
-    }));
-  };
+    //Local state management for the dynamic ingredients array
+    const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
+    const toggleIngredient = (index: number) => {
+        setCheckedItems((prevState) => ({
+            ...prevState,
+            [index]: !prevState[index] 
+        }));
+    };
 
-  //As soon as the page opens, get the recipe data from the zustand store
-  useEffect(() => {
-    fetchRecipeById(id);
-  }, [id]);
+    //As soon as the page opens, get the recipe data from the zustand store
+    useEffect(() => {
+        fetchRecipeById(id);
+    }, [id]);
 
-  //Recipe is undefined when it is not loaded
-  if (!recipe) {
-    //Here we can render the loading screen version of the page
+    //ui
+    const insets = useSafeAreaInsets();
+
+    //Recipe is undefined when it is not loaded
+    if (!recipe) {
+        //Here we can render the loading screen version of the page
+        return (
+            <View style={styles.screen}>
+            <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
+
+                <PageHeader 
+                logoText="CoKitchen"
+                backButtonEnabled={true}
+                profileButtonEnabled={true}
+                />
+
+            <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
+
+            
+            </View>
+            </ScrollView>
+            </View>
+        );
+    }
+
+    //Now the recipe is loaded, we can render the normal version of the page
     return (
-      <SafeAreaView style={theme.container.page}>
-        <ScrollView
-          contentContainerStyle={theme.container.scrollview}
-        ></ScrollView>
-      </SafeAreaView>
-    );
-  }
+        <View style={styles.screen}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
 
-  //Now the recipe is loaded, we can render the normal version of the page
-
-  return (
-    <SafeAreaView style={theme.container.page}>
-      <ScrollView contentContainerStyle={theme.container.content}>
-        <Arrow type={"arrow-back"} onPress={() => router.back()} />
-
-        <Text style={textstyles.header}>{recipe.title}</Text>
-
-        <Text style={[textstyles.label, { marginBottom: -10 }]}>
-          Ingredients:
-        </Text>
-        <View style={theme.container.content}>
-          {recipe.ingredients.map((ingredientString, index) => (
-            <CheckableItem
-              key={`ingredient-${index}`}
-              enabled={true}
-              shouldCrossOut={true}
-              label={ingredientString}
-              isChecked={!!checkedItems[index]}
-              callBack={() => toggleIngredient(index)}
+            <PageHeader 
+            logoText="CoKitchen"
+            backButtonEnabled={true}
+            profileButtonEnabled={true}
             />
-          ))}
+
+        <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
+
+        <Text style={[textStyles.header, {}]}>
+            {recipe.title}
+        </Text>
+
+        <View style={styles.imageContainer} >
+          <Image
+            style={styles.image}
+            source={recipe.imageURL}
+            contentFit="cover"
+            transition={1000}
+          />
+          <View style={styles.imageShadow} />
         </View>
 
-        <Text style={[textstyles.label, { marginBottom: -10 }]}>Steps:</Text>
-        <Text style={textStyles.body}>{recipe.steps}</Text>
+        <Text style={[textStyles.subHeader, {marginBottom: -10, alignSelf: 'flex-start',}]}>
+            Ingredients:
+        </Text>
+        <View style={styles.ingredientsContainer}>
+            {recipe.ingredients.map((ingredientString, index) => (
+                <CheckableItem
+                    key={`ingredient-${index}`} 
+                    enabled={true}
+                    shouldCrossOut={true} 
+                    label={ingredientString}
+                    isChecked={!!checkedItems[index]} 
+                    callBack={() => toggleIngredient(index)}
+                />
+            ))}
+        </View>
 
-        <Button
-          label="Customize Recipe"
-          onPress={() => {
-            console.log("This does nothing yet.");
-          }}
-        />
+        <Text style={[textStyles.subHeader, {marginBottom: -10, alignSelf: 'flex-start',}]}>
+            Directions:
+        </Text>
+        <View style={styles.directionsContainer} >
+        {recipe.directions.map((step, index) => (
+            <Text 
+                key={index} 
+                style={[textStyles.body, {alignSelf: 'flex-start', }]}
+            >
+                {/*{index + 1}.*/}{step}
+            </Text>
+        ))}
+        </View>
 
-        <Button
-          label="Add to Cookbook"
-          onPress={() => {
-            console.log("This does nothing yet.");
-          }}
-        />
-      </ScrollView>
-    </SafeAreaView>
+        </View>
+        </ScrollView>
+        </View>
   );
 }
+
+const styles = StyleSheet.create({
+    screen: {
+      flex: 1,
+      backgroundColor: "#F0EBD8",
+    },
+    contentContainer: {
+      flex: 1,
+      flexDirection: "column",
+      gap: 20,
+      //justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: '10%',
+      paddingTop: '5%',
+    },
+    imageContainer: {
+      width: '100%',
+      height: 200,
+      borderRadius: 12,
+      overflow: 'hidden',
+    },
+    image: {
+      width: '100%',
+      height: '100%',
+      borderRadius: 12,
+      backgroundColor: '#333333',
+    },
+    imageShadow: {
+      ...StyleSheet.absoluteFillObject,
+      borderRadius: 12,
+      boxShadow: [{
+          offsetX: 0,
+          offsetY: 0,
+          blurRadius: 15,
+          spreadDistance: 0,
+          color: 'rgba(0,0,0,0.9)',
+          inset: true,
+      }],
+    },
+    ingredientsContainer: {
+        alignSelf: 'stretch',
+        gap: 0,
+    },
+    directionsContainer: {
+      alignSelf: 'stretch',
+      gap: 10,
+    },
+    
+});

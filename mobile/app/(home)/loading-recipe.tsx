@@ -35,7 +35,9 @@ export default function LoadingRecipe() {
 
   //As soon as the page opens, use the zustand store to communicate with the backend
   useEffect(() => {
-    handleCreateNewRecipe();
+    setTimeout(() => {
+      handleCreateNewRecipe();
+    }, 5000);
   }, []);
 
   return (

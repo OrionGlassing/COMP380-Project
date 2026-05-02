@@ -29,19 +29,29 @@ recipe when a change is requested.
 
 interface RecipeStore {
   recipes: Record<string, Recipe>;
+  saved_recipes: string[];
   fetchRecipeById: (id: string) => Promise<void>; 
 }
 
 const testRecipeData: Recipe = {
-    id: "testID",
+    recipe_id: "testID",
     title: "Test Recipe",
-    ingredients: ['Test Ingredient #1 - 2 cups',
+    imageURL: "https://picsum.photos/seed/cokitchen/600/400",
+    ingredients: [
+        'Test Ingredient #1 - 2 cups',
         'Test Ingredient #2 - 1/2 cup',
         'Test Ingredient #3 - x2',
         'Test Ingredient #4 - 3 Tbsp.',
         'Test Ingredient #5 - 1 tsp.',
     ],
-    steps: "1. Example step one...\n2. Example step two...\n3. Example step three...\n4. Example step four...\n5. Example step five...\n"
+    directions: [
+        "1. Example step one...",
+        "2. Example step two...",
+        "3. Example step three...",
+        "4. Example step four...",
+        "5. Example step five...",
+    ],
+    cook_time: "25 minutes",
 };
 
 export const useRecipeStore = create(     //zustand creates a store
@@ -49,6 +59,7 @@ export const useRecipeStore = create(     //zustand creates a store
         (set, get) => ({                  //set is zustand's internal update function
             
             recipes: {},
+            saved_recipes: [],
 
             fetchRecipeById: async (id: string) => {
             // Check if this recipe id is already saved
