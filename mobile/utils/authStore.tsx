@@ -1,6 +1,5 @@
 import { create } from "zustand";   //in memory state management
 import { persist, createJSONStorage } from "zustand/middleware"; //save state to device storage
-import { getItem, setItem, deleteItemAsync } from "expo-secure-store";
 import { Platform } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -17,6 +16,7 @@ interface UserState {
     logOut: () => void;
     completeTutorial: () => void;
     setHydrated: (value: boolean) => void;
+    restoreSession: () => void;
 }
 
 const storage = createJSONStorage(() => ({
@@ -122,7 +122,42 @@ export const useAuthStore = create<UserState>()(
           hasCompletedTutorial: true,
         });
       },
-    }),
+
+      restoreSession: async () => {
+          try {
+              const token = await SecureStore.getItemAsync("access_token");
+
+              if (!token) {
+                set({ isLoggedIn: false, userID: null, token: null, hydrated: true });
+                return;
+              }
+            
+              const response = await fetch("http://ip:8000/authentication/me/", {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+            
+              if (!response.ok) {
+                await SecureStore.deleteItemAsync("access_token");
+                await SecureStore.deleteItemAsync("refresh_token");
+                await SecureStore.deleteItemAsync("auth-storage");
+              
+                set({ isLoggedIn: false, userID: null, token: null, hydrated: true });
+                return;
+              }
+              const profile = await response.json();
+              set({
+                isLoggedIn: true,
+                token,
+                userID: profile.id,
+                hydrated: true,
+              });
+          } catch (error) {
+            set({ isLoggedIn: false, userID: null, token: null, hydrated: true });
+          }
+        }
+      }),
     {
       name: "auth-store",
       storage,
