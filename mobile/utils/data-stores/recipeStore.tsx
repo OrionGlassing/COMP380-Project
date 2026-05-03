@@ -29,14 +29,16 @@ recipe when a change is requested.
 
 interface RecipeStore {
   recipes: Record<string, Recipe>;
-  saved_recipes: string[];
+  saved_recipes: Recipe[];
+  getSavedRecipes: () => Promise<void>;
   fetchRecipeById: (id: string) => Promise<void>; 
+  wipeRecipeStore: () => void;
 }
 
 const testRecipeData: Recipe = {
     recipe_id: "testID",
-    title: "Test Recipe",
-    imageURL: "https://picsum.photos/seed/cokitchen/600/400",
+    title: "Test Recipe Title",
+    imageURL: "https://firebasestorage.googleapis.com/v0/b/cokitchen-2dea8.firebasestorage.app/o/recipe_images%2Fpad_see_ew_001%2Fpad-see-ew-sq-cu.jpg?alt=media&token=62019e0e-f350-4228-870c-346aaf6e5457",
     ingredients: [
         'Test Ingredient #1 - 2 cups',
         'Test Ingredient #2 - 1/2 cup',
@@ -60,6 +62,11 @@ export const useRecipeStore = create(     //zustand creates a store
             
             recipes: {},
             saved_recipes: [],
+
+            getSavedRecipes: async () => {
+                //Get all of the users saved recipes from the database
+                
+            },
 
             fetchRecipeById: async (id: string) => {
             // Check if this recipe id is already saved
@@ -90,8 +97,14 @@ export const useRecipeStore = create(     //zustand creates a store
                     ...state.recipes,
                     [id]: testRecipeData
                 }
-            }))
+            }));
 
+            },
+            wipeRecipeStore: () => {
+                set((state) => ({
+                    recipes: {},
+                    saved_recipes: [],
+                }));
             }
         }),
         {                                           //define the persist config

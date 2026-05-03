@@ -35,17 +35,19 @@ const RecipeCard = ({ID, }: Props) => {
         return (
             <View style={styles.cardContainer}>
                 <View style={styles.imageContainer} >
-                    <ActivityIndicator size="large" color={'#6e6e6e'} />
+                    <ActivityIndicator size="large" color={theme.colors.text} />
                 </View>
-                <View style={styles.textContainer} >
-                    <View style={[styles.textPlaceHolder, {width: '100%'}]} />
-                    <View style={[styles.textPlaceHolder, {width: '100%'}]} />
-                    <View style={[styles.textPlaceHolder, {width: '69%'}]} />
-                    <View style={styles.textPlaceHolder} />
-                    <View style={[styles.textPlaceHolder, {width: '50%', backgroundColor: theme.colors.primary}]} />
-                    <View style={[styles.textPlaceHolder, {width: '50%', backgroundColor: theme.colors.primary}]} />
+                <View style={[{flex: 1, backgroundColor: '#111111',}]} >
+                    <View style={[styles.textContainer, {gap: 5, paddingTop: 8, }]} >
+                        <View style={[styles.textPlaceHolder, {width: '100%'}]} />
+                        <View style={[styles.textPlaceHolder, {width: '100%'}]} />
+                        <View style={[styles.textPlaceHolder, {width: '69%'}]} />
+                    </View>
+                    <View style={[styles.textContainer, {gap: 8, paddingBottom: 8}]} >
+                        <View style={[styles.textPlaceHolder, {width: '50%', backgroundColor: theme.colors.primary}]} />
+                        <View style={[styles.textPlaceHolder, {width: '50%', backgroundColor: theme.colors.primary}]} />
+                    </View>
                 </View>
-                
             </View>
         );
     }
@@ -65,7 +67,7 @@ const RecipeCard = ({ID, }: Props) => {
                         style={styles.image}
                         source={recipe.imageURL}
                         contentFit="cover"
-                        transition={1000}
+                        transition={300}
                         />
                         <View style={styles.imageShadow} />
                     </View>
@@ -74,19 +76,23 @@ const RecipeCard = ({ID, }: Props) => {
 
                     <View style={[{flex: 1, backgroundColor: '#111111',}]} >
 
-                        <View style={styles.textContainer} >
-                            <Text style={styles.textTitle} >
+                        <View style={[styles.textContainer, {paddingTop: 4, }]} >
+                            <Text style={styles.textTitle} numberOfLines={2} adjustsFontSizeToFit>
                                 {recipe.title}
                             </Text>
                         </View>
                         
-                        <View style={styles.textContainer} >
+                        <View style={[styles.textContainer, {flex: 1.5, paddingBottom: 4, }]} >
                             <Text style={styles.textSub} >
-                                45 minutes
+                                {recipe.cook_time}
                             </Text>
+
+                            {/*MORE RECIPE DATA HERE */}
+
                         </View>
 
                     </View>
+                    <View style={styles.cardHighlight} />
             </Pressable>
         </View>
     );
@@ -113,18 +119,29 @@ const styles = StyleSheet.create({
             //inset: true, 
         }],
     },
+    cardHighlight: {
+        ...StyleSheet.absoluteFillObject,
+        boxShadow: [{
+            offsetX: -25,
+            offsetY: 10,
+            blurRadius: 40,
+            spreadDistance: 0,
+            color: 'rgba(255, 255, 255, 0.25)',
+            inset: true, 
+        }],
+    },
     imageContainer: {
         flex: 1,
         //width: '100%',
         //height: 125,
-        backgroundColor: 'lightgrey',
+        backgroundColor: 'darkgrey',
         flexDirection: 'column',
         justifyContent: "center",
         alignItems: "center",
     },
     image: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: '#333333',
+      backgroundColor: 'darkgrey',
     },
     imageShadow: {
       ...StyleSheet.absoluteFillObject,
@@ -146,7 +163,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'flex-start',
-        padding: 8,
+        paddingHorizontal: 8,
     },
     textPlaceHolder: {
         height: 10,
@@ -155,10 +172,9 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'left',
-
     },
     textSub: {
         color: theme.colors.primary,

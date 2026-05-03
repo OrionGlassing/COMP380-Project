@@ -94,7 +94,7 @@ export default function ID() {
             style={styles.image}
             source={recipe.imageURL}
             contentFit="cover"
-            transition={1000}
+            transition={500}
           />
           <View style={styles.imageShadow} />
         </View>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
       width: '100%',
       height: '100%',
       borderRadius: 12,
-      backgroundColor: '#333333',
+      backgroundColor: 'darkgrey',
     },
     imageShadow: {
       ...StyleSheet.absoluteFillObject,

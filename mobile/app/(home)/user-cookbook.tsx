@@ -15,22 +15,18 @@ export default function UserCookbook() {
         backButtonEnabled={true}
         profileButtonEnabled={true}
     />
+
+    {/*THIS NEEDS TO BE A FLATLIST*/}
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
         <View style={[styles.contentContainer, { paddingBottom: insets.bottom }]}>
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
-            <RecipeCard ID="5" />
+            <View style={styles.grid} >
+              <RecipeCard ID="5" />
+              <RecipeCard ID="5" />
+              <RecipeCard ID="5" />
+
+              {/*DYNAMIC CARD GENERATOR GOES HERE*/}
+
+            </View>
         </View>
     </ScrollView>
     </View>
@@ -44,11 +40,17 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    flexDirection: "column",
     gap: 20,
     //justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: "5%",
     paddingTop: "5%",
   },
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start", 
+    gap: 20,
+    width: 370, 
+},
 });
