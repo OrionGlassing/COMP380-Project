@@ -9,11 +9,12 @@ interface Props {
     shouldCrossOut: boolean;
     label: string;
     isChecked: boolean;
+    buttonColor: string;
     callBack: () => void;
 }
 
 
-const CheckableItem = ({enabled, shouldCrossOut, label, isChecked, callBack, }: Props) => {
+const CheckableItem = ({enabled, shouldCrossOut, label, isChecked, buttonColor, callBack, }: Props) => {
 
     return (
         <View style={checklistStyles.checkItemContainer}>
@@ -28,6 +29,7 @@ const CheckableItem = ({enabled, shouldCrossOut, label, isChecked, callBack, }: 
                     <CheckBox
                         enabled={enabled}
                         isChecked={isChecked}
+                        buttonColor={buttonColor}
                     />
                 </View>
                 <Text

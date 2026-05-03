@@ -5,9 +5,10 @@ import { theme } from "@/src/constants/theme";
 interface Props {
   enabled: boolean;
   isChecked: boolean;
+  buttonColor: string;
 }
 
-const CheckBox = ({ enabled, isChecked }: Props) => {
+const CheckBox = ({ enabled, isChecked, buttonColor, }: Props) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -20,7 +21,7 @@ const CheckBox = ({ enabled, isChecked }: Props) => {
                     ? theme.colors.primary
                     : theme.colors.textMuted
                   : enabled
-                    ? theme.colors.text
+                    ? buttonColor
                     : theme.colors.textMuted
               }
             />

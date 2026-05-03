@@ -7,6 +7,7 @@ import { useRecipeStore } from "@/utils/data-stores/recipeStore";
 import CheckableItem from "@/src/components/checklist/checkableItem";
 import { useEffect, useState } from "react";
 import PageHeader from "@/src/components/ui/PageHeader";
+import { theme } from "@/src/constants/theme";
 
 //
 // Notes:
@@ -109,6 +110,7 @@ export default function ID() {
                     shouldCrossOut={true} 
                     label={ingredientString}
                     isChecked={!!checkedItems[index]} 
+                    buttonColor={theme.colors.text}
                     callBack={() => toggleIngredient(index)}
                 />
             ))}
@@ -146,7 +148,7 @@ const styles = StyleSheet.create({
       //justifyContent: "center",
       alignItems: "center",
       paddingHorizontal: '10%',
-      paddingTop: '5%',
+      paddingTop: 20,
     },
     imageContainer: {
       width: '100%',

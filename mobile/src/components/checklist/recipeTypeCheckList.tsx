@@ -21,6 +21,7 @@ const RecipeTypeCheckList = () => {
               shouldCrossOut={false}
               label={type.label}
               isChecked={type.isChecked}
+              buttonColor={theme.colors.lightinput}
               callBack={() => toggleRecipeOption(type.id)}
             />
           ))}
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
   window: {
     height: 200,
     width: "100%",
-    backgroundColor: theme.colors.option,
+    backgroundColor: theme.colors.darkinput,
     borderRadius: theme.borderRadius.md,
     padding: theme.spacing.sm,
     borderWidth: 1,

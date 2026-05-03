@@ -5,6 +5,7 @@ import { useRecipeStore } from "@/utils/data-stores/recipeStore";
 import { useEffect, useState } from "react";
 import { router } from "expo-router";
 import { ActivityIndicator } from "react-native";
+import { Image } from "expo-image";
 
 /*  Notes:
 
@@ -30,7 +31,7 @@ const RecipeCard = ({ID, }: Props) => {
     }, [ID]);
 
     //The loading version of the card
-    if (true) {
+    if (!recipe) {
         return (
             <View style={styles.cardContainer}>
                 <View style={styles.imageContainer} >
@@ -59,24 +60,33 @@ const RecipeCard = ({ID, }: Props) => {
                 }}
                 style={[{flex: 1, }]}
             >
-                <View style={styles.cardContainer}>
                     <View style={styles.imageContainer} >
-                        {/*The recipe image will go here when that is set up*/}
-                        <Text style={styles.textTitle} >
-                            image
-                        </Text>
+                        <Image
+                        style={styles.image}
+                        source={recipe.imageURL}
+                        contentFit="cover"
+                        transition={1000}
+                        />
+                        <View style={styles.imageShadow} />
                     </View>
-                    <View style={styles.textContainer} >
-                        <Text style={styles.textTitle} >
-                            {recipe.title}
-                        </Text>
-                        <View style={styles.textPlaceHolder} />
-                        <Text style={styles.textSub} >
-                            45 minutes
-                        </Text>
+
+                    <View style={styles.centerDivider} />
+
+                    <View style={[{flex: 1, backgroundColor: '#111111',}]} >
+
+                        <View style={styles.textContainer} >
+                            <Text style={styles.textTitle} >
+                                {recipe.title}
+                            </Text>
+                        </View>
+                        
+                        <View style={styles.textContainer} >
+                            <Text style={styles.textSub} >
+                                45 minutes
+                            </Text>
+                        </View>
+
                     </View>
-                    
-                </View>
             </Pressable>
         </View>
     );
@@ -92,7 +102,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         overflow: 'hidden',
         outlineColor: 'white',
-        outlineWidth: 5,
+        outlineWidth: 4,
         flexDirection: 'column',
         boxShadow: [{
             offsetX: 1,
@@ -105,26 +115,38 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         flex: 1,
-        backgroundColor: theme.colors.grey,
+        //width: '100%',
+        //height: 125,
+        backgroundColor: 'lightgrey',
         flexDirection: 'column',
         justifyContent: "center",
         alignItems: "center",
-        boxShadow: [{
-            offsetX: 0,
-            offsetY: 4,
-            blurRadius: 10,
-            spreadDistance: 0,
-            color: 'rgba(0,0,0,0.25)',
-            inset: true, 
-        }],
+    },
+    image: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: '#333333',
+    },
+    imageShadow: {
+      ...StyleSheet.absoluteFillObject,
+      boxShadow: [{
+          offsetX: 0,
+          offsetY: 0,
+          blurRadius: 8,
+          spreadDistance: 0,
+          color: 'rgba(0,0,0,0.75)',
+          inset: true,
+      }],
+    },
+    centerDivider: {
+        width: '100%',
+        height: 3,
+        backgroundColor: 'white',
     },
     textContainer: {
         flex: 1,
-        backgroundColor: '#111111',
         flexDirection: 'column',
         alignItems: 'flex-start',
         padding: 8,
-        gap: 6,
     },
     textPlaceHolder: {
         height: 10,

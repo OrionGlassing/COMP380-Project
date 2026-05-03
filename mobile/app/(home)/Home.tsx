@@ -46,7 +46,7 @@ export default function Home() {
         </View>
         <Button
           label="Browse Recipes"
-          onPress={() => router.push("/explore")}
+          onPress={() => router.push("/discover")}
           style={{ alignSelf: "stretch" }}
         />
       </View>
@@ -76,7 +76,7 @@ export default function Home() {
         </View>
         <Button
           label="My Cookbook"
-          onPress={() => router.push("/cookbook")}
+          onPress={() => router.push("/user-cookbook")}
           style={{ alignSelf: "stretch" }}
         />
       </View>

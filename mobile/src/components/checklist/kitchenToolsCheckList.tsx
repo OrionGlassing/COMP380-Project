@@ -21,6 +21,7 @@ const KitchenToolsCheckList = () => {
               shouldCrossOut={false}
               label={tool.label}
               isChecked={tool.isChecked}
+              buttonColor={theme.colors.lightinput}
               callBack={() => toggleKitchenTool(tool.id)}
             />
           ))}

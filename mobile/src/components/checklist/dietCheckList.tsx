@@ -21,6 +21,7 @@ const DietCheckList = () => {
               shouldCrossOut={false}
               label={diet.label}
               isChecked={diet.isChecked}
+              buttonColor={theme.colors.lightinput}
               callBack={() => toggleDiet(diet.id)}
             />
           ))}
