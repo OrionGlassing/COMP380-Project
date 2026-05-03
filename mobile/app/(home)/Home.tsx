@@ -1,7 +1,7 @@
 import AccountBtn from "@/src/components/ui/AccountBtn";
 import Button from "@/src/components/ui/Button";
 import Icon from "@/src/components/ui/Icon";
-import Logo from "@/src/components/ui/Logo";
+import PageHeader from "@/src/components/ui/PageHeader";
 import textstyles from "@/src/constants/textstyles";
 import { theme } from "@/src/constants/theme";
 import { router } from "expo-router";
@@ -19,15 +19,7 @@ export default function Home() {
       ]}
       bounces={false}
     >
-      <View
-        style={[
-          theme.container.component,
-          { gap: 10, paddingBottom: 20, paddingTop: 40 },
-        ]}
-      >
-        <Logo />
-        <AccountBtn onPress={() => router.push("/account")} />
-      </View>
+      <PageHeader logoText={"CoKitchen"} backButtonEnabled={true} profileButtonEnabled={true}/>
 
       {/* Explore Card */}
       <View

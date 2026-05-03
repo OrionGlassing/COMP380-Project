@@ -5,6 +5,7 @@ import AccountBtn from './AccountBtn';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { theme } from '@/src/constants/theme';
+import CoKitchenLogo from "@/assets/logo/CoKitchenLogo.svg";
 
 
 interface Props {
@@ -29,7 +30,7 @@ const PageHeader = ({ logoText, backButtonEnabled, profileButtonEnabled }: Props
             </View>
             <View style={styles.logoContainer}>
                 <View style={styles.logoOutline}>
-                    {/*<CoKitchenLogo width={35} height={35}/>*/}
+                    <CoKitchenLogo width={60} height={60} />
                     <Text style={styles.title}>{logoText}</Text>
                 </View>
             </View>
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         height: 150,
-        backgroundColor: theme.colors.background,
+        backgroundColor: theme.colors.option,
         boxShadow: [{
             offsetX: 0,
             offsetY: 1,

@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { router } from "expo-router";
-import { ScrollView, Text, View, StyleSheet } from "react-native";
+import { ScrollView, Text, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import textStyles from "@/src/constants/textstyles";
 import LabeledSlider from "@/src/components/sliders/LabeledSlider";
 import { useCustomizeProfileStore } from "@/utils/data-stores/customizeProfileStore";
 import DietCheckList from "@/src/components/checklist/dietCheckList";
@@ -11,6 +10,7 @@ import KitchenToolsCheckList from "@/src/components/checklist/kitchenToolsCheckL
 import textstyles from "@/src/constants/textstyles";
 import Button from "@/src/components/ui/Button";
 import { theme } from "@/src/constants/theme";
+import PageHeader from "@/src/components/ui/PageHeader";
 //Cesar: have not centralized theme.
 //Work in progress?
 
@@ -71,86 +71,79 @@ export default function CustomizeProfile() {
         { backgroundColor: theme.colors.background },
       ]}
     >
-      <ScrollView contentContainerStyle={theme.container.content}>
-        <Text style={textstyles.header}>Diet & Restrictions</Text>
-
-        <DietCheckList />
-
-        <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text }]}>
-          Describe your diet:
-        </Text>
-        <CustomTextInput
-          value={dietDescription}
-          onChangeText={(s) => {
-            setDietDescription(s);
-          }}
-          variant="multiline-fixed"
-          placeholder="My diet consists of..."
-          keyboardType="default"
-        />
-
-        <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text  }]}>
-          List your food allergies:
-        </Text>
-        <CustomTextInput
-          value={allergyDescription}
-          onChangeText={(s) => {
-            setAllergyDescription(s);
-          }}
-          variant="multiline-fixed"
-          placeholder="Ex: Nuts, Shellfish, Milk..."
-          keyboardType="default"
-        />
-
-        <Text style={textstyles.header}>Food Preferences</Text>
-
-        <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text }]}>
-          What are some ingredients you love?
-        </Text>
-        <CustomTextInput
-          value={lovedIngredientsDescription}
-          onChangeText={(s) => {
-            setLovedIngredientsDescription(s);
-          }}
-          variant="multiline-fixed"
-          placeholder="I love eating..."
-          keyboardType="default"
-        />
-
-        <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text}]}>
-          What are some ingredients you hate?
-        </Text>
-        <CustomTextInput
-          value={hatedIngredientsDescription}
-          onChangeText={(s) => {
-            setHatedIngredientsDescription(s);
-          }}
-          variant="multiline-fixed"
-          placeholder="I'm not a fan of..."
-          keyboardType="default"
-        />
-
-        <Text style={textstyles.header}>Cooking</Text>
-
-        <LabeledSlider
-          enabled={true}
-          label="Experience Level:"
-          stepLabels={["Noob", "Beginner", "Average", "Experienced", "Pro"]}
-          index={cookingExperienceIndex}
-          callBack={(selectedValue: string, index: number) => {
-            setCookingExperience(selectedValue, index);
-          }}
-        />
-
-        <KitchenToolsCheckList />
-
-        <Button
-          label="Save and Exit"
-          onPress={() => {
-            router.back();
-          }}
-        />
-      </ScrollView>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+        <ScrollView contentContainerStyle={theme.container.content} keyboardShouldPersistTaps="handled">
+          <PageHeader logoText={"CoKitchen"} backButtonEnabled={true} profileButtonEnabled={true}/>
+          <Text style={textstyles.header}>Diet & Restrictions</Text>
+          <DietCheckList />
+          <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text }]}>
+            Describe your diet:
+          </Text>
+          <CustomTextInput
+            value={dietDescription}
+            onChangeText={(s) => {
+              setDietDescription(s);
+            }}
+            variant="multiline-fixed"
+            placeholder="My diet consists of..."
+            keyboardType="default"
+          />
+          <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text  }]}>
+            List your food allergies:
+          </Text>
+          <CustomTextInput
+            value={allergyDescription}
+            onChangeText={(s) => {
+              setAllergyDescription(s);
+            }}
+            variant="multiline-fixed"
+            placeholder="Ex: Nuts, Shellfish, Milk..."
+            keyboardType="default"
+          />
+          <Text style={textstyles.header}>Food Preferences</Text>
+          <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text }]}>
+            What are some ingredients you love?
+          </Text>
+          <CustomTextInput
+            value={lovedIngredientsDescription}
+            onChangeText={(s) => {
+              setLovedIngredientsDescription(s);
+            }}
+            variant="multiline-fixed"
+            placeholder="I love eating..."
+            keyboardType="default"
+          />
+          <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text}]}>
+            What are some ingredients you hate?
+          </Text>
+          <CustomTextInput
+            value={hatedIngredientsDescription}
+            onChangeText={(s) => {
+              setHatedIngredientsDescription(s);
+            }}
+            variant="multiline-fixed"
+            placeholder="I'm not a fan of..."
+            keyboardType="default"
+          />
+          <Text style={textstyles.header}>Cooking</Text>
+          <LabeledSlider
+            enabled={true}
+            label="Experience Level:"
+            stepLabels={["Noob", "Beginner", "Average", "Experienced", "Pro"]}
+            index={cookingExperienceIndex}
+            callBack={(selectedValue: string, index: number) => {
+              setCookingExperience(selectedValue, index);
+            }}
+          />
+          <KitchenToolsCheckList />
+          <Button
+            label="Save and Exit"
+            onPress={() => {
+              router.back();
+            }}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

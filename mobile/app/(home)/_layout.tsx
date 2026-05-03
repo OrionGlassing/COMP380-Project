@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 export default function ProtectedLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" />
+      <Stack.Screen name="home" />
       <Stack.Screen name="account" />
       <Stack.Screen name="customize-profile" />
       <Stack.Screen name="explore" />

@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, Platform } from "react-native";
+import { View, Text, TextInput, StyleSheet } from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import Button from "../ui/Button";
@@ -18,7 +18,12 @@ export default function SignUpForm() {
   const router = useRouter();
 
   const handleSignUp = async () => {
-    if (!username.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
+    if (
+      !username.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim()
+    ) {
       setError("All fields are required.");
       return;
     }
@@ -39,60 +44,64 @@ export default function SignUpForm() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <View style={styles.form}>
-          <View style={styles.inputRow}>
-            <Icon name="person-outline" color={theme.colors.textMuted} />
-            <TextInput
-              style={styles.input}
-              placeholder="Username"
-              placeholderTextColor={theme.colors.textMuted}
-              autoCapitalize="none"
-              value={username}
-              onChangeText={setUsername}
-            />
-          </View>
-          <View style={styles.inputRow}>
-            <Icon name="mail-outline" color={theme.colors.textMuted} />
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              placeholderTextColor={theme.colors.textMuted}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={email}
-              onChangeText={setEmail}
-            />
-          </View>
-          <View style={styles.inputRow}>
-            <Icon name="lock-open-outline" color={theme.colors.textMuted} />
-            <TextInput
-              style={styles.input}
-              placeholder="New Password"
-              placeholderTextColor={theme.colors.textMuted}
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-            />
-          </View>
-          <View style={styles.inputRow}>
-            <Icon name="lock-closed-outline" color={theme.colors.textMuted} />
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm Password"
-              placeholderTextColor={theme.colors.textMuted}
-              secureTextEntry
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-            />
-          </View>
-          {error ? <Text style={textstyles.error}>{error}</Text> : null}
-          <Button label="Create Account" onPress={handleSignUp} style={{ alignSelf: "stretch" }} />
-          <Button label="Cancel" onPress={() => router.back()} style={{ alignSelf: "stretch" }} />
-        </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+    <View style={styles.form}>
+      <View style={styles.inputRow}>
+        <Icon name="person-outline" color={theme.colors.textMuted} />
+        <TextInput
+          style={styles.input}
+          placeholder="Username"
+          placeholderTextColor={theme.colors.textMuted}
+          autoCapitalize="none"
+          value={username}
+          onChangeText={setUsername}
+        />
+      </View>
+      <View style={styles.inputRow}>
+        <Icon name="mail-outline" color={theme.colors.textMuted} />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          placeholderTextColor={theme.colors.textMuted}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
+      </View>
+      <View style={styles.inputRow}>
+        <Icon name="lock-open-outline" color={theme.colors.textMuted} />
+        <TextInput
+          style={styles.input}
+          placeholder="New Password"
+          placeholderTextColor={theme.colors.textMuted}
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+      </View>
+      <View style={styles.inputRow}>
+        <Icon name="lock-closed-outline" color={theme.colors.textMuted} />
+        <TextInput
+          style={styles.input}
+          placeholder="Confirm Password"
+          placeholderTextColor={theme.colors.textMuted}
+          secureTextEntry
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+        />
+      </View>
+      {error ? <Text style={textstyles.error}>{error}</Text> : null}
+      <Button
+        label="Create Account"
+        onPress={handleSignUp}
+        style={{ alignSelf: "stretch" }}
+      />
+      <Button
+        label="Cancel"
+        onPress={() => router.back()}
+        style={{ alignSelf: "stretch" }}
+      />
+    </View>
   );
 }
 

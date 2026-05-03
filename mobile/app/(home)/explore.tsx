@@ -1,5 +1,4 @@
 import Arrow from "@/src/components/ui/Arrow";
-import Logo from "@/src/components/ui/Logo";
 import SearchBar from "@/src/components/home/SearchBar";
 import Filter from "@/src/components/ui/Filter";
 import RecipeCard from "@/src/components/recipe-cards/recipeCard";
@@ -7,6 +6,7 @@ import { router } from "expo-router";
 import { Text, View, ScrollView } from "react-native";
 import { theme } from "@/src/constants/theme";
 import textstyles from "@/src/constants/textstyles";
+import PageHeader from "@/src/components/ui/PageHeader";
 
 export default function Explore() {
   //ui
@@ -15,10 +15,7 @@ export default function Explore() {
   return (
     <ScrollView style={theme.container.scrollview}>
       {/* Header */}
-      <View style={[theme.container.component, { paddingTop: 40 }]}>
-        <Arrow type="arrow-back" onPress={() => router.back()} />
-        <Logo style={{ flex: 1 }} />
-      </View>
+      <PageHeader logoText={"CoKitchen"} backButtonEnabled={true} profileButtonEnabled={true}/>
 
       {/* Search + Filter */}
       <View style={theme.container.component}>

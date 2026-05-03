@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, Platform } from "react-native";
+import { View, Text, TextInput, StyleSheet } from "react-native";
 import { useState } from "react";
 import Button from "../ui/Button";
 import { useAuthStore } from "@/utils/authStore";
@@ -33,37 +33,37 @@ export default function LoginForm() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <View style={styles.form}>
-          <View style={styles.inputRow}> 
-            <Icon name="person-outline" color={theme.colors.textMuted} />
-            <TextInput
-              style={styles.input}
-              placeholder="Username"
-              placeholderTextColor={theme.colors.textMuted}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={username}
-              onChangeText={setUsername}
-            />
-          </View>
-          <View style={styles.inputRow}>
-            <Icon name="lock-closed-outline" color={theme.colors.textMuted} />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              placeholderTextColor={theme.colors.textMuted}
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-            />
-          </View>
-          {error ? <Text style={textstyles.error}>{error}</Text> : null}
-          <Button label="Login" onPress={handleLogin} style={{ alignSelf: "stretch" }} />
-        </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+    <View style={styles.form}>
+      <View style={styles.inputRow}>
+        <Icon name="person-outline" color={theme.colors.textMuted} />
+        <TextInput
+          style={styles.input}
+          placeholder="Username"
+          placeholderTextColor={theme.colors.textMuted}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={username}
+          onChangeText={setUsername}
+        />
+      </View>
+      <View style={styles.inputRow}>
+        <Icon name="lock-closed-outline" color={theme.colors.textMuted} />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor={theme.colors.textMuted}
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+      </View>
+      {error ? <Text style={textstyles.error}>{error}</Text> : null}
+      <Button
+        label="Login"
+        onPress={handleLogin}
+        style={{ alignSelf: "stretch" }}
+      />
+    </View>
   );
 }
 

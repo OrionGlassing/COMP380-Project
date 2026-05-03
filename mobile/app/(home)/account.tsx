@@ -5,7 +5,7 @@ import { useAuthStore } from "@/utils/authStore";
 import { theme } from "@/src/constants/theme";
 import Button from "@/src/components/ui/Button";
 import Arrow from "@/src/components/ui/Arrow";
-import Logo from "@/src/components/ui/Logo";
+import PageHeader from "@/src/components/ui/PageHeader";
 
 export default function Account() {
   const logOut = useAuthStore((state) => state.logOut);
@@ -27,7 +27,7 @@ export default function Account() {
         style={{ paddingTop: 20 }}
       />
 
-      <Logo style={{ alignSelf: "stretch" }} />
+      <PageHeader logoText={"CoKitchen"} backButtonEnabled={true} profileButtonEnabled={false}/>
 
       <Text style={[textstyles.header]}>Manage your account</Text>
 

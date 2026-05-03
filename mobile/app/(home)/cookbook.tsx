@@ -2,16 +2,16 @@ import { router } from "expo-router";
 import { Text, View } from "react-native";
 import Arrow from "@/src/components/ui/Arrow";
 import { theme } from "@/src/constants/theme";
-import Logo from "@/src/components/ui/Logo";
 import Divider from "@/src/components/ui/Divider";
 import textstyles from "@/src/constants/textstyles";
+import PageHeader from "@/src/components/ui/PageHeader";
 
 export default function cookbook() {
   return (
     <View style={theme.container.page}>
       <View style={[theme.container.component, { paddingTop: 40 }]}>
         <Arrow type="arrow-back" onPress={() => router.back()} />
-        <Logo style={{ flex: 1 }} />
+        <PageHeader logoText={"CoKitchen"} backButtonEnabled={true} profileButtonEnabled={true}/>
       </View>
       <Text style={textstyles.header}>Manage CookBook</Text>
       <Divider>My Collection</Divider>

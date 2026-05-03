@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, ScrollView, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, Platform } from "react-native";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import HorizontalMenu from "../ui/HorizontalMenu";
 import Icon from "../ui/Icon";
 import { useState } from "react";
@@ -14,76 +14,76 @@ export default function UserProfileForm() {
   const handleSave = () => {};
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ScrollView style={styles.scroll}>
-          <Divider>DIET & RESTRICTIONS</Divider>
-          <Text style={textstyles.body}>Select your diet:</Text>
-          <HorizontalMenu />
-          <Text style={textstyles.body}>Food allergies?</Text>
-          <View style={styles.row}>
-            <Pressable
-              style={[styles.btn, allergyNone && styles.btnActive]}
-              onPress={() => {
-                setAllergyNone(true);
-                setAdd(false);
-              }}
-            >
-              <Text style={[textstyles.body, allergyNone && styles.textActive]}>
-                None
-              </Text>
-            </Pressable>
-            <Pressable
-              style={[styles.btn, add && styles.btnActive]}
-              onPress={() => {
-                setAdd(!add);
-                setAllergyNone(false);
-              }}
-            >
-              <Icon name="add-outline" />
-              <Text style={[textstyles.body, add && styles.textActive]}>Add</Text>
-            </Pressable>
-          </View>
-          {add && (
-            <TextInput
-              style={styles.input}
-              placeholder="Specify your allergies..."
-              placeholderTextColor={theme.colors.textMuted}
-            />
-          )}
-          <Divider>Food Preferences</Divider>
-          <Text style={textstyles.body}>Ingredients you love:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Specify ingredients..."
-            placeholderTextColor={theme.colors.textMuted}
-          />
-          <Text style={textstyles.body}>Ingredients you dislike:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Specify ingredients..."
-            placeholderTextColor={theme.colors.textMuted}
-          />
-          <Text style={textstyles.body}>Preferred Spice Level</Text>
-          {/* options work in progress */}
-          <Divider>Cooking</Divider>
-          <Text style={textstyles.body}>Experience Level:</Text>
-          <Text style={textstyles.body}>Select available kitchen tools:</Text>
-          <View style={styles.buttons}>
-            <Button label="Exit" onPress={() => {}} style={{ flex: 1 }} />
-            <Button
-              label="Save and Exit"
-              onPress={handleSave}
-              style={{ flex: 1 }}
-            />
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+    <View style={styles.container}>
+      <Divider>DIET & RESTRICTIONS</Divider>
+      <Text style={textstyles.body}>Select your diet:</Text>
+      <HorizontalMenu />
+      <Text style={textstyles.body}>Food allergies?</Text>
+      <View style={styles.row}>
+        <Pressable
+          style={[styles.btn, allergyNone && styles.btnActive]}
+          onPress={() => {
+            setAllergyNone(true);
+            setAdd(false);
+          }}
+        >
+          <Text style={[textstyles.body, allergyNone && styles.textActive]}>
+            None
+          </Text>
+        </Pressable>
+        <Pressable
+          style={[styles.btn, add && styles.btnActive]}
+          onPress={() => {
+            setAdd(!add);
+            setAllergyNone(false);
+          }}
+        >
+          <Icon name="add-outline" />
+          <Text style={[textstyles.body, add && styles.textActive]}>Add</Text>
+        </Pressable>
+      </View>
+      {add && (
+        <TextInput
+          style={styles.input}
+          placeholder="Specify your allergies..."
+          placeholderTextColor={theme.colors.textMuted}
+        />
+      )}
+      <Divider>Food Preferences</Divider>
+      <Text style={textstyles.body}>Ingredients you love:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Specify ingredients..."
+        placeholderTextColor={theme.colors.textMuted}
+      />
+      <Text style={textstyles.body}>Ingredients you dislike:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Specify ingredients..."
+        placeholderTextColor={theme.colors.textMuted}
+      />
+      <Text style={textstyles.body}>Preferred Spice Level</Text>
+      {/* options work in progress */}
+      <Divider>Cooking</Divider>
+      <Text style={textstyles.body}>Experience Level:</Text>
+      <Text style={textstyles.body}>Select available kitchen tools:</Text>
+      <View style={styles.buttons}>
+        <Button label="Exit" onPress={() => {}} style={{ flex: 1 }} />
+        <Button
+          label="Save and Exit"
+          onPress={handleSave}
+          style={{ flex: 1 }}
+        />
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: theme.spacing.md,
+  },
   scroll: {
     flex: 1,
     padding: theme.spacing.md,
