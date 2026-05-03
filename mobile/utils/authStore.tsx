@@ -6,16 +6,16 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
 
 interface UserState {
-    isLoggedIn: boolean;
-    hasCompletedTutorial: boolean;
-    userID: string | null;
-    token: string | null;
-    hydrated: boolean;
+    hydrated: boolean;                  //Frontend only (prevents that app from briefly routing to the wrong page)
+    isLoggedIn: boolean;                //Frontend only (manages routing to app or login pages)
+    hasCompletedTutorial: boolean;      //Frontend only (manages routing to app or tutorial flow)
+    userID: string | null;              //Users account ID to locate them in the database (backend)
+    token: string | null;               //Ticket for backend/database requests (backend)
+    setHydrated: (value: boolean) => void;
     logIn: (username: string, password: string) => Promise<void>;
     createNewAccount: (username: string, email: string, password: string) => Promise<void>;
     logOut: () => void;
     completeTutorial: () => void;
-    setHydrated: (value: boolean) => void;
     restoreSession: () => void;
 }
 

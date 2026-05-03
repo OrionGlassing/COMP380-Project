@@ -5,6 +5,7 @@ import { useRecipeStore } from "@/utils/data-stores/recipeStore";
 import { useEffect, useState } from "react";
 import { router } from "expo-router";
 import { ActivityIndicator } from "react-native";
+import { Image } from "expo-image";
 
 /*  Notes:
 
@@ -30,21 +31,23 @@ const RecipeCard = ({ID, }: Props) => {
     }, [ID]);
 
     //The loading version of the card
-    if (true) {
+    if (!recipe) {
         return (
             <View style={styles.cardContainer}>
                 <View style={styles.imageContainer} >
-                    <ActivityIndicator size="large" color={'#6e6e6e'} />
+                    <ActivityIndicator size="large" color={theme.colors.text} />
                 </View>
-                <View style={styles.textContainer} >
-                    <View style={[styles.textPlaceHolder, {width: '100%'}]} />
-                    <View style={[styles.textPlaceHolder, {width: '100%'}]} />
-                    <View style={[styles.textPlaceHolder, {width: '69%'}]} />
-                    <View style={styles.textPlaceHolder} />
-                    <View style={[styles.textPlaceHolder, {width: '50%', backgroundColor: theme.colors.primary}]} />
-                    <View style={[styles.textPlaceHolder, {width: '50%', backgroundColor: theme.colors.primary}]} />
+                <View style={[{flex: 1, backgroundColor: '#111111',}]} >
+                    <View style={[styles.textContainer, {gap: 5, paddingTop: 8, }]} >
+                        <View style={[styles.textPlaceHolder, {width: '100%'}]} />
+                        <View style={[styles.textPlaceHolder, {width: '100%'}]} />
+                        <View style={[styles.textPlaceHolder, {width: '69%'}]} />
+                    </View>
+                    <View style={[styles.textContainer, {gap: 8, paddingBottom: 8}]} >
+                        <View style={[styles.textPlaceHolder, {width: '50%', backgroundColor: theme.colors.primary}]} />
+                        <View style={[styles.textPlaceHolder, {width: '50%', backgroundColor: theme.colors.primary}]} />
+                    </View>
                 </View>
-                
             </View>
         );
     }
@@ -59,24 +62,37 @@ const RecipeCard = ({ID, }: Props) => {
                 }}
                 style={[{flex: 1, }]}
             >
-                <View style={styles.cardContainer}>
                     <View style={styles.imageContainer} >
-                        {/*The recipe image will go here when that is set up*/}
-                        <Text style={styles.textTitle} >
-                            image
-                        </Text>
+                        <Image
+                        style={styles.image}
+                        source={recipe.imageURL}
+                        contentFit="cover"
+                        transition={300}
+                        />
+                        <View style={styles.imageShadow} />
                     </View>
-                    <View style={styles.textContainer} >
-                        <Text style={styles.textTitle} >
-                            {recipe.title}
-                        </Text>
-                        <View style={styles.textPlaceHolder} />
-                        <Text style={styles.textSub} >
-                            45 minutes
-                        </Text>
+
+                    <View style={styles.centerDivider} />
+
+                    <View style={[{flex: 1, backgroundColor: '#111111',}]} >
+
+                        <View style={[styles.textContainer, {paddingTop: 4, }]} >
+                            <Text style={styles.textTitle} numberOfLines={2} adjustsFontSizeToFit>
+                                {recipe.title}
+                            </Text>
+                        </View>
+                        
+                        <View style={[styles.textContainer, {flex: 1.5, paddingBottom: 4, }]} >
+                            <Text style={styles.textSub} >
+                                {recipe.cook_time}
+                            </Text>
+
+                            {/*MORE RECIPE DATA HERE */}
+
+                        </View>
+
                     </View>
-                    
-                </View>
+                    <View style={styles.cardHighlight} />
             </Pressable>
         </View>
     );
@@ -92,7 +108,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         overflow: 'hidden',
         outlineColor: 'white',
-        outlineWidth: 5,
+        outlineWidth: 4,
         flexDirection: 'column',
         boxShadow: [{
             offsetX: 1,
@@ -103,28 +119,51 @@ const styles = StyleSheet.create({
             //inset: true, 
         }],
     },
-    imageContainer: {
-        flex: 1,
-        backgroundColor: theme.colors.grey,
-        flexDirection: 'column',
-        justifyContent: "center",
-        alignItems: "center",
+    cardHighlight: {
+        ...StyleSheet.absoluteFillObject,
         boxShadow: [{
-            offsetX: 0,
-            offsetY: 4,
-            blurRadius: 10,
+            offsetX: -25,
+            offsetY: 10,
+            blurRadius: 40,
             spreadDistance: 0,
-            color: 'rgba(0,0,0,0.25)',
+            color: 'rgba(255, 255, 255, 0.25)',
             inset: true, 
         }],
     },
+    imageContainer: {
+        flex: 1,
+        //width: '100%',
+        //height: 125,
+        backgroundColor: 'darkgrey',
+        flexDirection: 'column',
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    image: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'darkgrey',
+    },
+    imageShadow: {
+      ...StyleSheet.absoluteFillObject,
+      boxShadow: [{
+          offsetX: 0,
+          offsetY: 0,
+          blurRadius: 8,
+          spreadDistance: 0,
+          color: 'rgba(0,0,0,0.75)',
+          inset: true,
+      }],
+    },
+    centerDivider: {
+        width: '100%',
+        height: 3,
+        backgroundColor: 'white',
+    },
     textContainer: {
         flex: 1,
-        backgroundColor: '#111111',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        padding: 8,
-        gap: 6,
+        paddingHorizontal: 8,
     },
     textPlaceHolder: {
         height: 10,
@@ -133,10 +172,9 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'left',
-
     },
     textSub: {
         color: theme.colors.primary,

@@ -1,94 +1,90 @@
 import Arrow from "@/src/components/ui/Arrow";
-import Logo from "@/src/components/ui/Logo";
 import SearchBar from "@/src/components/home/SearchBar";
-import { router } from "expo-router";
-import { Text, View, StyleSheet } from "react-native";
-import textStyles from "@/src/constants/text-styles";
 import Filter from "@/src/components/ui/Filter";
 import RecipeCard from "@/src/components/recipe-cards/recipeCard";
+import { router } from "expo-router";
+import { Text, View, ScrollView } from "react-native";
+import { theme } from "@/src/constants/theme";
+import textstyles from "@/src/constants/textstyles";
+import PageHeader from "@/src/components/ui/PageHeader";
 
 export default function Explore() {
+  //ui
+  //const insets = useSafeAreaInsets();
+
   return (
-    <View style={styles.container}>
-      <View style={styles.nav}>
-        <Arrow
-            type={"arrow-back"}
-            onPress={() => router.back()}
-          />
-        <Logo />
-      </View>
-      <View style={styles.searchRow}>
+    <ScrollView style={theme.container.scrollview}>
+      {/* Header */}
+      <PageHeader logoText={"CoKitchen"} backButtonEnabled={true} profileButtonEnabled={true}/>
+
+      {/* Search + Filter */}
+      <View style={theme.container.component}>
         <SearchBar />
         <Filter />
       </View>
-      <View style={styles.options}>
-        <View style={styles.optionsNav}>
-          <Text>New Picks: </Text>
+
+      {/* New Picks */}
+      <View style={{ gap: theme.spacing.sm, padding: theme.spacing.sm }}>
+        <View
+          style={[
+            theme.container.subcomponent,
+            { backgroundColor: theme.colors.component },
+            { borderRadius: theme.borderRadius.lg },
+          ]}
+        >
+          <Text style={[textstyles.subHeader, { color: "white" }]}>
+            New Picks
+          </Text>
           <Arrow
-            type={"arrow-forward"}
-            onPress={() => router.push("/(home)/NewPicks")}
+            type="arrow-forward"
+            onPress={() => router.push("/(home)/new-picks")}
+            style={{ margin: 0, padding: 0 }}
+          />{" "}
+        </View>
+        <RecipeCard ID="5" />
+      </View>
+
+      {/* Popular Right Now */}
+      <View style={{ gap: theme.spacing.sm, padding: theme.spacing.sm }}>
+        <View
+          style={[
+            theme.container.subcomponent,
+            { backgroundColor: theme.colors.component },
+            { borderRadius: theme.borderRadius.lg },
+          ]}
+        >
+          <Text style={[textstyles.subHeader, { color: "white" }]}>
+            Popular Right Now
+          </Text>
+          <Arrow
+            type="arrow-forward"
+            onPress={() => router.push("/(home)/popular-right-now")}
+            style={{ margin: 0, padding: 0 }}
           />
         </View>
-        <View>
-          <RecipeCard ID={'5'} />
-        </View>
+        <Text style={textstyles.body}>Display cards</Text>
       </View>
-      <View style={styles.options}>
-        <View style={styles.optionsNav}>
-          <Text>Popular Right Now: </Text>
+
+      {/* Your Favorites */}
+      <View style={{ gap: theme.spacing.sm, padding: theme.spacing.sm }}>
+        <View
+          style={[
+            theme.container.subcomponent,
+            { backgroundColor: theme.colors.component },
+            { borderRadius: theme.borderRadius.lg },
+          ]}
+        >
+          <Text style={[textstyles.subHeader, { color: "white" }]}>
+            Your Favorites
+          </Text>
           <Arrow
-            type={"arrow-forward"}
-            onPress={() => router.push("/(home)/PopularRightNow")}
+            type="arrow-forward"
+            onPress={() => router.push("/(home)/your-favorites")}
+            style={{ margin: 0, padding: 0 }}
           />
         </View>
-        <Text>Display cards</Text>
+        <Text style={textstyles.body}>Display cards</Text>
       </View>
-      <View style={styles.options}>
-        <View style={styles.optionsNav}>
-          <Text>Your Favorites: </Text>
-          <Arrow
-            type={"arrow-forward"}
-            onPress={() => router.push("/(home)/YourFavorites")}
-          />
-        </View>
-        <Text>Display cards</Text>
-      </View>
-    </View>
+    </ScrollView>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "stretch",
-    gap: 15,
-    padding: 15,
-    backgroundColor: "#F0EBD8",
-  },
-  nav: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 15,
-  },
-
-  options: {
-    gap: 20,
-  },
-
-  optionsNav: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    padding: 10,
-    borderRadius: 15,
-    backgroundColor: "#748CAB",
-  },
-
-  searchRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-});

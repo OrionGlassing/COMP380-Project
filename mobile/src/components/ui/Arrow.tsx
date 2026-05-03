@@ -1,21 +1,32 @@
+import { theme } from "@/src/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
-import { View, StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 
 type IoniconsName = React.ComponentProps<typeof Ionicons>["name"];
+
 interface Props {
   type: IoniconsName;
   onPress: () => void;
+  style?: object;
 }
-export default function Arrow({ type, onPress }: Props) {
+
+export default function Arrow({ type, onPress, style }: Props) {
   return (
-    <View>
-      <Ionicons name={type} style={styles.arrow} onPress={onPress}></Ionicons>
-    </View>
+    <Pressable onPress={onPress} style={styles.container}>
+      <Ionicons name={type} style={[styles.icon, style]} />
+    </Pressable>
   );
 }
+
 const styles = StyleSheet.create({
-  arrow: {
+  container: {
+    alignSelf: "flex-start",
+    padding: theme.spacing.sm,
+  },
+  icon: {
     fontSize: 35,
-    color: "white",
+    color: theme.colors.text,
   },
 });
+
+

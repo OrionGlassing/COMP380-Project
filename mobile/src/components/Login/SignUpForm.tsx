@@ -1,11 +1,11 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
-
 import { useState } from "react";
 import { useRouter } from "expo-router";
-
 import Button from "../ui/Button";
 import { useAuthStore } from "@/utils/authStore";
 import Icon from "../ui/Icon";
+import { theme } from "@/src/constants/theme";
+import textstyles from "@/src/constants/textstyles";
 
 export default function SignUpForm() {
   const [username, setUsername] = useState("");
@@ -18,136 +18,109 @@ export default function SignUpForm() {
   const router = useRouter();
 
   const handleSignUp = async () => {
-    if (!username.trim() || !email.trim() || !password.trim()  || !confirmPassword.trim()) {
-      setError("All field are required.");
+    if (
+      !username.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim()
+    ) {
+      setError("All fields are required.");
       return;
     }
-
     if (password !== confirmPassword) {
-      setError("Passwords dont Match");
+      setError("Passwords don't match.");
       setPassword("");
       setConfirmPassword("");
       return;
     }
-    
     try {
       await createNewAccount(username, email, password);
       router.replace("/(Login)/Login");
     } catch (error) {
-      //We may add a return type from the createNewAccount function
-      //So that we can tell the user what went wrong
-        //Ex: Username taken, email already exists, etc.
-      setError("Account creation failed. Confirm username and password.");
+      setError("Sign up failed. Please try again.");
+      return;
     }
-
     setError("");
   };
 
-  const inputProps = {
-    style: styles.inputText,
-    placeholderTextColor: "lightgrey",
-  } as const;
-
-  const inputContainerProps = {
-    style: styles.input,
-  } as const;
-
   return (
-    <View style={styles.formContainer}>
-      <View {...inputContainerProps}>
-        <Icon name="person-outline" />
+    <View style={styles.form}>
+      <View style={styles.inputRow}>
+        <Icon name="person-outline" color={theme.colors.textMuted} />
         <TextInput
-          {...inputProps}
-          placeholder="New Username"
-          keyboardType="default"
+          style={styles.input}
+          placeholder="Username"
+          placeholderTextColor={theme.colors.textMuted}
           autoCapitalize="none"
           value={username}
           onChangeText={setUsername}
         />
       </View>
-      <View {...inputContainerProps}>
-        <Icon name="mail-outline" />
-
+      <View style={styles.inputRow}>
+        <Icon name="mail-outline" color={theme.colors.textMuted} />
         <TextInput
-          {...inputProps}
+          style={styles.input}
           placeholder="Email"
+          placeholderTextColor={theme.colors.textMuted}
           keyboardType="email-address"
           autoCapitalize="none"
           value={email}
           onChangeText={setEmail}
         />
       </View>
-      <View {...inputContainerProps}>
-        <Icon name="lock-open-outline" />
+      <View style={styles.inputRow}>
+        <Icon name="lock-open-outline" color={theme.colors.textMuted} />
         <TextInput
-          {...inputProps}
+          style={styles.input}
           placeholder="New Password"
-          secureTextEntry={true}
+          placeholderTextColor={theme.colors.textMuted}
+          secureTextEntry
           value={password}
           onChangeText={setPassword}
         />
       </View>
-      <View {...inputContainerProps}>
-        <Icon name="lock-closed-outline" />
+      <View style={styles.inputRow}>
+        <Icon name="lock-closed-outline" color={theme.colors.textMuted} />
         <TextInput
-          {...inputProps}
+          style={styles.input}
           placeholder="Confirm Password"
-          secureTextEntry={true}
+          placeholderTextColor={theme.colors.textMuted}
+          secureTextEntry
           value={confirmPassword}
           onChangeText={setConfirmPassword}
         />
       </View>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-      <Button label={"Create Account"} onPress={handleSignUp} />
+      {error ? <Text style={textstyles.error}>{error}</Text> : null}
+      <Button
+        label="Create Account"
+        onPress={handleSignUp}
+        style={{ alignSelf: "stretch" }}
+      />
+      <Button
+        label="Cancel"
+        onPress={() => router.back()}
+        style={{ alignSelf: "stretch" }}
+      />
     </View>
   );
 }
+
 const styles = StyleSheet.create({
-  formContainer: {
-    width: "100%",
-    gap: 10,
-    padding: 30,
-    borderRadius: 15,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#3E5C76",
+  form: {
+    padding: theme.spacing.md,
+    gap: theme.spacing.md,
   },
-
-  input: {
+  inputRow: {
     flexDirection: "row",
-    backgroundColor: "#1D2D44",
-    borderRadius: 15,
-    padding: 10,
-    fontSize: 15,
-    width: "100%",
-    gap: 15,
-  },
-
-  inputText: {
-    flex: 1,
-    color: "white",
-    fontSize: 15,
-  },
-
-  btn: {
-    backgroundColor: "#F2F4F3",
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    padding: 10,
     alignItems: "center",
-    width: "50%",
+    backgroundColor: theme.colors.lightinput,
+    borderRadius: theme.borderRadius.sm,
+    padding: theme.spacing.sm,
+    gap: theme.spacing.sm,
   },
-
-  btnText: {
+  input: {
+    flex: 1,
     fontSize: 15,
-    fontWeight: "bold",
-  },
-
-  error: {
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "white",
+    color: theme.colors.text,
   },
 });

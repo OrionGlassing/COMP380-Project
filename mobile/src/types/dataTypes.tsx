@@ -5,8 +5,10 @@ export interface CheckListEntry {
 }
 
 export interface Recipe {
-  id: string;
+  recipe_id: string;
   title: string;
+  imageURL: string;
   ingredients: string[];
-  steps: string;
+  directions: string[];
+  cook_time: string;
 }

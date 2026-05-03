@@ -1,60 +1,23 @@
 import SignUpForm from "@/src/components/Login/SignUpForm";
-import Logo from "@/src/components/ui/Logo";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import Arrow from "@/src/components/ui/Arrow";
-import { router } from "expo-router";
+import { View, Text, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, Platform } from "react-native";
+import { theme } from "@/src/constants/theme";
+import textstyles from "@/src/constants/textstyles";
+import PageHeader from "@/src/components/ui/PageHeader";
 
 export default function SignUp() {
   return (
-    <View style={styles.pageContainer}>
-      <View style={styles.container}>
-        <View style={styles.arrow}>
-          <Arrow
-            type={"arrow-back"}
-            onPress={() => router.dismissTo("/(Login)/Login")}
-          />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        behavior='padding'
+        style={{flex:1}}
+      >
+        <View style={theme.container.page}>
+          <PageHeader logoText={"CoKitchen"} backButtonEnabled={false} profileButtonEnabled={false}/>
+          <Text style={textstyles.header}>New Account</Text>
+          <SignUpForm />
         </View>
-        <Logo />
-        <Text style={styles.title}>New Account</Text>
-        <SignUpForm />
-      </View>
-    </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
-const styles = StyleSheet.create({
-  arrow: {
-    alignSelf: "flex-start",
-  },
-
-  pageContainer: {
-    flex: 1,
-    backgroundColor: "#F0EBD8",
-    padding: 20,
-    justifyContent: "center",
-  },
-  container: {
-    alignItems: "center",
-    gap: 10,
-    padding: 15,
-
-    backgroundColor: "#748CAB",
-
-    borderRadius: 15,
-    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
-    maxWidth: 400,
-    width: "100%",
-    alignSelf: "center",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-  },
-
-  text: {
-    fontSize: 15,
-    textAlign: "center",
-    color: "white",
-  },
-});

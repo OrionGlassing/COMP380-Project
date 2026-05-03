@@ -1,38 +1,38 @@
 import { View, StyleSheet, TextInput } from "react-native";
 import Icon from "../ui/Icon";
 import { useState } from "react";
+import { theme } from "@/src/constants/theme";
 
 export default function SearchBar() {
   const [search, setSearch] = useState("");
-
   return (
-    <View style={styles.searchContainer}>
+    <View style={styles.container}>
       <TextInput
-        style={styles.searchInput}
+        style={styles.input}
         placeholder="Search for a recipe..."
-        placeholderTextColor="black"
+        placeholderTextColor={theme.colors.textMuted}
         value={search}
         onChangeText={setSearch}
         returnKeyType="search"
       />
-      <Icon name="search-outline" />
+      <Icon name="search-outline" color={theme.colors.textMuted} />
     </View>
   );
 }
+
 const styles = StyleSheet.create({
-  searchContainer: {
+  container: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
-    borderRadius: 15,
-    padding: 10,
-    gap: 10,
+    backgroundColor: theme.colors.lightinput,
+    borderRadius: theme.borderRadius.md,
+    padding: theme.spacing.sm,
+    gap: theme.spacing.sm,
     flex: 1,
   },
-
-  searchInput: {
+  input: {
     flex: 1,
     fontSize: 15,
-    color: "black",
+    color: theme.colors.text,
   },
 });

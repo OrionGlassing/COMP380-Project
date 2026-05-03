@@ -1,12 +1,13 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import textStyles from "@/src/constants/text-styles";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { Image } from "expo-image";
+import textStyles from "@/src/constants/textstyles";
 import { useRecipeStore } from "@/utils/data-stores/recipeStore";
 import CheckableItem from "@/src/components/checklist/checkableItem";
-import SimpleButton from "@/src/components/simpleButton";
 import { useEffect, useState } from "react";
-import Arrow from "@/src/components/ui/Arrow";
+import PageHeader from "@/src/components/ui/PageHeader";
+import { theme } from "@/src/constants/theme";
 
 //
 // Notes:
@@ -46,36 +47,59 @@ export default function ID() {
         fetchRecipeById(id);
     }, [id]);
 
+    //ui
+    const insets = useSafeAreaInsets();
+
     //Recipe is undefined when it is not loaded
     if (!recipe) {
         //Here we can render the loading screen version of the page
         return (
-            <SafeAreaView style={styles.screen}>
-            <ScrollView contentContainerStyle={styles.contentContainer}>
+            <View style={styles.screen}>
+            <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
+
+                <PageHeader 
+                logoText="CoKitchen"
+                backButtonEnabled={true}
+                profileButtonEnabled={true}
+                />
+
+            <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
 
             
-
+            </View>
             </ScrollView>
-            </SafeAreaView>
+            </View>
         );
     }
 
     //Now the recipe is loaded, we can render the normal version of the page
-
     return (
-        <SafeAreaView style={styles.screen}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View style={styles.screen}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
 
-        <Arrow
-            type={"arrow-back"}
-            onPress={() => router.back()}
-        />
+            <PageHeader 
+            logoText="CoKitchen"
+            backButtonEnabled={true}
+            profileButtonEnabled={true}
+            />
 
-        <Text style={textStyles.Header}>
+        <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
+
+        <Text style={[textStyles.header, {}]}>
             {recipe.title}
         </Text>
 
-        <Text style={[textStyles.Label, {marginBottom: -10}]}>
+        <View style={styles.imageContainer} >
+          <Image
+            style={styles.image}
+            source={recipe.imageURL}
+            contentFit="cover"
+            transition={500}
+          />
+          <View style={styles.imageShadow} />
+        </View>
+
+        <Text style={[textStyles.subHeader, {marginBottom: -10, alignSelf: 'flex-start',}]}>
             Ingredients:
         </Text>
         <View style={styles.ingredientsContainer}>
@@ -86,53 +110,77 @@ export default function ID() {
                     shouldCrossOut={true} 
                     label={ingredientString}
                     isChecked={!!checkedItems[index]} 
+                    buttonColor={theme.colors.text}
                     callBack={() => toggleIngredient(index)}
                 />
             ))}
         </View>
 
-        <Text style={[textStyles.Label, {marginBottom: -10}]}>
-            Steps:
+        <Text style={[textStyles.subHeader, {marginBottom: -10, alignSelf: 'flex-start',}]}>
+            Directions:
         </Text>
-        <Text style={textStyles.longForm}>
-            {recipe.steps}
-        </Text>
+        <View style={styles.directionsContainer} >
+        {recipe.directions.map((step, index) => (
+            <Text 
+                key={index} 
+                style={[textStyles.body, {alignSelf: 'flex-start', }]}
+            >
+                {/*{index + 1}.*/}{step}
+            </Text>
+        ))}
+        </View>
 
-        <SimpleButton
-            label="Customize Recipe"
-            onPress={() => {
-            console.log("This does nothing yet.")
-            }}
-        />
-
-        <SimpleButton
-            label="Add to Cookbook"
-            onPress={() => {
-            console.log("This does nothing yet.")
-            }}
-        />
-
+        </View>
         </ScrollView>
-        </SafeAreaView>
+        </View>
   );
 }
 
 const styles = StyleSheet.create({
     screen: {
       flex: 1,
-      flexDirection: "column",
-      backgroundColor: "#1f1f1f",
+      backgroundColor: "#F0EBD8",
     },
     contentContainer: {
+      flex: 1,
       flexDirection: "column",
       gap: 20,
-      justifyContent: "center",
+      //justifyContent: "center",
       alignItems: "center",
-      paddingHorizontal: '8%'
+      paddingHorizontal: '10%',
+      paddingTop: 20,
+    },
+    imageContainer: {
+      width: '100%',
+      height: 200,
+      borderRadius: 12,
+      overflow: 'hidden',
+    },
+    image: {
+      width: '100%',
+      height: '100%',
+      borderRadius: 12,
+      backgroundColor: 'darkgrey',
+    },
+    imageShadow: {
+      ...StyleSheet.absoluteFillObject,
+      borderRadius: 12,
+      boxShadow: [{
+          offsetX: 0,
+          offsetY: 0,
+          blurRadius: 15,
+          spreadDistance: 0,
+          color: 'rgba(0,0,0,0.9)',
+          inset: true,
+      }],
     },
     ingredientsContainer: {
         alignSelf: 'stretch',
         gap: 0,
+    },
+    directionsContainer: {
+      alignSelf: 'stretch',
+      gap: 10,
     },
     
 });
