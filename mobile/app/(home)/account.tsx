@@ -21,13 +21,8 @@ export default function Account() {
         },
       ]}
     >
-      <Arrow
-        type="arrow-back"
-        onPress={() => router.back()}
-        style={{ paddingTop: 20 }}
-      />
 
-      <PageHeader logoText={"CoKitchen"} backButtonEnabled={true} profileButtonEnabled={false}/>
+      <PageHeader logoText={"Account"} backButtonEnabled={true} profileButtonEnabled={false}/>
 
       <Text style={[textstyles.header]}>Manage your account</Text>
 

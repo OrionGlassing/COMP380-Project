@@ -19,7 +19,7 @@ export default function Home() {
       ]}
       bounces={false}
     >
-      <PageHeader logoText={"CoKitchen"} backButtonEnabled={true} profileButtonEnabled={true}/>
+      <PageHeader logoText={"CoKitchen"} backButtonEnabled={false} profileButtonEnabled={true}/>
 
       {/* Explore Card */}
       <View

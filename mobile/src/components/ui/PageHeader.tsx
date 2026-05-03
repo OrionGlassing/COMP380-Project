@@ -30,8 +30,12 @@ const PageHeader = ({ logoText, backButtonEnabled, profileButtonEnabled }: Props
             </View>
             <View style={styles.logoContainer}>
                 <View style={styles.logoOutline}>
-                    <CoKitchenLogo width={60} height={60} />
-                    <Text style={styles.title}>{logoText}</Text>
+                    <View style={styles.logoGroup}>
+                        <View style={styles.logoImageWrapper}>
+                            <CoKitchenLogo width={75} height={75} />
+                        </View>
+                        <Text style={styles.title}>{logoText}</Text>
+                    </View>
                 </View>
             </View>
             <View style={styles.profileContainer}>
@@ -76,11 +80,8 @@ const styles = StyleSheet.create({
         height: '70%',
         backgroundColor: theme.colors.primary,
         borderRadius: 12,
-        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: 10,
-        padding: 10,
         overflow: 'hidden',
         /*
         boxShadow: [{
@@ -92,7 +93,18 @@ const styles = StyleSheet.create({
             //inset: true, 
         }],
         */
-        
+    },
+    logoGroup: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    logoImageWrapper: {
+        width: 30,   
+        height: 50,
+        overflow: 'hidden',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     profileContainer: {
         flex: 1,
@@ -100,10 +112,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        fontSize: 32,
+        fontSize: 28,
         fontWeight: 'bold',
         color: theme.colors.darkinput,
-        textAlign: 'center',
+        textAlign: 'left',
         letterSpacing: 0.3,
     },
 });

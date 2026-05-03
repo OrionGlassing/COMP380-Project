@@ -7,7 +7,6 @@ import CustomTextInput from "@/src/components/textbox/TextBox";
 import RecipeTypeCheckList from "@/src/components/checklist/recipeTypeCheckList";
 import CuisineTypeCheckList from "@/src/components/checklist/cuisineTypeCheckList";
 import SeasonTypeCheckList from "@/src/components/checklist/seasonTypeCheckList";
-import Arrow from "@/src/components/ui/Arrow";
 import textstyles from "@/src/constants/textstyles";
 import { theme } from "@/src/constants/theme";
 import Button from "@/src/components/ui/Button";
@@ -48,20 +47,19 @@ export default function CreateNewRecipe() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
-        <ScrollView
-          style={{ flex: 1 }}
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{
-            padding: theme.spacing.md,
-            gap: theme.spacing.md,
-          }}
-        >
-          <PageHeader logoText={"CoKitchen"} backButtonEnabled={true} profileButtonEnabled={true}/>
+      <KeyboardAvoidingView behavior='padding'>
+        <ScrollView contentContainerStyle={theme.container.content} keyboardShouldPersistTaps="handled">
+
+          <PageHeader logoText={"New Recipe"} backButtonEnabled={true} profileButtonEnabled={true}/>
+
           <Text style={textstyles.header}>General Options</Text>
+
           <RecipeTypeCheckList />
+
           <CuisineTypeCheckList />
+
           <SeasonTypeCheckList />
+
           <LabeledSlider
             enabled={true}
             label="Spice Level"
@@ -71,6 +69,7 @@ export default function CreateNewRecipe() {
               setSpiceLevel(selectedValue, index);
             }}
           />
+
           <LabeledSlider
             enabled={true}
             label="Sweetness Level"
@@ -80,6 +79,7 @@ export default function CreateNewRecipe() {
               setSweetnessLevel(selectedValue, index);
             }}
           />
+
           <LabeledSlider
             enabled={true}
             label="Recipe Complexity"
@@ -89,6 +89,7 @@ export default function CreateNewRecipe() {
               setRecipeComplexity(selectedValue, index);
             }}
           />
+
           <LabeledSlider
             enabled={true}
             label="Time Limit"
@@ -98,7 +99,9 @@ export default function CreateNewRecipe() {
               setRecipeTime(selectedValue, index);
             }}
           />
+
           <Text style={textstyles.header}>Your Hankering</Text>
+
           <Text style={[textstyles.body, { marginBottom: -10 }]}>
             Describe what you're in the mood for:
           </Text>
@@ -110,7 +113,10 @@ export default function CreateNewRecipe() {
             variant="multiline-fixed"
             placeholder="I'm hungry for..."
             keyboardType="default"
+            returnKeyType="done"
+            submitBehavior="blurAndSubmit"
           />
+
           <Button
             label="Let's Cook!"
             onPress={() => {

@@ -8,5 +8,5 @@ import { Redirect } from "expo-router";
 export default function Index() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
-  return <Redirect href={isLoggedIn ? "/Home" : "/Welcome"}/>;
+  return <Redirect href={isLoggedIn ? "/home" : "/Login"}/>;
 }

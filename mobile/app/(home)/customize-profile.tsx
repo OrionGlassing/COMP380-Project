@@ -71,11 +71,15 @@ export default function CustomizeProfile() {
         { backgroundColor: theme.colors.background },
       ]}
     >
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+      <KeyboardAvoidingView behavior='padding'>
         <ScrollView contentContainerStyle={theme.container.content} keyboardShouldPersistTaps="handled">
-          <PageHeader logoText={"CoKitchen"} backButtonEnabled={true} profileButtonEnabled={true}/>
+
+          <PageHeader logoText={"Profile"} backButtonEnabled={false} profileButtonEnabled={false}/>
+          
           <Text style={textstyles.header}>Diet & Restrictions</Text>
+
           <DietCheckList />
+
           <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text }]}>
             Describe your diet:
           </Text>
@@ -87,7 +91,10 @@ export default function CustomizeProfile() {
             variant="multiline-fixed"
             placeholder="My diet consists of..."
             keyboardType="default"
+            returnKeyType="done"
+            submitBehavior="blurAndSubmit"
           />
+
           <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text  }]}>
             List your food allergies:
           </Text>
@@ -99,8 +106,12 @@ export default function CustomizeProfile() {
             variant="multiline-fixed"
             placeholder="Ex: Nuts, Shellfish, Milk..."
             keyboardType="default"
+            returnKeyType="done"
+            submitBehavior="blurAndSubmit"
           />
+
           <Text style={textstyles.header}>Food Preferences</Text>
+
           <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text }]}>
             What are some ingredients you love?
           </Text>
@@ -112,7 +123,10 @@ export default function CustomizeProfile() {
             variant="multiline-fixed"
             placeholder="I love eating..."
             keyboardType="default"
+            returnKeyType="done"
+            submitBehavior="blurAndSubmit"
           />
+
           <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text}]}>
             What are some ingredients you hate?
           </Text>
@@ -124,7 +138,10 @@ export default function CustomizeProfile() {
             variant="multiline-fixed"
             placeholder="I'm not a fan of..."
             keyboardType="default"
+            returnKeyType="done"
+            submitBehavior="blurAndSubmit"
           />
+
           <Text style={textstyles.header}>Cooking</Text>
           <LabeledSlider
             enabled={true}
@@ -135,13 +152,16 @@ export default function CustomizeProfile() {
               setCookingExperience(selectedValue, index);
             }}
           />
+
           <KitchenToolsCheckList />
+
           <Button
             label="Save and Exit"
             onPress={() => {
               router.back();
             }}
           />
+
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

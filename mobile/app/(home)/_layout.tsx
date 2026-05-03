@@ -10,9 +10,6 @@ export default function ProtectedLayout() {
       <Stack.Screen name="user-cookbook" />
       <Stack.Screen name="create-new-recipe" />
       <Stack.Screen name="loading-recipe" />
-      <Stack.Screen name="new-picks" />
-      <Stack.Screen name="popular-right-now" />
-      <Stack.Screen name="your-favorites" />
       <Stack.Screen name="recipe/[id]" />
     </Stack>
   );

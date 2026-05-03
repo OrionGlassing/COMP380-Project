@@ -8,7 +8,10 @@ import PageHeader from "@/src/components/ui/PageHeader";
 export default function SignUp() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingView
+        behavior='padding'
+        style={{flex:1}}
+      >
         <View style={theme.container.page}>
           <PageHeader logoText={"CoKitchen"} backButtonEnabled={false} profileButtonEnabled={false}/>
           <Text style={textstyles.header}>New Account</Text>

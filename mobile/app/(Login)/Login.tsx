@@ -11,7 +11,10 @@ export default function Login() {
   const router = useRouter();
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingView
+        behavior='padding'
+        style={{flex:1}}
+      >
         <View style={theme.container.page}>
           <PageHeader logoText={"CoKitchen"} backButtonEnabled={false} profileButtonEnabled={false}/>
           <View style={theme.container.component}>
