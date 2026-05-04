@@ -4,6 +4,9 @@ import { Platform } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
+import { useRecipeStore } from "./data-stores/recipeStore";
+import { useCreateNewRecipeStore } from "./data-stores/createNewRecipeStore";
+import { useCustomizeProfileStore } from "./data-stores/customizeProfileStore";
 
 interface UserState {
     hydrated: boolean;                  //Frontend only (prevents that app from briefly routing to the wrong page)
@@ -54,6 +57,7 @@ export const useAuthStore = create<UserState>()(
       setHydrated: (value) => set({ hydrated: value }),
 
       logIn: async (email, password) => {
+        /*
         const credential = await signInWithEmailAndPassword(auth, email, password);
         const idToken = await credential.user.getIdToken();
 
@@ -71,13 +75,17 @@ export const useAuthStore = create<UserState>()(
           throw new Error(data.error || "Login failed");
         }
         console.log(data.error);
-    
+        
         set({
           isLoggedIn: true,
           hasCompletedTutorial: true,
           userID: data.user.uid,
           token: idToken,
         });
+        */
+       set({
+        isLoggedIn: true,
+       });
       },
 
       createNewAccount: async (username, email, password) => {
@@ -110,6 +118,15 @@ export const useAuthStore = create<UserState>()(
       },
 
       logOut: () => {
+        //Reset the other stores
+        useRecipeStore.getState().reset();
+        useRecipeStore.persist.clearStorage();
+
+        useCreateNewRecipeStore.getState().reset();
+        
+        useCustomizeProfileStore.getState().reset();
+        useCustomizeProfileStore.persist.clearStorage();
+
         set({
           isLoggedIn: false,
           userID: null,

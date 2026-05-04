@@ -2,44 +2,52 @@ import { create } from "zustand" //in memory state management
 import { persist, createJSONStorage } from "zustand/middleware" //save state to device storage
 import { CheckListEntry } from "@/src/types/dataTypes";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuthStore } from "../authStore";
 
 //
 // Notes
 //
 /*
-This zustand store contains all of the user profile settings page data.
+The previous approach was poorly planned on my behalf. It involved having the database control
+which options were available for checklists, and knowing the UI state of the checklists & sliders.
+For some reason it made sense at the time, but this is obviously not the best appraoch.
 
-This data is owned by the database, so when the user opens the customize profile page we 
-will want to set this data with a fetch request. 
+The new approach gives the frontend control over the options for the fields in the users profile,
+while the database only knows the actual string value of each field.
 
-Some of the data fields are set up here in the front end, and some are dynamically retireved from the backend:
+Because of this, the checkbox and slider UI components now need methods of initializing
+to the correct state when the users profile data is retreived from the database.
 
-    - Things like the text boxes have their data mirrored between frontend and backend.
-        - They both know what the data managed by that component looks like (just a string).
-
-    - The checkbox components do NOT know what fields they will manage.
-
-        - These work by recieving an array from the backend, and then dynamically 
-        displaying however many fields were recieved in that array.
-        (They both need to share the same type for the element in the array (CheckListEntry))
-
-        - This makes it really easy to manage larger data fields, because we do not 
-        need to sync the frontend and database, the database tells the frontend everything.
-
-        - When a change is made, for example removing an option or adding a new one, 
-        one change to the database keeps the whole app synced.
-
-The data is stored on the device using the persist middlware so that the app 
-is still capable of working offline.
-    - Data may get out of sync, but the database will be regularly sending the frontend
-    the true values, so this isn't a big deal for now.
 */
 
-interface UserProfileDatabaseResponse {
-    difficulty: number;
-    diets: CheckListEntry[];
-    tools: CheckListEntry[];
-}
+//The options that the checklists and sliders have for the customize-profile page
+const ProfileDataOptions = {
+    diets:  [
+        { id: 'vegan', label: 'Vegan', isChecked: false },
+        { id: 'vegetarian', label: 'Vegetarian', isChecked: false },
+        { id: 'keto', label: 'Keto', isChecked: false },
+        { id: 'paleo', label: 'Paleo', isChecked: false },
+        { id: 'gluten_free', label: 'Gluten-Free', isChecked: false },
+        { id: 'dairy_free', label: 'Dairy-Free', isChecked: false },
+    ] as CheckListEntry[],
+    tools: [
+        { id: 'oven', label: 'Oven', isChecked: false },
+        { id: 'microwave', label: 'Microwave', isChecked: false },
+        { id: 'gas_stovetop', label: 'Gas Stovetop', isChecked: false },
+        { id: 'induction_stovetop', label: 'Induction Stovetop', isChecked: false },
+        { id: 'air_fryer', label: 'Air Fryer', isChecked: false },
+        { id: 'slow_cooker', label: 'Slow Cooker', isChecked: false },
+        { id: 'cast_iron', label: 'Cast Iron Cookware', isChecked: false },
+        { id: 'stainless_steel', label: 'Stainless Steel Cookware', isChecked: false },
+        { id: 'nonstick', label: 'Nonstick Cookware', isChecked: false },
+        { id: 'blender', label: 'Blender', isChecked: false },
+        { id: 'food_processor', label: 'Food Processor', isChecked: false },
+        { id: 'stand_mixer', label: 'Stand Mixer', isChecked: false },
+        { id: 'mandoline', label: 'Mandoline', isChecked: false },
+        { id: 'food_scale', label: 'Food Scale', isChecked: false },
+    ] as CheckListEntry[],
+    cookingExperienceLevels: ["Noob", "Beginner", "Average", "Experienced", "Pro"],
+};
 
 interface CustomizeProfileState {
     //Diet Checklist:
@@ -74,15 +82,20 @@ interface CustomizeProfileState {
     //Database Integration:
     fetchUserProfile: () => Promise<void>;
     submitUserProfile: () => Promise<void>;
+    reset: () => void;
   
 };
 
 export const useCustomizeProfileStore = create(     //zustand creates a store
     persist<CustomizeProfileState>(                 //persist saves to device storage
-        (set) => ({                                 //set is zustand's internal update function
+        (set, get, store) => ({                     //set is zustand's internal update function
             
+            //
+            //Initialize fields and define setter functions
+            //
+
             //Diet Checklist
-            dietOptions: [],
+            dietOptions: ProfileDataOptions.diets,
             toggleDiet: (id) => set((state) => ({
                 dietOptions: state.dietOptions.map((diet) =>
                     diet.id === id
@@ -116,15 +129,15 @@ export const useCustomizeProfileStore = create(     //zustand creates a store
             }),
 
             //Experience Level Slider
-            cookingExperienceValue: '',
-            cookingExperienceIndex: 0,
+            cookingExperienceValue: 'Average',
+            cookingExperienceIndex: 2,
             setCookingExperience: (value, index) => set({
                 cookingExperienceValue: value,
                 cookingExperienceIndex: index,
             }),
 
             //Kitchen Tools Checklist
-            kitchenTools: [],
+            kitchenTools: ProfileDataOptions.tools,
             toggleKitchenTool: (id) => set((state) => ({
                 kitchenTools: state.kitchenTools.map((tool) =>
                     tool.id === id
@@ -133,50 +146,79 @@ export const useCustomizeProfileStore = create(     //zustand creates a store
                 ),
             })),
 
+            //
             //Database Integration
+            //
+
             fetchUserProfile: async () => {
+                const userID = useAuthStore.getState().userID;
                 try {
+                    const response = await fetch(`ourAPIlink/${userID}/`);
+                    const data = await response.json();
 
+                    set((state) => {
+                        //Hydrate the diets checklist
+                        //(set diet option to checked if it's label is in the database response)
+                        const newDietOptions = ProfileDataOptions.diets.map(opt => ({
+                            ...opt,
+                            isChecked: data.diets?.includes(opt.label) || false
+                        }));
+
+                        //Hydrate the tools checklist
+                        //(set tool option to checked if it's label is in the database response)
+                        const newKitchenTools = ProfileDataOptions.tools.map(opt => ({
+                            ...opt,
+                            isChecked: data.tools?.includes(opt.label) || false
+                        }));
+
+                        //Hydrate the experience slider
+                        //(check for the index of the string in the options array)
+                        //If this fails it returns -1
+                        const experienceIndex = ProfileDataOptions.cookingExperienceLevels.indexOf(data.experienceLevel);
+
+                        return {
+                            dietOptions:                    newDietOptions,
+                            dietDescription:                data.dietDescription || "",
+                            allergyDescription:             data.allergyDescription || "",
+                            lovedIngredientsDescription:    data.lovedIngredientsDescription || "",
+                            hatedIngredientsDescription:    data.hatedIngredientsDescription || "",
+                            cookingExperienceValue:         data.experienceLevel || ProfileDataOptions.cookingExperienceLevels[2],
+                            cookingExperienceIndex:         experienceIndex == -1 ? 2 : experienceIndex,
+                            kitchenTools:                   newKitchenTools,
+                        };
+                    });
                 } catch (error) {
-
+                    //console.error("User profile settings fetch failed:", error);
                 }
-
-                //For now here's some pretend data to allow the components to work
-                const mockDatabaseResponse: UserProfileDatabaseResponse = {
-                    difficulty: 1,
-                    diets: [
-                        { id: 'vegan', label: 'Vegan', isChecked: false },
-                        { id: 'vegetarian', label: 'Vegetarian', isChecked: true },
-                        { id: 'keto', label: 'Keto', isChecked: false },
-                        { id: 'paleo', label: 'Paleo', isChecked: false },
-                        { id: 'gluten_free', label: 'Gluten-Free', isChecked: true },
-                        { id: 'dairy_free', label: 'Dairy-Free', isChecked: false },
-                    ],
-                    tools: [
-                        { id: 'oven', label: 'Oven', isChecked: true },
-                        { id: 'microwave', label: 'Microwave', isChecked: true },
-                        { id: 'gas_stovetop', label: 'Gas Stovetop', isChecked: false },
-                        { id: 'induction_stovetop', label: 'Induction Stovetop', isChecked: false },
-                        { id: 'air_fryer', label: 'Air Fryer', isChecked: true },
-                        { id: 'cast_iron', label: 'Cast Iron Cookware', isChecked: false },
-                        { id: 'stainless_steel', label: 'Stainless Steel Cookware', isChecked: false },
-                        { id: 'nonstick', label: 'Nonstick Cookware', isChecked: true },
-                        { id: 'blender', label: 'Blender', isChecked: true },
-                        { id: 'food_processor', label: 'Food Processor', isChecked: false },
-                        { id: 'stand_mixer', label: 'Stand Mixer', isChecked: false },
-                        { id: 'mandoline', label: 'Mandoline', isChecked: false },
-                        { id: 'food_scale', label: 'Food Scale', isChecked: true },
-                    ]
-                };
             },
 
             submitUserProfile: async () => {
+                const userID = useAuthStore.getState().userID;
+                const state = get();
+
+                //Set up the payload, converting checklists and sliders to string values
+                const payload = {
+                    diets:                          state.dietOptions.filter(d => d.isChecked).map(d => d.label),
+                    dietDescription:                state.dietDescription,
+                    allergyDescription:             state.allergyDescription,
+                    lovedIngredientsDescription:    state.lovedIngredientsDescription,
+                    hatedIngredientsDescription:    state.hatedIngredientsDescription,
+                    experienceLevel:                state.cookingExperienceValue,
+                    tools:                          state.kitchenTools.filter(d => d.isChecked).map(d => d.label),
+                };
+
                 try { 
-
+                    await fetch(`ourAPIlink/${userID}/`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                    });
                 } catch(error) {
-
+                    console.error("Failed to submit profile data:", error);
                 }
             },
+
+            reset: () => set(store.getInitialState()),
         }),
         {                                           //define the persist config
             name: "customize-profile-storage", 

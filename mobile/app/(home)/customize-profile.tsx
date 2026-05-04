@@ -17,12 +17,11 @@ import PageHeader from "@/src/components/ui/PageHeader";
 export default function CustomizeProfile() {
   //Fetch the data for this page from the database
   //This wants to be called at the launch of the app, might be removed from here
-  const fetchUserProfile = useCustomizeProfileStore(
-    (state) => state.fetchUserProfile,
-  );
+  const fetchUserProfile = useCustomizeProfileStore((state) => state.fetchUserProfile);
+  const submitUserProfile = useCustomizeProfileStore((state) => state.submitUserProfile);
 
   useEffect(() => {
-    //fetchUserProfile();
+    fetchUserProfile();
   }, []);
 
   //Import customize profile store data (one-by-one for efficient rendering)
@@ -158,6 +157,7 @@ export default function CustomizeProfile() {
           <Button
             label="Save and Exit"
             onPress={() => {
+              submitUserProfile();
               router.back();
             }}
           />

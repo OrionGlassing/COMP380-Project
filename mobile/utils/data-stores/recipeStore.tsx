@@ -57,7 +57,7 @@ interface RecipeStore {
   fetchRecipeById: (id: string) => Promise<void>; 
   addRecipe: (addition: Recipe) => void;
   saveRecipe: (recipeID: string) => Promise<void>;
-  wipeRecipeStore: () => void;
+  reset: () => void;
 }
 
 const testRecipeData: Recipe = {
@@ -83,7 +83,7 @@ const testRecipeData: Recipe = {
 
 export const useRecipeStore = create(     //zustand creates a store
     persist<RecipeStore>(                 //persist saves to device storage
-        (set, get) => ({                  //set is zustand's internal update function
+        (set, get, store) => ({                  //set is zustand's internal update function
             
             recipes: {},
             saved_recipes: [],
@@ -209,12 +209,7 @@ export const useRecipeStore = create(     //zustand creates a store
                 }
             },
 
-            wipeRecipeStore: () => {
-                set((state) => ({
-                    recipes: {},
-                    saved_recipes: [],
-                }));
-            }
+            reset: () => set(store.getInitialState()),
         }),
         {                                           //define the persist config
             name: "recipe-storage", 

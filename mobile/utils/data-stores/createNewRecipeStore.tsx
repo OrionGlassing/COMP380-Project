@@ -57,7 +57,7 @@ interface CreateNewRecipeState {
     isSubmitting: boolean;
     submitError: boolean;
     submitNewRecipe: () => Promise<string>;
-    resetNewRecipe: () => void;
+    reset: () => void;
 }
 
 const CheckListData = {
@@ -91,7 +91,7 @@ const CheckListData = {
     ]
 };
 
-export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get) => ({
+export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get, store) => ({
     //Recipe Type Checklist
     recipeTypeOptions: CheckListData.recipeOptions,
     toggleRecipeOption: (id) => set((state) => ({
@@ -203,7 +203,7 @@ export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get) =
 
             set({ isSubmitting: false });
 
-            state.resetNewRecipe();
+            state.reset();
 
             return data.recipeId;
 
@@ -220,18 +220,5 @@ export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get) =
         return "2";
     },
 
-    resetNewRecipe: () => set({
-        recipeTypeOptions: CheckListData.recipeOptions,
-        cuisineTypeOptions: CheckListData.cuisineOptions,
-        seasonTypeOptions: CheckListData.seasonOptions,
-        spiceLevelValue: "Mild",
-        spiceLevelIndex: 2,
-        sweetnessLevelValue: "Some",
-        sweetnessLevelIndex: 2,
-        recipeComplexityValue: "Average",
-        recipeComplexityIndex: 1,
-        recipeTimeValue: "45 min",
-        recipeTimeIndex: 2,
-        recipeDescription: "",
-    }),
+    reset: () => set(store.getInitialState()),
 }));
