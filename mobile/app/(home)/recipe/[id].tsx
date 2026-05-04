@@ -8,6 +8,7 @@ import CheckableItem from "@/src/components/checklist/checkableItem";
 import { useEffect, useState } from "react";
 import PageHeader from "@/src/components/ui/PageHeader";
 import { theme } from "@/src/constants/theme";
+import Button from "@/src/components/ui/Button";
 
 //
 // Notes:
@@ -28,10 +29,14 @@ While the data is loading, the page wants to display loading animations.
 */
 
 export default function ID() {
-    //Global state from zustand store
+    //Getting the recipe from zustand store
     const { id } = useLocalSearchParams<{ id: string }>();
     const recipe = useRecipeStore((state) => state.recipes[id]);
     const fetchRecipeById = useRecipeStore((state) => state.fetchRecipeById);
+    //Saving the recipe
+    const saveRecipe = useRecipeStore((state) => state.saveRecipe);
+    const saved_recipes = useRecipeStore((state) => state.saved_recipes);
+    const isSaved = saved_recipes.includes(id);
 
     //Local state management for the dynamic ingredients array
     const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
@@ -129,6 +134,20 @@ export default function ID() {
             </Text>
         ))}
         </View>
+
+        <Button 
+            label={isSaved ? "Saved" : "Save Recipe"} 
+            onPress={
+                isSaved ? 
+                (() => {
+                    //Unsave?
+                })
+                :
+                (() => {
+                    saveRecipe(id);
+                })
+            }
+        />
 
         </View>
         </ScrollView>

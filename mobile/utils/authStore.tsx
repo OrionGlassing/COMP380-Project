@@ -1,6 +1,9 @@
 import { create } from "zustand";   //in memory state management
 import { persist, createJSONStorage } from "zustand/middleware"; //save state to device storage
-import { getItem, setItem, deleteItemAsync } from "expo-secure-store";
+import { Platform } from "react-native";
+import * as SecureStore from "expo-secure-store";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./firebase";
 
 interface UserState {
     hydrated: boolean;                  //Frontend only (prevents that app from briefly routing to the wrong page)
@@ -10,93 +13,157 @@ interface UserState {
     token: string | null;               //Ticket for backend/database requests (backend)
     setHydrated: (value: boolean) => void;
     logIn: (username: string, password: string) => Promise<void>;
-    createNewAccount: (username:string, email: string, password: string) => Promise<void>;
+    createNewAccount: (username: string, email: string, password: string) => Promise<void>;
     logOut: () => void;
     completeTutorial: () => void;
-};
+    restoreSession: () => void;
+}
 
-export const useAuthStore = create(         //zustand creates a store
-    persist<UserState>(                     //persist saves to device storage
-        (set) => ({                         //set is zustand's internal update function
-            hydrated: false,
-            isLoggedIn: false,
-            hasCompletedTutorial: false,
-            userID: null,
-            token: null,
+const storage = createJSONStorage(() => ({
+  getItem: async (name: string) => {
+    if (Platform.OS === "web") {
+      return localStorage.getItem(name);
+    }
+    return await SecureStore.getItemAsync(name);
+  },
+  setItem: async (name: string, value: string) => {
+    if (Platform.OS === "web") {
+      localStorage.setItem(name, value);
+      return;
+    }
+    await SecureStore.setItemAsync(name, value);
+  },
+  removeItem: async (name: string) => {
+    if (Platform.OS === "web") {
+      localStorage.removeItem(name);
+      return;
+    }
+    await SecureStore.deleteItemAsync(name);
+  },
+}));
 
-            setHydrated(value) {
-                set({
-                    hydrated: value,
-                });
-            },
+export const useAuthStore = create<UserState>()(
+  persist(
+    (set) => ({
+      isLoggedIn: false,
+      hasCompletedTutorial: false,
+      userID: null,
+      token: null,
+      hydrated: false,
 
-            logIn: async (username, password) => {
-                try {
+      setHydrated: (value) => set({ hydrated: value }),
 
-                    //
-                    //Backend login operation goes here.
-                    //
+      logIn: async (email, password) => {
+        const credential = await signInWithEmailAndPassword(auth, email, password);
+        const idToken = await credential.user.getIdToken();
 
-                    set({
-                        isLoggedIn: true,
-                        hasCompletedTutorial: true,
-                        //userID: 
-                        //token: 
-                    });
-                } catch (error) {
-                    console.error("Login failed: ", error);
-                    throw error;
-                }
-            },
+        const response = await fetch("http://192.168.1.140:8000/auth/login/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id_token: idToken }),
+        });
+    
+        const data = await response.json();
+    
+        if (!response.ok) {
+          throw new Error(data.error || "Login failed");
+        }
+        console.log(data.error);
+    
+        set({
+          isLoggedIn: true,
+          hasCompletedTutorial: true,
+          userID: data.user.uid,
+          token: idToken,
+        });
+      },
+
+      createNewAccount: async (username, email, password) => {
+        const response = await fetch("http://192.168.1.140:8000/auth/signup/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            display_name: username,
+            email,
+            password,
+          }),
+        });
+
+        const data = await response.json();
+        console.log("signup status:", response.status);
+        console.log("signup data:", data);
+
+        if (!response.ok) {
+          throw new Error(data.error || "Signup failed");
+        }
+
+        set({
+          isLoggedIn: true,
+          hasCompletedTutorial: false,
+          userID: data.user?.uid ?? null,
+          token: data.token ?? null,
+        });
+      },
+
+      logOut: () => {
+        set({
+          isLoggedIn: false,
+          userID: null,
+          token: null,
+        });
+      },
+
+      completeTutorial: () => {
+        set({
+          hasCompletedTutorial: true,
+        });
+      },
+
+      restoreSession: async () => {
+          try {
+              const token = await SecureStore.getItemAsync("access_token");
+
+              if (!token) {
+                set({ isLoggedIn: false, userID: null, token: null, hydrated: true });
+                return;
+              }
             
-            createNewAccount: async (username, email, password) => {
-                //The backend should give a specific reason if making a new account fails
-                //So that we can tell the user what went wrong
-                    //Ex: Username taken, email already exists, etc.
-
-                try {
-
-                    //
-                    //Backend create new user operation goes here.
-                    //
-
-                    set({
-                        isLoggedIn: true,
-                        hasCompletedTutorial: false,
-                        //userID: 
-                        //token: 
-                    });
-                } catch (error) {
-                    console.error("Failed to make new account: ", error);
-                    throw error;
-                }
-            },
-
-            logOut: () => {
-                set({
-                    isLoggedIn: false,
-                    userID: null,
-                    token: null,
-                });
-            },
-
-            completeTutorial: () => {
-                set({
-                    hasCompletedTutorial: true,
-                });
-            },
-
-        }),
-        {                                   //define the persist config
-            name: "auth-store",
-            storage: createJSONStorage(() => ({ //using expo secure store functions
-                setItem,
-                getItem,
-                removeItem: deleteItemAsync,
-            })),
-            onRehydrateStorage: () => (state) => {
-                state?.setHydrated(true);
-            },
-        },
-    ),
+              const response = await fetch("http://ip:8000/authentication/me/", {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+            
+              if (!response.ok) {
+                await SecureStore.deleteItemAsync("access_token");
+                await SecureStore.deleteItemAsync("refresh_token");
+                await SecureStore.deleteItemAsync("auth-storage");
+              
+                set({ isLoggedIn: false, userID: null, token: null, hydrated: true });
+                return;
+              }
+              const profile = await response.json();
+              set({
+                isLoggedIn: true,
+                token,
+                userID: profile.id,
+                hydrated: true,
+              });
+          } catch (error) {
+            set({ isLoggedIn: false, userID: null, token: null, hydrated: true });
+          }
+        }
+      }),
+    {
+      name: "auth-store",
+      storage,
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated(true);
+      },
+    }
+  )
 );

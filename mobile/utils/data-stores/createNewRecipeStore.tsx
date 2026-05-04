@@ -1,5 +1,6 @@
 import { create } from "zustand" //in memory state management
 import { CheckListEntry } from "@/src/types/dataTypes";
+import { useAuthStore } from "../authStore";
 
 //
 //Notes:
@@ -54,8 +55,9 @@ interface CreateNewRecipeState {
 
     //Submitting data to the backend
     isSubmitting: boolean;
+    submitError: boolean;
     submitNewRecipe: () => Promise<string>;
-    reset: () => void;
+    resetNewRecipe: () => void;
 }
 
 const CheckListData = {
@@ -160,18 +162,23 @@ export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get) =
 
     //Submitting to the backend
     isSubmitting: false,
+    submitError: false,
     submitNewRecipe: async () => {
-        set({isSubmitting: true});
+        set({isSubmitting: true, submitError: false});
 
         const state = get();
+        const userID = useAuthStore.getState().userID;
 
         const payload = {
-            // Filter only checked items, then map them to just an array of labels
+            //User info
+            creatorID: userID,
+
+            //Filter only checked items, then map them to just an array of labels
             recipeTypes: state.recipeTypeOptions.filter((opt: CheckListEntry) => opt.isChecked).map((opt: CheckListEntry) => opt.label),
             cuisineTypes: state.cuisineTypeOptions.filter((opt: CheckListEntry) => opt.isChecked).map((opt: CheckListEntry) => opt.label),
             seasonTypes: state.seasonTypeOptions.filter((opt: CheckListEntry) => opt.isChecked).map((opt: CheckListEntry) => opt.label),
             
-            // Grab the raw values
+            //Grab the raw values
             spiceLevel: state.spiceLevelValue,
             sweetnessLevel: state.sweetnessLevelValue,
             complexity: state.recipeComplexityValue,
@@ -179,14 +186,11 @@ export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get) =
             description: state.recipeDescription,
         };
 
-        /* When we have the API link, we can actually use this section
         try {
-
             const response = await fetch('ourAPIlink/recipes/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Add more info, like authentication if needed
                 },
                 body: JSON.stringify(payload),
             });
@@ -199,22 +203,24 @@ export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get) =
 
             set({ isSubmitting: false });
 
-            state.reset();
+            state.resetNewRecipe();
 
             return data.recipeId;
 
         } catch (error) {
-            set({ isSubmitting: false });
+            set({ isSubmitting: false, submitError: true});
             console.error("Error submitting new recipe: ", error);
-            //More error handling wants to go here
+            return null;
+            //This wants to trip a value that the loading recipe page wants to lsiten to
+            //When it trips, the loading page will know that something went wrong
+            //And then it will provide an exit option (or mayebe retry button too)
         }
-        */
 
         //For now it returns 2 for testing purposes
         return "2";
     },
 
-    reset: () => set({
+    resetNewRecipe: () => set({
         recipeTypeOptions: CheckListData.recipeOptions,
         cuisineTypeOptions: CheckListData.cuisineOptions,
         seasonTypeOptions: CheckListData.seasonOptions,

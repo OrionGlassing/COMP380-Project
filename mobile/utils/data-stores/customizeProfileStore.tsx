@@ -73,6 +73,7 @@ interface CustomizeProfileState {
 
     //Database Integration:
     fetchUserProfile: () => Promise<void>;
+    submitUserProfile: () => Promise<void>;
   
 };
 
@@ -134,8 +135,11 @@ export const useCustomizeProfileStore = create(     //zustand creates a store
 
             //Database Integration
             fetchUserProfile: async () => {
-                //This will call the backend API
-                //It will return all user profile data at once
+                try {
+
+                } catch (error) {
+
+                }
 
                 //For now here's some pretend data to allow the components to work
                 const mockDatabaseResponse: UserProfileDatabaseResponse = {
@@ -164,12 +168,15 @@ export const useCustomizeProfileStore = create(     //zustand creates a store
                         { id: 'food_scale', label: 'Food Scale', isChecked: true },
                     ]
                 };
+            },
 
-                set({
-                    dietOptions: mockDatabaseResponse.diets,
-                    kitchenTools: mockDatabaseResponse.tools,
-                });
-            }
+            submitUserProfile: async () => {
+                try { 
+
+                } catch(error) {
+
+                }
+            },
         }),
         {                                           //define the persist config
             name: "customize-profile-storage", 
