@@ -119,6 +119,7 @@ export const useRecipeStore = create(     //zustand creates a store
             },
 
             fetchRandomRecipe: async () => {
+                /*
                 try {
                     //Fetch the random recipe
                     const response = await fetch(`ourAPIlink/recipes/random/`);
@@ -136,6 +137,18 @@ export const useRecipeStore = create(     //zustand creates a store
                     console.error("Failed to fetch random recipe:", error);
                     return null;
                 }
+                */
+
+                //Frontend only test version
+                //const randomID: string = Math.floor(Math.random() * 25).toString();
+                const randomID: string = "ab";
+                set((state) => ({
+                    recipes: {
+                        ...state.recipes,
+                        [randomID]: testRecipeData
+                    }
+                }));
+                return randomID;
             },
 
             fetchRecipeById: async (id: string) => {
