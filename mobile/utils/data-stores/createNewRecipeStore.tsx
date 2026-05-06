@@ -15,6 +15,8 @@ where the user can go back and forth between pages and keep the new recipe draft
 The data is not saved to device storage, because we do not need to save the draft between app launches.
 */
 
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
 interface CreateNewRecipeState {
     //Recipe Type Checklist
     recipeTypeOptions: CheckListEntry[];
@@ -58,40 +60,42 @@ interface CreateNewRecipeState {
     reset: () => void;
 }
 
-const CheckListData = {
-    recipeOptions: [
-        { id: 'breakfast', label: 'Breakfast', isChecked: false },
-        { id: 'lunch', label: 'Lunch', isChecked: false },
-        { id: 'dinner', label: 'Dinner', isChecked: false },
-        { id: 'dessert', label: 'Dessert', isChecked: false },
-        { id: 'baking', label: 'Baking', isChecked: false },
-        { id: 'snack', label: 'Snack', isChecked: false },
-        { id: 'drink', label: 'Drink', isChecked: false },
-        { id: 'specialevent', label: 'Special Event', isChecked: false },
-    ],
-    cuisineOptions: [
-        { id: 'american', label: 'American', isChecked: false },
-        { id: 'mexican', label: 'Mexican', isChecked: false },
-        { id: 'italian', label: 'Italian', isChecked: false },
-        { id: 'french', label: 'French', isChecked: false },
-        { id: 'greek', label: 'Greek', isChecked: false },
-        { id: 'chinese', label: 'Chinese', isChecked: false },
-        { id: 'japanese', label: 'Japanese', isChecked: false },
-        { id: 'thai', label: 'Thai', isChecked: false },
-        { id: 'korean', label: 'Korean', isChecked: false },
-        { id: 'indian', label: 'Indian', isChecked: false },
-    ],
-    seasonOptions: [
-        { id: 'fall', label: 'Fall', isChecked: false },
-        { id: 'winter', label: 'Winter', isChecked: false },
-        { id: 'spring', label: 'Spring', isChecked: false },
-        { id: 'summer', label: 'Summer', isChecked: false },
-    ]
-};
+const getInitialinitialCheckListData = () => ({
+  recipeOptions: [
+    { id: "breakfast", label: "Breakfast", isChecked: false },
+    { id: "lunch", label: "Lunch", isChecked: false },
+    { id: "dinner", label: "Dinner", isChecked: false },
+    { id: "dessert", label: "Dessert", isChecked: false },
+    { id: "baking", label: "Baking", isChecked: false },
+    { id: "snack", label: "Snack", isChecked: false },
+    { id: "drink", label: "Drink", isChecked: false },
+    { id: "specialevent", label: "Special Event", isChecked: false },
+  ],
+  cuisineOptions: [
+    { id: "american", label: "American", isChecked: false },
+    { id: "mexican", label: "Mexican", isChecked: false },
+    { id: "italian", label: "Italian", isChecked: false },
+    { id: "french", label: "French", isChecked: false },
+    { id: "greek", label: "Greek", isChecked: false },
+    { id: "chinese", label: "Chinese", isChecked: false },
+    { id: "japanese", label: "Japanese", isChecked: false },
+    { id: "thai", label: "Thai", isChecked: false },
+    { id: "korean", label: "Korean", isChecked: false },
+    { id: "indian", label: "Indian", isChecked: false },
+  ],
+  seasonOptions: [
+    { id: "fall", label: "Fall", isChecked: false },
+    { id: "winter", label: "Winter", isChecked: false },
+    { id: "spring", label: "Spring", isChecked: false },
+    { id: "summer", label: "Summer", isChecked: false },
+  ],
+});
+
+const initialCheckListData = getInitialinitialCheckListData();
 
 export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get) => ({
     //Recipe Type Checklist
-    recipeTypeOptions: CheckListData.recipeOptions,
+    recipeTypeOptions: initialCheckListData.recipeOptions,
     toggleRecipeOption: (id) => set((state) => ({
                 recipeTypeOptions: state.recipeTypeOptions.map((type) =>
                     type.id === id
@@ -101,7 +105,7 @@ export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get) =
             })),
 
     //Cuisine Type Checklist
-    cuisineTypeOptions: CheckListData.cuisineOptions,
+    cuisineTypeOptions: initialCheckListData.cuisineOptions,
     toggleCuisineOption: (id) => set((state) => ({
                 cuisineTypeOptions: state.cuisineTypeOptions.map((type) =>
                     type.id === id
@@ -111,7 +115,7 @@ export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get) =
             })),
 
     //Season Type Checklist
-    seasonTypeOptions: CheckListData.seasonOptions,
+    seasonTypeOptions: initialCheckListData.seasonOptions,
     toggleSeasonOption: (id) => set((state) => ({
                 seasonTypeOptions: state.seasonTypeOptions.map((type) =>
                     type.id === id
@@ -161,71 +165,95 @@ export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get) =
     //Submitting to the backend
     isSubmitting: false,
     submitNewRecipe: async () => {
-        set({isSubmitting: true});
+      set({ isSubmitting: true });
 
-        const state = get();
+      const state = get();
 
-        const payload = {
-            // Filter only checked items, then map them to just an array of labels
-            recipeTypes: state.recipeTypeOptions.filter((opt: CheckListEntry) => opt.isChecked).map((opt: CheckListEntry) => opt.label),
-            cuisineTypes: state.cuisineTypeOptions.filter((opt: CheckListEntry) => opt.isChecked).map((opt: CheckListEntry) => opt.label),
-            seasonTypes: state.seasonTypeOptions.filter((opt: CheckListEntry) => opt.isChecked).map((opt: CheckListEntry) => opt.label),
-            
-            // Grab the raw values
-            spiceLevel: state.spiceLevelValue,
-            sweetnessLevel: state.sweetnessLevelValue,
-            complexity: state.recipeComplexityValue,
-            timeLimit: state.recipeTimeValue,
-            description: state.recipeDescription,
-        };
+      if (!state.recipeDescription.trim()) {
+        set({ isSubmitting: false });
+        throw new Error("Recipe description is required before submitting.");
+      }
 
-        /* When we have the API link, we can actually use this section
-        try {
+      const payload = {
+        recipe_types: state.recipeTypeOptions
+          .filter((opt) => opt.isChecked)
+          .map((opt) => opt.label),
 
-            const response = await fetch('ourAPIlink/recipes/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Add more info, like authentication if needed
-                },
-                body: JSON.stringify(payload),
-            });
+        cuisine_types: state.cuisineTypeOptions
+          .filter((opt) => opt.isChecked)
+          .map((opt) => opt.label),
 
-            if (!response.ok) {
-                throw new Error('Error making new recipe!');
-            }
+        season_types: state.seasonTypeOptions
+          .filter((opt) => opt.isChecked)
+          .map((opt) => opt.label),
 
-            const data = await response.json();
+        spice_level: state.spiceLevelValue,
+        sweetness_level: state.sweetnessLevelValue,
+        complexity: state.recipeComplexityValue,
+        time_limit: state.recipeTimeValue,
+        description: state.recipeDescription,
+      };
 
-            set({ isSubmitting: false });
+      console.log("CREATE RECIPE PAYLOAD:", JSON.stringify(payload, null, 2));
+      console.log("DESCRIPTION VALUE:", state.recipeDescription);
+      console.log("API URL:", API_URL);
 
-            state.reset();
+      try {
+        const response = await fetch(`${API_URL}/ai/chat/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
 
-            return data.recipeId;
-
-        } catch (error) {
-            set({ isSubmitting: false });
-            console.error("Error submitting new recipe: ", error);
-            //More error handling wants to go here
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText || "Error making new recipe!");
         }
-        */
 
-        //For now it returns 2 for testing purposes
-        return "2";
+        const data = await response.json();
+
+        set({ isSubmitting: false });
+
+        state.reset();
+
+        return data.recipe_id;
+      } catch (error) {
+        set({ isSubmitting: false });
+        console.error("Error submitting new recipe:", error);
+
+        throw error;
+      }
     },
 
     reset: () => set({
-        recipeTypeOptions: CheckListData.recipeOptions,
-        cuisineTypeOptions: CheckListData.cuisineOptions,
-        seasonTypeOptions: CheckListData.seasonOptions,
-        spiceLevelValue: "Mild",
-        spiceLevelIndex: 2,
-        sweetnessLevelValue: "Some",
-        sweetnessLevelIndex: 2,
-        recipeComplexityValue: "Average",
-        recipeComplexityIndex: 1,
-        recipeTimeValue: "45 min",
-        recipeTimeIndex: 2,
-        recipeDescription: "",
-    }),
+    recipeTypeOptions: initialCheckListData.recipeOptions.map((opt) => ({
+        ...opt,
+        isChecked: false,
+    })),
+    cuisineTypeOptions: initialCheckListData.cuisineOptions.map((opt) => ({
+        ...opt,
+        isChecked: false,
+    })),
+    seasonTypeOptions: initialCheckListData.seasonOptions.map((opt) => ({
+        ...opt,
+        isChecked: false,
+    })),
+
+    spiceLevelValue: "Mild",
+    spiceLevelIndex: 2,
+
+    sweetnessLevelValue: "Some",
+    sweetnessLevelIndex: 2,
+
+    recipeComplexityValue: "Average",
+    recipeComplexityIndex: 1,
+
+    recipeTimeValue: "45 min",
+    recipeTimeIndex: 2,
+
+    recipeDescription: "",
+    isSubmitting: false,
+}),
 }));

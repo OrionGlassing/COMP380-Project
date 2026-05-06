@@ -26,90 +26,106 @@ But for now I don't see a big problem, since the user is supposed to be the one
 defining when changes are made to the recipe. And in this case, we can update the 
 recipe when a change is requested. 
 */
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 interface RecipeStore {
   recipes: Record<string, Recipe>;
   saved_recipes: Recipe[];
+
+  isFetchingRecipe: boolean;
+  fetchRecipeError: string | null;
+
   getSavedRecipes: () => Promise<void>;
-  fetchRecipeById: (id: string) => Promise<void>; 
+  fetchRecipeById: (id: string) => Promise<void>;
   wipeRecipeStore: () => void;
 }
+export const useRecipeStore = create(
+  persist<RecipeStore>(
+    (set, get) => ({
+      recipes: {},
+      saved_recipes: [],
 
-const testRecipeData: Recipe = {
-    recipe_id: "testID",
-    title: "Test Recipe Title",
-    imageURL: "https://firebasestorage.googleapis.com/v0/b/cokitchen-2dea8.firebasestorage.app/o/recipe_images%2Fpad_see_ew_001%2Fpad-see-ew-sq-cu.jpg?alt=media&token=62019e0e-f350-4228-870c-346aaf6e5457",
-    ingredients: [
-        'Test Ingredient #1 - 2 cups',
-        'Test Ingredient #2 - 1/2 cup',
-        'Test Ingredient #3 - x2',
-        'Test Ingredient #4 - 3 Tbsp.',
-        'Test Ingredient #5 - 1 tsp.',
-    ],
-    directions: [
-        "1. Example step one...",
-        "2. Example step two...",
-        "3. Example step three...",
-        "4. Example step four...",
-        "5. Example step five...",
-    ],
-    cook_time: "25 minutes",
-};
+      isFetchingRecipe: false,
+      fetchRecipeError: null,
 
-export const useRecipeStore = create(     //zustand creates a store
-    persist<RecipeStore>(                 //persist saves to device storage
-        (set, get) => ({                  //set is zustand's internal update function
-            
-            recipes: {},
-            saved_recipes: [],
+      getSavedRecipes: async () => {
+        // Later:
+        // fetch user's saved recipes from Django
+      },
 
-            getSavedRecipes: async () => {
-                //Get all of the users saved recipes from the database
-                
-            },
+      fetchRecipeById: async (id: string) => {
+        if (!API_URL) {
+    set({
+      isFetchingRecipe: false,
+      fetchRecipeError: "API URL is missing.",
+    });
 
-            fetchRecipeById: async (id: string) => {
-            // Check if this recipe id is already saved
-            //if (get().recipes[id]) return;
-            
-            /* When we have the API link, we can actually use this section
-            try {
-                // If it's not saved, fetch it from the database
-                const response = await fetch(`ourAPIlink/recipes/${id}`);
-                const fetchedRecipe = await response.json();
-
-                // Add the new fetched recipe to the zustand store
-                set((state) => ({
-                recipes: {
-                    ...state.recipes,
-                    [id]: fetchedRecipe
-                }
-                }));
-            } catch (error) {
-                console.error("Failed to fetch recipe:", error);
-                // More error handling will want to go here
-            }
-            */
-
-            //For now, here's some temporary data to test with
-            set((state) => ({
-                recipes: {
-                    ...state.recipes,
-                    [id]: testRecipeData
-                }
-            }));
-
-            },
-            wipeRecipeStore: () => {
-                set((state) => ({
-                    recipes: {},
-                    saved_recipes: [],
-                }));
-            }
-        }),
-        {                                           //define the persist config
-            name: "recipe-storage", 
-            storage: createJSONStorage(() => AsyncStorage), //Using async storage (not encrypted, faster)
+    throw new Error("EXPO_PUBLIC_API_URL is missing.");
         }
-    )
+    
+        // If already cached, do not fetch again
+        if (get().recipes[id]) {
+          console.log("Recipe loaded from cache:", id);
+          return;
+        }
+    
+        const url = `${API_URL}/ai/recipes/${id}/`;
+    
+        console.log("FETCHING RECIPE URL:", url);
+    
+        set({
+          isFetchingRecipe: true,
+          fetchRecipeError: null,
+        });
+    
+        try {
+          const response = await fetch(url);
+        
+          console.log("FETCH RECIPE STATUS:", response.status);
+        
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.log("FETCH RECIPE ERROR BODY:", errorText);
+
+            throw new Error("Failed to fetch recipe.");
+          }
+      
+          const fetchedRecipe: Recipe = await response.json();
+      
+          console.log("FETCHED RECIPE:", fetchedRecipe);
+      
+          set((state) => ({
+            recipes: {
+              ...state.recipes,
+              [id]: fetchedRecipe,
+            },
+            isFetchingRecipe: false,
+            fetchRecipeError: null,
+          }));
+        } catch (error) {
+          console.error("Failed to fetch recipe:", error);
+        
+          set({
+            isFetchingRecipe: false,
+            fetchRecipeError: "Failed to fetch recipe.",
+          });
+      
+          throw error;
+        }
+      },
+
+      wipeRecipeStore: () => {
+        set({
+          recipes: {},
+          saved_recipes: [],
+          isFetchingRecipe: false,
+          fetchRecipeError: null,
+        });
+      },
+    }),
+    {
+      name: "recipe-storage",
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
 );

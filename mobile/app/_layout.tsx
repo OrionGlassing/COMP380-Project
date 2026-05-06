@@ -8,11 +8,6 @@ import BootSplash from "react-native-bootsplash";
 console.log("layout.tsx");
 
 export default function RootLayout() {
-<<<<<<< HEAD
-  const { isLoggedIn } = useAuthStore();
-  const hydrated = useAuthStore((state) => state.hydrated);
-
-=======
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const hydrated = useAuthStore((state) => state.hydrated);
 
@@ -23,29 +18,11 @@ export default function RootLayout() {
     }
   }, [hydrated]);
 
->>>>>>> origin/frontend/shared
   if (!hydrated) {
     return null;
   }
 
   return (
-<<<<<<< HEAD
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={!isLoggedIn}>
-        <Stack.Screen name="(Login)" />
-      </Stack.Protected>
-
-      <Stack.Protected guard={isLoggedIn}>
-        <Stack.Screen name="(home)" />
-      </Stack.Protected>
-    </Stack>
-    //Your version:
-    //<Stack screenOptions={{ headerShown: false }}>
-    //  <Stack.Screen name="index" />
-    //  <Stack.Screen name="(home)" />
-    //  <Stack.Screen name="(Login)" />
-    //</Stack>
-=======
     <Stack screenOptions={{headerShown: false}}>
       <Stack.Protected guard={isLoggedIn}>
         <Stack.Screen name="(home)"/>
@@ -54,6 +31,5 @@ export default function RootLayout() {
         <Stack.Screen name="(login)"/>
       </Stack.Protected>
      </Stack>
->>>>>>> origin/frontend/shared
   );
 };

@@ -15,15 +15,12 @@ import PageHeader from "@/src/components/ui/PageHeader";
 //Work in progress?
 
 export default function CustomizeProfile() {
-  //Fetch the data for this page from the database
-  //This wants to be called at the launch of the app, might be removed from here
-  const fetchUserProfile = useCustomizeProfileStore(
-    (state) => state.fetchUserProfile,
-  );
+  const fetchUserProfile = useCustomizeProfileStore((state) => state.fetchUserProfile);
+  const updateUserProfile = useCustomizeProfileStore((state) => state.updateUserProfile);
 
   useEffect(() => {
-    //fetchUserProfile();
-  }, []);
+    fetchUserProfile();
+    }, [fetchUserProfile]);
 
   //Import customize profile store data (one-by-one for efficient rendering)
   const dietDescription = useCustomizeProfileStore(
@@ -155,11 +152,14 @@ export default function CustomizeProfile() {
 
           <KitchenToolsCheckList />
 
-          <Button
-            label="Save and Exit"
-            onPress={() => {
-              router.back();
-            }}
+          <Button label="Save and Exit" onPress={async () => {
+              try {
+                  await updateUserProfile();
+                  router.back();
+              } catch (error) {
+                  console.error(error);
+              }
+          }}
           />
 
         </ScrollView>

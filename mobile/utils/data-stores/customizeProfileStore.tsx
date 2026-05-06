@@ -1,179 +1,225 @@
-import { create } from "zustand" //in memory state management
-import { persist, createJSONStorage } from "zustand/middleware" //save state to device storage
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { CheckListEntry } from "@/src/types/dataTypes";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-//
-// Notes
-//
-/*
-This zustand store contains all of the user profile settings page data.
-
-This data is owned by the database, so when the user opens the customize profile page we 
-will want to set this data with a fetch request. 
-
-Some of the data fields are set up here in the front end, and some are dynamically retireved from the backend:
-
-    - Things like the text boxes have their data mirrored between frontend and backend.
-        - They both know what the data managed by that component looks like (just a string).
-
-    - The checkbox components do NOT know what fields they will manage.
-
-        - These work by recieving an array from the backend, and then dynamically 
-        displaying however many fields were recieved in that array.
-        (They both need to share the same type for the element in the array (CheckListEntry))
-
-        - This makes it really easy to manage larger data fields, because we do not 
-        need to sync the frontend and database, the database tells the frontend everything.
-
-        - When a change is made, for example removing an option or adding a new one, 
-        one change to the database keeps the whole app synced.
-
-The data is stored on the device using the persist middlware so that the app 
-is still capable of working offline.
-    - Data may get out of sync, but the database will be regularly sending the frontend
-    the true values, so this isn't a big deal for now.
-*/
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface UserProfileDatabaseResponse {
-    difficulty: number;
-    diets: CheckListEntry[];
-    tools: CheckListEntry[];
+  difficulty: number;
+  diets: CheckListEntry[];
+  tools: CheckListEntry[];
+
+  dietDescription: string;
+  allergyDescription: string;
+  lovedIngredientsDescription: string;
+  hatedIngredientsDescription: string;
+}
+
+interface UpdateUserProfileRequest {
+  difficulty: number;
+  diets: CheckListEntry[];
+  tools: CheckListEntry[];
+
+  dietDescription: string;
+  allergyDescription: string;
+  lovedIngredientsDescription: string;
+  hatedIngredientsDescription: string;
 }
 
 interface CustomizeProfileState {
-    //Diet Checklist:
-    dietOptions: CheckListEntry[];
-    toggleDiet: (id: string) => void;
+  // Diet Checklist
+  dietOptions: CheckListEntry[];
+  toggleDiet: (id: string) => void;
 
-    //Describe your diet TextBox:
-    dietDescription: string;
-    setDietDescription: (value: string) => void;
-    
-    //Food allergies TextBox:
-    allergyDescription: string;
-    setAllergyDescription: (value: string) => void;
+  // Describe your diet TextBox
+  dietDescription: string;
+  setDietDescription: (value: string) => void;
 
-    //Loved ingredients TextBox:
-    lovedIngredientsDescription: string;
-    setLovedIngredientsDescription: (value: string) => void;
+  // Food allergies TextBox
+  allergyDescription: string;
+  setAllergyDescription: (value: string) => void;
 
-    //Hated ingredients TextBox:
-    hatedIngredientsDescription: string;
-    setHatedIngredientsDescription: (value: string) => void;
+  // Loved ingredients TextBox
+  lovedIngredientsDescription: string;
+  setLovedIngredientsDescription: (value: string) => void;
 
-    //Experience Level Slider:
-    cookingExperienceValue: string;
-    cookingExperienceIndex: number;
-    setCookingExperience: (value: string, index: number) => void;
+  // Hated ingredients TextBox
+  hatedIngredientsDescription: string;
+  setHatedIngredientsDescription: (value: string) => void;
 
-    //Kitchen tools Checklist:
-    kitchenTools: CheckListEntry[];
-    toggleKitchenTool: (id: string) => void;
+  // Experience Level Slider
+  cookingExperienceValue: string;
+  cookingExperienceIndex: number;
+  setCookingExperience: (value: string, index: number) => void;
 
-    //Database Integration:
-    fetchUserProfile: () => Promise<void>;
-  
-};
+  // Kitchen tools Checklist
+  kitchenTools: CheckListEntry[];
+  toggleKitchenTool: (id: string) => void;
 
-export const useCustomizeProfileStore = create(     //zustand creates a store
-    persist<CustomizeProfileState>(                 //persist saves to device storage
-        (set) => ({                                 //set is zustand's internal update function
-            
-            //Diet Checklist
-            dietOptions: [],
-            toggleDiet: (id) => set((state) => ({
-                dietOptions: state.dietOptions.map((diet) =>
-                    diet.id === id
-                        ? { ...diet, isChecked: !diet.isChecked }
-                        : diet
-                ),
-            })),
+  // Database Integration
+  fetchUserProfile: () => Promise<void>;
+  updateUserProfile: () => Promise<void>;
+}
 
-            //Diet Description
-            dietDescription: "",
-            setDietDescription: (value) => set({
-                dietDescription: value,
-            }),
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
-            //Allergy Description
-            allergyDescription: "",
-            setAllergyDescription: (value) => set({
-                allergyDescription: value,
-            }),
+export const useCustomizeProfileStore = create(
+  persist<CustomizeProfileState>(
+    (set, get) => ({
+      // Diet Checklist
+      dietOptions: [],
+      toggleDiet: (id) =>
+        set((state) => ({
+          dietOptions: state.dietOptions.map((diet) =>
+            diet.id === id
+              ? { ...diet, isChecked: !diet.isChecked }
+              : diet,
+          ),
+        })),
 
-            //Loved Ingredients
-            lovedIngredientsDescription: "",
-            setLovedIngredientsDescription: (value) => set({
-                lovedIngredientsDescription: value,
-            }),
-
-            //Hated Ingredients
-            hatedIngredientsDescription: "",
-            setHatedIngredientsDescription: (value) => set({
-                hatedIngredientsDescription: value,
-            }),
-
-            //Experience Level Slider
-            cookingExperienceValue: '',
-            cookingExperienceIndex: 0,
-            setCookingExperience: (value, index) => set({
-                cookingExperienceValue: value,
-                cookingExperienceIndex: index,
-            }),
-
-            //Kitchen Tools Checklist
-            kitchenTools: [],
-            toggleKitchenTool: (id) => set((state) => ({
-                kitchenTools: state.kitchenTools.map((tool) =>
-                    tool.id === id
-                        ? { ...tool, isChecked: !tool.isChecked }
-                        : tool
-                ),
-            })),
-
-            //Database Integration
-            fetchUserProfile: async () => {
-                //This will call the backend API
-                //It will return all user profile data at once
-
-                //For now here's some pretend data to allow the components to work
-                const mockDatabaseResponse: UserProfileDatabaseResponse = {
-                    difficulty: 1,
-                    diets: [
-                        { id: 'vegan', label: 'Vegan', isChecked: false },
-                        { id: 'vegetarian', label: 'Vegetarian', isChecked: true },
-                        { id: 'keto', label: 'Keto', isChecked: false },
-                        { id: 'paleo', label: 'Paleo', isChecked: false },
-                        { id: 'gluten_free', label: 'Gluten-Free', isChecked: true },
-                        { id: 'dairy_free', label: 'Dairy-Free', isChecked: false },
-                    ],
-                    tools: [
-                        { id: 'oven', label: 'Oven', isChecked: true },
-                        { id: 'microwave', label: 'Microwave', isChecked: true },
-                        { id: 'gas_stovetop', label: 'Gas Stovetop', isChecked: false },
-                        { id: 'induction_stovetop', label: 'Induction Stovetop', isChecked: false },
-                        { id: 'air_fryer', label: 'Air Fryer', isChecked: true },
-                        { id: 'cast_iron', label: 'Cast Iron Cookware', isChecked: false },
-                        { id: 'stainless_steel', label: 'Stainless Steel Cookware', isChecked: false },
-                        { id: 'nonstick', label: 'Nonstick Cookware', isChecked: true },
-                        { id: 'blender', label: 'Blender', isChecked: true },
-                        { id: 'food_processor', label: 'Food Processor', isChecked: false },
-                        { id: 'stand_mixer', label: 'Stand Mixer', isChecked: false },
-                        { id: 'mandoline', label: 'Mandoline', isChecked: false },
-                        { id: 'food_scale', label: 'Food Scale', isChecked: true },
-                    ]
-                };
-
-                set({
-                    dietOptions: mockDatabaseResponse.diets,
-                    kitchenTools: mockDatabaseResponse.tools,
-                });
-            }
+      // Diet Description
+      dietDescription: "",
+      setDietDescription: (value) =>
+        set({
+          dietDescription: value,
         }),
-        {                                           //define the persist config
-            name: "customize-profile-storage", 
-            storage: createJSONStorage(() => AsyncStorage), //Using async storage (not encrypted, faster)
+
+      // Allergy Description
+      allergyDescription: "",
+      setAllergyDescription: (value) =>
+        set({
+          allergyDescription: value,
+        }),
+
+      // Loved Ingredients
+      lovedIngredientsDescription: "",
+      setLovedIngredientsDescription: (value) =>
+        set({
+          lovedIngredientsDescription: value,
+        }),
+
+      // Hated Ingredients
+      hatedIngredientsDescription: "",
+      setHatedIngredientsDescription: (value) =>
+        set({
+          hatedIngredientsDescription: value,
+        }),
+
+      // Experience Level Slider
+      cookingExperienceValue: "",
+      cookingExperienceIndex: 0,
+      setCookingExperience: (value, index) =>
+        set({
+          cookingExperienceValue: value,
+          cookingExperienceIndex: index,
+        }),
+
+      // Kitchen Tools Checklist
+      kitchenTools: [],
+      toggleKitchenTool: (id) =>
+        set((state) => ({
+          kitchenTools: state.kitchenTools.map((tool) =>
+            tool.id === id
+              ? { ...tool, isChecked: !tool.isChecked }
+              : tool,
+          ),
+        })),
+
+      // Database Integration
+      fetchUserProfile: async () => {
+        console.log("Fetching profile from:", `${API_URL}/auth/profile/`);
+      
+        const response = await fetch(`${API_URL}/auth/profile/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      
+        if (!response.ok) {
+          const errorText = await response.text();
+      
+          console.log("Failed to fetch user profile");
+          console.log("Status:", response.status);
+          console.log("Body:", errorText);
+      
+          throw new Error(`Failed to fetch user profile: ${response.status}`);
         }
-    )
+      
+        const data: UserProfileDatabaseResponse = await response.json();
+      
+        console.log("Fetched profile:", data);
+      
+        set({
+          dietOptions: data.diets ?? [],
+          kitchenTools: data.tools ?? [],
+      
+          dietDescription: data.dietDescription ?? "",
+          allergyDescription: data.allergyDescription ?? "",
+          lovedIngredientsDescription: data.lovedIngredientsDescription ?? "",
+          hatedIngredientsDescription: data.hatedIngredientsDescription ?? "",
+      
+          cookingExperienceIndex: data.difficulty ?? 0,
+        });
+      },
+      
+      updateUserProfile: async () => {
+        const state = get();
+      
+        const payload: UpdateUserProfileRequest = {
+          difficulty: state.cookingExperienceIndex,
+      
+          diets: state.dietOptions,
+          tools: state.kitchenTools,
+      
+          dietDescription: state.dietDescription,
+          allergyDescription: state.allergyDescription,
+          lovedIngredientsDescription: state.lovedIngredientsDescription,
+          hatedIngredientsDescription: state.hatedIngredientsDescription,
+        };
+      
+        console.log("Updating profile at:", `${API_URL}/auth/profile/`);
+        console.log("Payload:", payload);
+      
+        const response = await fetch(`${API_URL}/auth/profile/`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+      
+        if (!response.ok) {
+          const errorText = await response.text();
+      
+          console.log("Failed to update user profile");
+          console.log("Status:", response.status);
+          console.log("Body:", errorText);
+      
+          throw new Error(`Failed to update user profile: ${response.status}`);
+        }
+      
+        const updatedData: UserProfileDatabaseResponse = await response.json();
+      
+        console.log("Updated profile:", updatedData);
+      
+        set({
+          dietOptions: updatedData.diets ?? [],
+          kitchenTools: updatedData.tools ?? [],
+      
+          dietDescription: updatedData.dietDescription ?? "",
+          allergyDescription: updatedData.allergyDescription ?? "",
+          lovedIngredientsDescription:
+            updatedData.lovedIngredientsDescription ?? "",
+          hatedIngredientsDescription:
+            updatedData.hatedIngredientsDescription ?? "",
+      
+          cookingExperienceIndex: updatedData.difficulty ?? 0,
+        });
+      },
+    }),
+    {
+      name: "customize-profile-storage",
+      storage: createJSONStorage(() => AsyncStorage),
+    },
+  ),
 );

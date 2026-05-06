@@ -30,8 +30,10 @@ While the data is loading, the page wants to display loading animations.
 export default function ID() {
     //Global state from zustand store
     const { id } = useLocalSearchParams<{ id: string }>();
-    const recipe = useRecipeStore((state) => state.recipes[id]);
+    const recipe = useRecipeStore((state) => id ? state.recipes[id] : undefined);
     const fetchRecipeById = useRecipeStore((state) => state.fetchRecipeById);
+    const isFetchingRecipe = useRecipeStore((state) => state.isFetchingRecipe);
+    const fetchRecipeError = useRecipeStore((state) => state.fetchRecipeError);
 
     //Local state management for the dynamic ingredients array
     const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
@@ -44,14 +46,26 @@ export default function ID() {
 
     //As soon as the page opens, get the recipe data from the zustand store
     useEffect(() => {
-        fetchRecipeById(id);
-    }, [id]);
+        if (!id) return;
+        if (recipe) return;
+
+        fetchRecipeById(id).catch((error) => {
+            console.error("Recipe page failed to fetch recipe:", error);
+        });
+    }, [id, recipe, fetchRecipeById]);
+
+    if (fetchRecipeError) {
+        return (
+            <View style={styles.screen}>
+                <Text style={textStyles.body}>Failed to load recipe.</Text>
+            </View>
+        );
+    }
 
     //ui
     const insets = useSafeAreaInsets();
-
     //Recipe is undefined when it is not loaded
-    if (!recipe) {
+    if (!recipe || isFetchingRecipe) {
         //Here we can render the loading screen version of the page
         return (
             <View style={styles.screen}>
