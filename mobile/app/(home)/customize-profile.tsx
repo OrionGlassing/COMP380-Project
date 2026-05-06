@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { router } from "expo-router";
-import { ScrollView, Text, KeyboardAvoidingView, Platform } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, Text, KeyboardAvoidingView, StyleSheet, View } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import LabeledSlider from "@/src/components/sliders/LabeledSlider";
 import { useCustomizeProfileStore } from "@/utils/data-stores/customizeProfileStore";
 import DietCheckList from "@/src/components/checklist/dietCheckList";
@@ -61,25 +61,31 @@ export default function CustomizeProfile() {
   );
 
   //ui
-  //const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView
+    <View
       style={[
-        theme.container.page,
-        { backgroundColor: theme.colors.background },
+        {flex: 1, backgroundColor: theme.colors.background },
       ]}
     >
       <KeyboardAvoidingView behavior='padding'>
-        <ScrollView contentContainerStyle={theme.container.content} keyboardShouldPersistTaps="handled">
+        <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} keyboardShouldPersistTaps="handled">
 
-          <PageHeader logoText={"Profile"} backButtonEnabled={false} profileButtonEnabled={false}/>
+          <PageHeader
+          logoText={"Profile"}
+          backButtonEnabled={false}
+          profileButtonEnabled={false}
+          transparent={false}
+          />
+
+          <View style={styles.contentContainer}>
           
           <Text style={textstyles.header}>Diet & Restrictions</Text>
 
           <DietCheckList />
 
-          <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text }]}>
+          <Text style={[textstyles.subHeader, { marginBottom: -10, alignSelf: 'flex-start' }]}>
             Describe your diet:
           </Text>
           <CustomTextInput
@@ -94,7 +100,7 @@ export default function CustomizeProfile() {
             submitBehavior="blurAndSubmit"
           />
 
-          <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text  }]}>
+          <Text style={[textstyles.subHeader, { marginBottom: -10, alignSelf: 'flex-start' }]}>
             List your food allergies:
           </Text>
           <CustomTextInput
@@ -111,7 +117,7 @@ export default function CustomizeProfile() {
 
           <Text style={textstyles.header}>Food Preferences</Text>
 
-          <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text }]}>
+          <Text style={[textstyles.subHeader, { marginBottom: -10, alignSelf: 'flex-start' }]}>
             What are some ingredients you love?
           </Text>
           <CustomTextInput
@@ -126,7 +132,7 @@ export default function CustomizeProfile() {
             submitBehavior="blurAndSubmit"
           />
 
-          <Text style={[textstyles.label, { marginBottom: -10, color: theme.colors.text}]}>
+          <Text style={[textstyles.subHeader, { marginBottom: -10, alignSelf: 'flex-start' }]}>
             What are some ingredients you hate?
           </Text>
           <CustomTextInput
@@ -154,6 +160,7 @@ export default function CustomizeProfile() {
 
           <KitchenToolsCheckList />
 
+          <View style={[{marginTop: 25, marginBottom: 100,}]}>
           <Button
             label="Save and Exit"
             onPress={() => {
@@ -161,9 +168,23 @@ export default function CustomizeProfile() {
               router.back();
             }}
           />
+          </View>
 
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+    contentContainer: {
+      flex: 1,
+      flexDirection: "column",
+      gap: 20,
+      //justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: '5%',
+      paddingTop: '5%',
+    },
+});

@@ -21,11 +21,14 @@ export default function UserCookbook() {
 
   return (
     <View style={styles.screen}>
-    <PageHeader
-        logoText="Cookbook"
-        backButtonEnabled={true}
-        profileButtonEnabled={true}
-    />
+      <View style={[{zIndex: 10}]}>
+        <PageHeader
+            logoText="Cookbook"
+            backButtonEnabled={true}
+            profileButtonEnabled={true}
+            transparent={false}
+        />
+      </View>
 
     <FlatList
       data={saved_recipes}

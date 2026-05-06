@@ -75,6 +75,7 @@ export default function Discover() {
         logoText="Discover"
         backButtonEnabled={true}
         profileButtonEnabled={true}
+        transparent={false}
       />
     
       <View style={[{flex: 1, zIndex: 1}]}>
@@ -90,7 +91,7 @@ export default function Discover() {
           cards={random_recipes}
           renderCard={(recipeID) => {
             return (
-              <View style={styles.cardScaler} >
+              <View style={[styles.cardScaler, {pointerEvents: "none" }]} >
                 <RecipeCard ID={recipeID} />
               </View>
             )

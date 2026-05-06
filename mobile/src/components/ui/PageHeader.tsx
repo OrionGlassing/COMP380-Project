@@ -12,14 +12,15 @@ interface Props {
     logoText: String;
     backButtonEnabled: boolean;
     profileButtonEnabled: boolean;
+    transparent: boolean;
 }
 
-const PageHeader = ({ logoText, backButtonEnabled, profileButtonEnabled }: Props) => {
+const PageHeader = ({ logoText, backButtonEnabled, profileButtonEnabled, transparent }: Props) => {
 
     const insets = useSafeAreaInsets();
 
     return (
-        <View style={[styles.header, {paddingTop: insets.top}]}>
+        <View style={[(transparent ? styles.transparentHeader : styles.header), {paddingTop: insets.top}]}>
             <View style={styles.backContainer}>
                 {backButtonEnabled && 
                     <Arrow
@@ -59,11 +60,17 @@ const styles = StyleSheet.create({
         boxShadow: [{
             offsetX: 0,
             offsetY: 1,
-            blurRadius: 15,
+            blurRadius: 25,
             spreadDistance: 2,
-            color: 'rgba(0,0,0,0.4)',
+            color: 'rgba(0,0,0,0.6)',
             //inset: true, 
         }],
+    },
+    transparentHeader: {
+        alignSelf: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        height: 150,
     },
     backContainer: {
         flex: 1,

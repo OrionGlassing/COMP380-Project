@@ -66,6 +66,7 @@ export default function ID() {
                 logoText="CoKitchen"
                 backButtonEnabled={true}
                 profileButtonEnabled={true}
+                transparent={false}
                 />
 
             <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
@@ -86,6 +87,7 @@ export default function ID() {
             logoText="CoKitchen"
             backButtonEnabled={true}
             profileButtonEnabled={true}
+            transparent={false}
             />
 
         <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
