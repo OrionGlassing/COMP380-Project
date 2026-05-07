@@ -1,34 +1,51 @@
 import PageHeader from "@/src/components/ui/PageHeader";
 import { theme } from "@/src/constants/theme";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, FlatList, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import RecipeCard from "@/src/components/recipe-cards/recipeCard";
+import { useRecipeStore } from "@/utils/data-stores/recipeStore";
+import { useEffect } from "react";
 
 export default function UserCookbook() {
-    //ui
+  //ui
   const insets = useSafeAreaInsets();
+
+  //data
+  const saved_recipes = useRecipeStore((state) => state.saved_recipes);
+  const fetchSavedRecipes = useRecipeStore((state) => state.fetchSavedRecipes);
+
+  //Get the users saved recipes when page loads
+  useEffect(() => {
+    fetchSavedRecipes();
+  }, []);
 
   return (
     <View style={styles.screen}>
-    <PageHeader
-        logoText="Cookbook"
-        backButtonEnabled={true}
-        profileButtonEnabled={true}
+      <View style={[{zIndex: 10}]}>
+        <PageHeader
+            logoText="Cookbook"
+            backButtonEnabled={true}
+            profileButtonEnabled={true}
+            transparent={false}
+        />
+      </View>
+
+    <FlatList
+      data={saved_recipes}
+      keyExtractor={(item, index) => index.toString()}
+      numColumns={2}
+      contentContainerStyle={[
+        styles.contentContainer,
+        {paddingBottom: insets.bottom}
+      ]}
+      columnWrapperStyle={styles.rowWrapper}
+      bounces={true}
+      renderItem={({item}) => <RecipeCard ID={item} />}
+      ListEmptyComponent={
+        //TODO: Add the Create Recipe Card here!
+        <Text>Placeholder.</Text>
+      }
     />
-
-    {/*THIS NEEDS TO BE A FLATLIST*/}
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
-        <View style={[styles.contentContainer, { paddingBottom: insets.bottom }]}>
-            <View style={styles.grid} >
-              <RecipeCard ID="5" />
-              <RecipeCard ID="5" />
-              <RecipeCard ID="5" />
-
-              {/*DYNAMIC CARD GENERATOR GOES HERE*/}
-
-            </View>
-        </View>
-    </ScrollView>
     </View>
   );
 }
@@ -39,18 +56,14 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
   },
   contentContainer: {
-    flex: 1,
     gap: 20,
-    //justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: "5%",
     paddingTop: "5%",
   },
-  grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "flex-start", 
+  rowWrapper: {
     gap: 20,
-    width: 370, 
-},
+    justifyContent: 'flex-start',
+    width: 370,
+  },
 });

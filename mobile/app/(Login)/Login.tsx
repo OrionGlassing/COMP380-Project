@@ -16,11 +16,12 @@ export default function Login() {
         style={{flex:1}}
       >
         <View style={theme.container.page}>
-          <PageHeader logoText={"CoKitchen"} backButtonEnabled={false} profileButtonEnabled={false}/>
-          <View style={theme.container.component}>
-            <SocialButtons/>
-          </View>
-          <Divider />
+          <PageHeader
+            logoText={"CoKitchen"}
+            backButtonEnabled={false}
+            profileButtonEnabled={false}
+            transparent={true}
+          />
           <LoginForm />
           <Divider />
           <Button

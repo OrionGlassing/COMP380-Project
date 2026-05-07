@@ -13,7 +13,12 @@ export default function SignUp() {
         style={{flex:1}}
       >
         <View style={theme.container.page}>
-          <PageHeader logoText={"CoKitchen"} backButtonEnabled={false} profileButtonEnabled={false}/>
+          <PageHeader
+            logoText={"CoKitchen"}
+            backButtonEnabled={false}
+            profileButtonEnabled={false}
+            transparent={true}
+          />
           <Text style={textstyles.header}>New Account</Text>
           <SignUpForm />
         </View>

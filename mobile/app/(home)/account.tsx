@@ -4,13 +4,22 @@ import textstyles from "@/src/constants/textstyles";
 import { useAuthStore } from "@/utils/authStore";
 import { theme } from "@/src/constants/theme";
 import Button from "@/src/components/ui/Button";
-import Arrow from "@/src/components/ui/Arrow";
 import PageHeader from "@/src/components/ui/PageHeader";
 
 export default function Account() {
   const logOut = useAuthStore((state) => state.logOut);
 
+
   return (
+    <View style={[{flex: 1, }]}>
+      <View style={[{zIndex: 10}]}>
+        <PageHeader
+          logoText={"Account"}
+          backButtonEnabled={true}
+          profileButtonEnabled={false}
+          transparent={false}
+        />
+      </View>
     <View
       style={[
         theme.container.page,
@@ -22,11 +31,9 @@ export default function Account() {
       ]}
     >
 
-      <PageHeader logoText={"Account"} backButtonEnabled={true} profileButtonEnabled={false}/>
-
       <Text style={[textstyles.header]}>Manage your account</Text>
 
-      <View style={{ gap: theme.spacing.sm, alignSelf: "stretch" }}>
+      <View style={{ gap: theme.spacing.md, alignSelf: "stretch" }}>
         <Button
           label="Customize Profile"
           onPress={() => router.push("/customize-profile")}
@@ -43,7 +50,13 @@ export default function Account() {
             backgroundColor: theme.colors.primary,
           }}
         />
+        <Button
+          label="Get Help"
+          onPress={() => router.push("/Help")}
+          style={{ alignSelf: "stretch" }}
+        />
       </View>
+    </View>
     </View>
   );
 }

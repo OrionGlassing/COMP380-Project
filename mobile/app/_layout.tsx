@@ -5,15 +5,12 @@ import { useAuthStore } from "@/utils/authStore";
 // I dont know if that will be a problem when the app is ran on android devices later on
 import BootSplash from "react-native-bootsplash";
 
-console.log("layout.tsx");
-
 export default function RootLayout() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const hydrated = useAuthStore((state) => state.hydrated);
 
   useEffect(() => {
     if (hydrated) {
-      console.log("Hiding splash screen!");
       BootSplash.hide({ fade: true });
     }
   }, [hydrated]);

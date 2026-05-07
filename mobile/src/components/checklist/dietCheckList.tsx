@@ -11,7 +11,7 @@ const DietCheckList = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={textstyles.subHeader}>Select your diet(s):</Text>
+      <Text style={textstyles.subHeader}>Select your diets:</Text>
       <View style={styles.window}>
         <ScrollView nestedScrollEnabled contentContainerStyle={styles.listContent}>
           {dietOptions.map((diet) => (

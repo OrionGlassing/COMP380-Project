@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { KeyboardAvoidingView, Platform, ScrollView, Text } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useCreateNewRecipeStore } from "@/utils/data-stores/createNewRecipeStore";
 import LabeledSlider from "@/src/components/sliders/LabeledSlider";
@@ -46,11 +46,18 @@ export default function CreateNewRecipe() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
-      <KeyboardAvoidingView behavior='padding'>
-        <ScrollView contentContainerStyle={theme.container.content} keyboardShouldPersistTaps="handled">
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+      <View style={[{zIndex: 10}]}>
+        <PageHeader
+        logoText={"New Recipe"}
+        backButtonEnabled={true}
+        profileButtonEnabled={true}
+        transparent={false}
+        />
+      </View>
 
-          <PageHeader logoText={"New Recipe"} backButtonEnabled={true} profileButtonEnabled={true}/>
+      <KeyboardAvoidingView behavior='padding' style={{flex:1}}>
+        <ScrollView contentContainerStyle={[theme.container.content, {marginTop: 25}]} keyboardShouldPersistTaps="handled">
 
           <Text style={textstyles.header}>General Options</Text>
 
@@ -117,14 +124,17 @@ export default function CreateNewRecipe() {
             submitBehavior="blurAndSubmit"
           />
 
+          <View style={[{marginBottom: 100}]}>
           <Button
             label="Let's Cook!"
             onPress={() => {
               router.replace("/loading-recipe");
             }}
           />
+          </View>
+
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }

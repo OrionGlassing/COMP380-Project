@@ -84,6 +84,9 @@ const RecipeCard = ({ID, }: Props) => {
                         
                         <View style={[styles.textContainer, {flex: 1.5, paddingBottom: 4, }]} >
                             <Text style={styles.textSub} >
+                                {recipe.recipe_id}
+                            </Text>
+                            <Text style={styles.textSub} >
                                 {recipe.cook_time}
                             </Text>
 

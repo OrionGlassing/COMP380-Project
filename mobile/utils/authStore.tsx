@@ -4,6 +4,11 @@ import { Platform } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
+import { useRecipeStore } from "./data-stores/recipeStore";
+import { useCreateNewRecipeStore } from "./data-stores/createNewRecipeStore";
+import { useCustomizeProfileStore } from "./data-stores/customizeProfileStore";
+
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 interface UserState {
     hydrated: boolean;                  //Frontend only (prevents that app from briefly routing to the wrong page)
@@ -57,7 +62,7 @@ export const useAuthStore = create<UserState>()(
         const credential = await signInWithEmailAndPassword(auth, email, password);
         const idToken = await credential.user.getIdToken();
 
-        const response = await fetch("http://192.168.1.140:8000/auth/login/", {
+        const response = await fetch(`${API_URL}/auth/login/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -71,7 +76,7 @@ export const useAuthStore = create<UserState>()(
           throw new Error(data.error || "Login failed");
         }
         console.log(data.error);
-    
+        
         set({
           isLoggedIn: true,
           hasCompletedTutorial: true,
@@ -110,6 +115,15 @@ export const useAuthStore = create<UserState>()(
       },
 
       logOut: () => {
+        //Reset the other stores
+        useRecipeStore.getState().reset();
+        useRecipeStore.persist.clearStorage();
+
+        useCreateNewRecipeStore.getState().reset();
+        
+        useCustomizeProfileStore.getState().reset();
+        useCustomizeProfileStore.persist.clearStorage();
+
         set({
           isLoggedIn: false,
           userID: null,
@@ -132,7 +146,7 @@ export const useAuthStore = create<UserState>()(
                 return;
               }
             
-              const response = await fetch("http://ip:8000/authentication/me/", {
+              const response = await fetch(`${API_URL}/authentication/me/`, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
