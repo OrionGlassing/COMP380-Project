@@ -5,6 +5,7 @@ db.sqlite3
 .env
 .DS_Store
 .vscode/
+.secrets
 
 # macOS
 .DS_Store
