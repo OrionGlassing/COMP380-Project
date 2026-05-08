@@ -57,7 +57,6 @@ export const useAuthStore = create<UserState>()(
       setHydrated: (value) => set({ hydrated: value }),
 
       logIn: async (email, password) => {
-        /*
         const credential = await signInWithEmailAndPassword(auth, email, password);
         const idToken = await credential.user.getIdToken();
 
@@ -82,10 +81,6 @@ export const useAuthStore = create<UserState>()(
           userID: data.user.uid,
           token: idToken,
         });
-        */
-       set({
-        isLoggedIn: true,
-       });
       },
 
       createNewAccount: async (username, email, password) => {
@@ -129,6 +124,7 @@ export const useAuthStore = create<UserState>()(
 
         set({
           isLoggedIn: false,
+          hasCompletedTutorial: false,
           userID: null,
           token: null,
         });

@@ -1,10 +1,11 @@
 import PageHeader from "@/src/components/ui/PageHeader";
 import { theme } from "@/src/constants/theme";
-import { View, StyleSheet, ScrollView, FlatList, Text } from "react-native";
+import { View, StyleSheet, ScrollView, FlatList, Text, ActivityIndicator } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import RecipeCard from "@/src/components/recipe-cards/recipeCard";
 import { useRecipeStore } from "@/utils/data-stores/recipeStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import MakeNewRecipeCard from "@/src/components/recipe-cards/makeNewRecipeCard";
 
 export default function UserCookbook() {
   //ui
@@ -14,9 +15,17 @@ export default function UserCookbook() {
   const saved_recipes = useRecipeStore((state) => state.saved_recipes);
   const fetchSavedRecipes = useRecipeStore((state) => state.fetchSavedRecipes);
 
+  //local data
+  const [hydrated, setHydrated] = useState<boolean>(false);
+
   //Get the users saved recipes when page loads
   useEffect(() => {
-    fetchSavedRecipes();
+    const load = async () => {
+      await fetchSavedRecipes();
+      setHydrated(true);
+    }
+
+    load();
   }, []);
 
   return (
@@ -30,6 +39,7 @@ export default function UserCookbook() {
         />
       </View>
 
+    {hydrated ? (
     <FlatList
       data={saved_recipes}
       keyExtractor={(item) => item}
@@ -42,10 +52,18 @@ export default function UserCookbook() {
       bounces={true}
       renderItem={({item}) => <RecipeCard ID={item} />}
       ListEmptyComponent={
-        //TODO: Add the Create Recipe Card here!
-        <Text>Placeholder.</Text>
+        <View style={styles.rowWrapper}>
+          <MakeNewRecipeCard />
+        </View>
       }
     />
+    ) : (
+      <View style={[{flex: 1, alignItems: 'center', justifyContent: 'center'}]}>
+        <View style={[{paddingBottom: 200}]}>
+          <ActivityIndicator size={'large'} color={theme.colors.primary} />
+        </View>
+      </View>
+    )}
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Text, View, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import textStyles from "@/src/constants/textstyles";
@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "@/src/components/ui/PageHeader";
 import { theme } from "@/src/constants/theme";
 import Button from "@/src/components/ui/Button";
+import textstyles from "@/src/constants/textstyles";
 
 //
 // Notes:
@@ -49,7 +50,9 @@ export default function ID() {
 
     //As soon as the page opens, get the recipe data from the zustand store
     useEffect(() => {
-        fetchRecipeById(id);
+        if (!recipe) {
+            fetchRecipeById(id);
+        }
     }, [id]);
 
     //ui
@@ -69,9 +72,11 @@ export default function ID() {
                 transparent={false}
                 />
 
-            <View style={[styles.contentContainer, {paddingBottom: insets.bottom}]} >
+            <View style={[{paddingBottom: insets.bottom}]} >
 
-            
+                <ActivityIndicator size={"large"} color={theme.colors.primary} />
+                <Text style={textstyles.body}>Loading recipe...</Text>
+
             </View>
             </ScrollView>
             </View>

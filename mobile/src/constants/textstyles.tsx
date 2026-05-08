@@ -35,7 +35,7 @@ const textstyles = StyleSheet.create({
 
   error: {
     fontSize: 15,
-    fontWeight: 700,
+    fontWeight: "700",
     color: "red",
     textAlign: "center",
   },

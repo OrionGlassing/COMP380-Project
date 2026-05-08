@@ -211,13 +211,7 @@ export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get, s
             set({ isSubmitting: false, submitError: true});
             console.error("Error submitting new recipe: ", error);
             return null;
-            //This wants to trip a value that the loading recipe page wants to lsiten to
-            //When it trips, the loading page will know that something went wrong
-            //And then it will provide an exit option (or mayebe retry button too)
         }
-
-        //For now it returns 2 for testing purposes
-        return "2";
     },
 
     reset: () => set(store.getInitialState()),

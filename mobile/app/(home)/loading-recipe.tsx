@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { Text, View, ActivityIndicator } from "react-native";
+import { Text, View, ActivityIndicator, Alert } from "react-native";
 import { theme } from "@/src/constants/theme";
 import { useEffect } from "react";
 import { useCreateNewRecipeStore } from "@/utils/data-stores/createNewRecipeStore";
@@ -15,45 +15,54 @@ and recieving the new recipe that was generated.
 */
 
 export default function LoadingRecipe() {
-  const submitNewRecipe = useCreateNewRecipeStore(
-    (state) => state.submitNewRecipe,
-  );
-  const isSubmitting = useCreateNewRecipeStore((state) => state.isSubmitting);
+  const submitNewRecipe = useCreateNewRecipeStore((state) => state.submitNewRecipe);
 
   const handleCreateNewRecipe = async () => {
-    try {
-      console.log("Sending recipe...");
-      const newRecipeID = await submitNewRecipe();
-      if (newRecipeID) {
-        console.log("Recieved recipe ID...");
-      }
+    const newRecipeID = await submitNewRecipe();
+
+    if (newRecipeID) {
+      //Recipe load success
       router.replace(`/recipe/${newRecipeID}`);
-    } catch (error) {
-      console.log(error);
+    } else {
+      //Recipe load fail
+      Alert.alert("Something Went Wrong!", "Sorry, your chef couldn't prepare your recipe.", [
+        {
+          text: "Try Again",
+          style: "cancel",
+          onPress: () => {
+            handleCreateNewRecipe();
+          },
+        },
+        {
+          text: "Go Back",
+          onPress: () => {
+            router.replace(`/create-new-recipe`);
+          }
+        },
+      ],
+      {
+        cancelable: false,
+      }
+    );
     }
   };
 
+
   //As soon as the page opens, use the zustand store to communicate with the backend
   useEffect(() => {
-    setTimeout(() => {
-      handleCreateNewRecipe();
-    }, 5000);
+    handleCreateNewRecipe();
   }, []);
 
+  //Waiting on backend / database
   return (
     <View
       style={[
         theme.container.page,
-        { backgroundColor: theme.colors.background },
+        { backgroundColor: theme.colors.background, alignItems: 'center', gap: 25, },
       ]}
     >
-      {/* If something goes wrong, we will give the user a back button to leave the page.*/}
-      <Arrow
-        type={"arrow-back"}
-        onPress={() => router.replace("/create-new-recipe")}
-      />
       <ActivityIndicator size="large" color={theme.colors.primary} />
-      <Text style={textstyles.body}>Loading...</Text>
+      <Text style={textstyles.body}>Crafting something delicious...</Text>
     </View>
   );
 }

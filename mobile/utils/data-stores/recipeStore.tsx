@@ -91,6 +91,7 @@ export const useRecipeStore = create(     //zustand creates a store
             fetchSavedRecipes: async () => {
                 //Get all of the users saved recipes from the database
                 const userID = useAuthStore.getState().userID;
+
                 try {
                     //Fetch all of the users saved recipes from the backend (userID is passed in)
                     //This is meant to return an array of recipe datatypes
@@ -140,12 +141,12 @@ export const useRecipeStore = create(     //zustand creates a store
                 */
 
                 //Frontend only test version
-                //const randomID: string = Math.floor(Math.random() * 25).toString();
-                const randomID: string = "ab";
+                const randomID: string = Math.floor(Math.random() * 25).toString();
+                const newTestRecipeData = {...testRecipeData, recipe_id: randomID};
                 set((state) => ({
                     recipes: {
                         ...state.recipes,
-                        [randomID]: testRecipeData
+                        [randomID]: newTestRecipeData
                     }
                 }));
                 return randomID;

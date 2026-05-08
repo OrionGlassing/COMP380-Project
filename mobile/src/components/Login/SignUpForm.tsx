@@ -35,12 +35,16 @@ export default function SignUpForm() {
     }
     try {
       await createNewAccount(username, email, password);
+      setError("");
       router.replace("/");
     } catch (error) {
-      setError("Sign up failed. Please try again.");
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Sign up failed. Please try again.");
+      }
       return;
     }
-    setError("");
   };
 
   return (
