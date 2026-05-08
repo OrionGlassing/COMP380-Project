@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { Recipe } from "@/src/types/dataTypes";
 import { useAuthStore } from "../authStore";
 
@@ -8,12 +9,12 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 interface RecipeStore {
   recipes: Record<string, Recipe>;
-  saved_recipes: string[];
+  user_recipe_ids: string[];
 
-  isFetchingRecipe: boolean;
-  fetchRecipeError: string | null;
+  isFetchingRecipes: boolean;
+  fetchRecipesError: string | null;
 
-  fetchSavedRecipes: () => Promise<void>;
+  fetchUserRecipes: () => Promise<void>;
   fetchRandomRecipe: () => Promise<string | null>;
   fetchRecipeById: (id: string) => Promise<void>;
   addRecipe: (addition: Recipe) => void;
@@ -25,47 +26,77 @@ export const useRecipeStore = create<RecipeStore>()(
   persist(
     (set, get) => ({
       recipes: {},
-      saved_recipes: [],
+      user_recipe_ids: [],
 
-      isFetchingRecipe: false,
-      fetchRecipeError: null,
+      isFetchingRecipes: false,
+      fetchRecipesError: null,
 
-      fetchSavedRecipes: async () => {
+      fetchUserRecipes: async () => {
+        if (!API_URL) {
+          set({
+            isFetchingRecipes: false,
+            fetchRecipesError: "API URL is missing.",
+          });
+
+          throw new Error("EXPO_PUBLIC_API_URL is missing.");
+        }
+
         const userID = useAuthStore.getState().userID;
 
-        if (!API_URL) {
-          console.error("EXPO_PUBLIC_API_URL is missing.");
-          return;
+        if (!userID) {
+          set({
+            isFetchingRecipes: false,
+            fetchRecipesError: "User ID is missing.",
+          });
+
+          throw new Error("Cannot fetch recipes: userID is missing.");
         }
+
+        set({
+          isFetchingRecipes: true,
+          fetchRecipesError: null,
+        });
 
         try {
           const response = await fetch(`${API_URL}/ai/cookbook/${userID}/`);
 
           if (!response.ok) {
             const errorText = await response.text();
-            console.error("Failed to fetch saved recipes:", errorText);
-            throw new Error("Failed to fetch saved recipes.");
+            console.error("Failed to fetch user recipes:", errorText);
+            throw new Error("Failed to fetch user recipes.");
           }
 
           const data = await response.json();
           const fetchedRecipes: Recipe[] = data.recipes ?? [];
 
-          set((state) => {
-            const updatedRecipes = { ...state.recipes };
-            const updatedSavedIds = new Set(state.saved_recipes);
+          const updatedRecipes: Record<string, Recipe> = {};
+          const updatedRecipeIds: string[] = [];
 
-            fetchedRecipes.forEach((recipe) => {
-              updatedRecipes[recipe.recipe_id] = recipe;
-              updatedSavedIds.add(recipe.recipe_id);
-            });
+          fetchedRecipes.forEach((recipe) => {
+            const recipeID = String(recipe.recipe_id);
 
-            return {
-              recipes: updatedRecipes,
-              saved_recipes: Array.from(updatedSavedIds),
-            };
+            updatedRecipes[recipeID] = recipe;
+            updatedRecipeIds.push(recipeID);
           });
+
+          set((state) => ({
+            recipes: {
+              ...state.recipes,
+              ...updatedRecipes,
+            },
+            user_recipe_ids: updatedRecipeIds,
+            isFetchingRecipes: false,
+            fetchRecipesError: null,
+          }));
         } catch (error) {
-          console.error("Failed to fetch saved recipes:", error);
+          console.error("Failed to fetch user recipes:", error);
+
+          set({
+            isFetchingRecipes: false,
+            fetchRecipesError: "Failed to fetch user recipes.",
+          });
+
+          throw error;
         }
       },
 
@@ -85,15 +116,16 @@ export const useRecipeStore = create<RecipeStore>()(
           }
 
           const fetchedRecipe: Recipe = await response.json();
+          const recipeID = String(fetchedRecipe.recipe_id);
 
           set((state) => ({
             recipes: {
               ...state.recipes,
-              [fetchedRecipe.recipe_id]: fetchedRecipe,
+              [recipeID]: fetchedRecipe,
             },
           }));
 
-          return fetchedRecipe.recipe_id;
+          return recipeID;
         } catch (error) {
           console.error("Failed to fetch random recipe:", error);
           return null;
@@ -101,58 +133,49 @@ export const useRecipeStore = create<RecipeStore>()(
       },
 
       fetchRecipeById: async (id: string) => {
+        if (get().recipes[id]) {
+          return;
+        }
+
         if (!API_URL) {
           set({
-            isFetchingRecipe: false,
-            fetchRecipeError: "API URL is missing.",
+            fetchRecipesError: "API URL is missing.",
           });
 
           throw new Error("EXPO_PUBLIC_API_URL is missing.");
         }
 
-        if (get().recipes[id]) {
-          console.log("Recipe loaded from cache:", id);
-          return;
-        }
-
-        const url = `${API_URL}/ai/recipes/${id}/`;
-
-        console.log("FETCHING RECIPE URL:", url);
-
         set({
-          isFetchingRecipe: true,
-          fetchRecipeError: null,
+          isFetchingRecipes: true,
+          fetchRecipesError: null,
         });
 
         try {
-          const response = await fetch(url);
-
-          console.log("FETCH RECIPE STATUS:", response.status);
+          const response = await fetch(`${API_URL}/ai/recipes/${id}/`);
 
           if (!response.ok) {
             const errorText = await response.text();
-            console.log("FETCH RECIPE ERROR BODY:", errorText);
+            console.error("Failed to fetch recipe:", errorText);
             throw new Error("Failed to fetch recipe.");
           }
 
           const fetchedRecipe: Recipe = await response.json();
-
-          console.log("FETCHED RECIPE:", fetchedRecipe);
+          const recipeID = String(fetchedRecipe.recipe_id);
 
           set((state) => ({
             recipes: {
               ...state.recipes,
-              [id]: fetchedRecipe,
+              [recipeID]: fetchedRecipe,
             },
-            isFetchingRecipe: false,
-            fetchRecipeError: null,
+            isFetchingRecipes: false,
+            fetchRecipesError: null,
           }));
         } catch (error) {
           console.error("Failed to fetch recipe:", error);
 
           set({
-            isFetchingRecipe: false,
-            fetchRecipeError: "Failed to fetch recipe.",
+            isFetchingRecipes: false,
+            fetchRecipesError: "Failed to fetch recipe.",
           });
 
           throw error;
@@ -160,66 +183,33 @@ export const useRecipeStore = create<RecipeStore>()(
       },
 
       addRecipe: (addition: Recipe) => {
+        const recipeID = String(addition.recipe_id);
+
         set((state) => ({
           recipes: {
             ...state.recipes,
-            [addition.recipe_id]: addition,
+            [recipeID]: addition,
           },
+          user_recipe_ids: state.user_recipe_ids.includes(recipeID)
+            ? state.user_recipe_ids
+            : [recipeID, ...state.user_recipe_ids],
         }));
       },
 
       saveRecipe: async (recipeID: string) => {
-        const alreadySaved = get().saved_recipes.includes(recipeID);
-        if (alreadySaved) return;
-
         set((state) => ({
-          saved_recipes: [recipeID, ...state.saved_recipes],
+          user_recipe_ids: state.user_recipe_ids.includes(recipeID)
+            ? state.user_recipe_ids
+            : [recipeID, ...state.user_recipe_ids],
         }));
-
-        if (!API_URL) {
-          console.error("EXPO_PUBLIC_API_URL is missing.");
-
-          set((state) => ({
-            saved_recipes: state.saved_recipes.filter((id) => id !== recipeID),
-          }));
-
-          return;
-        }
-
-        const userID = useAuthStore.getState().userID;
-
-        try {
-          const response = await fetch(`${API_URL}/ai/cookbook/save/`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              user_id: userID,
-              recipe_id: recipeID,
-            }),
-          });
-
-          if (!response.ok) {
-            const errorText = await response.text();
-            console.error("Failed to save recipe:", errorText);
-            throw new Error("Failed to save recipe.");
-          }
-        } catch (error) {
-          console.error("Save failed, rolling back local state:", error);
-
-          set((state) => ({
-            saved_recipes: state.saved_recipes.filter((id) => id !== recipeID),
-          }));
-        }
       },
 
       reset: () => {
         set({
           recipes: {},
-          saved_recipes: [],
-          isFetchingRecipe: false,
-          fetchRecipeError: null,
+          user_recipe_ids: [],
+          isFetchingRecipes: false,
+          fetchRecipesError: null,
         });
       },
     }),

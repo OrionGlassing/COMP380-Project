@@ -1,48 +1,40 @@
 import { create } from "zustand";
+
 import { CheckListEntry } from "@/src/types/dataTypes";
-import { useAuthStore } from "../authStore";
 import { useCustomizeProfileStore } from "@/utils/data-stores/customizeProfileStore";
+import { useAuthStore } from "../authStore";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 interface CreateNewRecipeState {
-  // Recipe Type Checklist
   recipeTypeOptions: CheckListEntry[];
   toggleRecipeOption: (id: string) => void;
 
-  // Cuisine Type Checklist
   cuisineTypeOptions: CheckListEntry[];
   toggleCuisineOption: (id: string) => void;
 
-  // Season Type Checklist
   seasonTypeOptions: CheckListEntry[];
   toggleSeasonOption: (id: string) => void;
 
-  // Spice Level Slider
   spiceLevelValue: string;
   spiceLevelIndex: number;
   setSpiceLevel: (value: string, index: number) => void;
 
-  // Sweetness Level Slider
   sweetnessLevelValue: string;
   sweetnessLevelIndex: number;
   setSweetnessLevel: (value: string, index: number) => void;
 
-  // Recipe Complexity Slider
   recipeComplexityValue: string;
   recipeComplexityIndex: number;
   setRecipeComplexity: (value: string, index: number) => void;
 
-  // Recipe Time Limit Slider
   recipeTimeValue: string;
   recipeTimeIndex: number;
   setRecipeTime: (value: string, index: number) => void;
 
-  // Recipe Description Text Box
   recipeDescription: string;
   setRecipeDescription: (value: string) => void;
 
-  // Submitting data to the backend
   isSubmitting: boolean;
   submitError: boolean;
   submitNewRecipe: () => Promise<string>;
@@ -60,6 +52,7 @@ const getInitialCheckListData = () => ({
     { id: "drink", label: "Drink", isChecked: false },
     { id: "specialevent", label: "Special Event", isChecked: false },
   ],
+
   cuisineOptions: [
     { id: "american", label: "American", isChecked: false },
     { id: "mexican", label: "Mexican", isChecked: false },
@@ -72,6 +65,7 @@ const getInitialCheckListData = () => ({
     { id: "korean", label: "Korean", isChecked: false },
     { id: "indian", label: "Indian", isChecked: false },
   ],
+
   seasonOptions: [
     { id: "fall", label: "Fall", isChecked: false },
     { id: "winter", label: "Winter", isChecked: false },
@@ -80,127 +74,138 @@ const getInitialCheckListData = () => ({
   ],
 });
 
-const initialCheckListData = getInitialCheckListData();
+const createFreshCheckListData = () => {
+  const data = getInitialCheckListData();
 
-export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get) => ({
-  // Recipe Type Checklist
-  recipeTypeOptions: initialCheckListData.recipeOptions,
-  toggleRecipeOption: (id) =>
-    set((state) => ({
-      recipeTypeOptions: state.recipeTypeOptions.map((type) =>
-        type.id === id ? { ...type, isChecked: !type.isChecked } : type
-      ),
-    })),
+  return {
+    recipeTypeOptions: data.recipeOptions,
+    cuisineTypeOptions: data.cuisineOptions,
+    seasonTypeOptions: data.seasonOptions,
+  };
+};
 
-  // Cuisine Type Checklist
-  cuisineTypeOptions: initialCheckListData.cuisineOptions,
-  toggleCuisineOption: (id) =>
-    set((state) => ({
-      cuisineTypeOptions: state.cuisineTypeOptions.map((type) =>
-        type.id === id ? { ...type, isChecked: !type.isChecked } : type
-      ),
-    })),
+export const useCreateNewRecipeStore = create<CreateNewRecipeState>(
+  (set, get) => ({
+    ...createFreshCheckListData(),
 
-  // Season Type Checklist
-  seasonTypeOptions: initialCheckListData.seasonOptions,
-  toggleSeasonOption: (id) =>
-    set((state) => ({
-      seasonTypeOptions: state.seasonTypeOptions.map((type) =>
-        type.id === id ? { ...type, isChecked: !type.isChecked } : type
-      ),
-    })),
+    toggleRecipeOption: (id) =>
+      set((state) => ({
+        recipeTypeOptions: state.recipeTypeOptions.map((type) =>
+          type.id === id ? { ...type, isChecked: !type.isChecked } : type
+        ),
+      })),
 
-  // Spice Level Slider
-  spiceLevelValue: "Mild",
-  spiceLevelIndex: 2,
-  setSpiceLevel: (value, index) =>
-    set({
-      spiceLevelValue: value,
-      spiceLevelIndex: index,
-    }),
+    toggleCuisineOption: (id) =>
+      set((state) => ({
+        cuisineTypeOptions: state.cuisineTypeOptions.map((type) =>
+          type.id === id ? { ...type, isChecked: !type.isChecked } : type
+        ),
+      })),
 
-  // Sweetness Level Slider
-  sweetnessLevelValue: "Some",
-  sweetnessLevelIndex: 2,
-  setSweetnessLevel: (value, index) =>
-    set({
-      sweetnessLevelValue: value,
-      sweetnessLevelIndex: index,
-    }),
+    toggleSeasonOption: (id) =>
+      set((state) => ({
+        seasonTypeOptions: state.seasonTypeOptions.map((type) =>
+          type.id === id ? { ...type, isChecked: !type.isChecked } : type
+        ),
+      })),
 
-  // Recipe Complexity Slider
-  recipeComplexityValue: "Average",
-  recipeComplexityIndex: 1,
-  setRecipeComplexity: (value, index) =>
-    set({
-      recipeComplexityValue: value,
-      recipeComplexityIndex: index,
-    }),
-
-  // Recipe Time Limit Slider
-  recipeTimeValue: "45 min",
-  recipeTimeIndex: 2,
-  setRecipeTime: (value, index) =>
-    set({
-      recipeTimeValue: value,
-      recipeTimeIndex: index,
-    }),
-
-  // Recipe Description Text Box
-  recipeDescription: "",
-  setRecipeDescription: (value) =>
-    set({
-      recipeDescription: value,
-    }),
-
-  // Submitting to the backend
-  isSubmitting: false,
-  submitError: false,
-
-  submitNewRecipe: async () => {
-    set({
-      isSubmitting: true,
-      submitError: false,
-    });
-
-    const state = get();
-    const userID = useAuthStore.getState().userID;
-
-    if (!API_URL) {
+    spiceLevelValue: "Mild",
+    spiceLevelIndex: 2,
+    setSpiceLevel: (value, index) =>
       set({
-        isSubmitting: false,
-        submitError: true,
+        spiceLevelValue: value,
+        spiceLevelIndex: index,
+      }),
+
+    sweetnessLevelValue: "Some",
+    sweetnessLevelIndex: 2,
+    setSweetnessLevel: (value, index) =>
+      set({
+        sweetnessLevelValue: value,
+        sweetnessLevelIndex: index,
+      }),
+
+    recipeComplexityValue: "Average",
+    recipeComplexityIndex: 1,
+    setRecipeComplexity: (value, index) =>
+      set({
+        recipeComplexityValue: value,
+        recipeComplexityIndex: index,
+      }),
+
+    recipeTimeValue: "45 min",
+    recipeTimeIndex: 2,
+    setRecipeTime: (value, index) =>
+      set({
+        recipeTimeValue: value,
+        recipeTimeIndex: index,
+      }),
+
+    recipeDescription: "",
+    setRecipeDescription: (value) =>
+      set({
+        recipeDescription: value,
+      }),
+
+    isSubmitting: false,
+    submitError: false,
+
+    submitNewRecipe: async () => {
+      set({
+        isSubmitting: true,
+        submitError: false,
       });
 
-      throw new Error("EXPO_PUBLIC_API_URL is missing.");
-    }
+      const state = get();
+      const userID = useAuthStore.getState().userID;
 
-    if (!state.recipeDescription.trim()) {
-      set({
-        isSubmitting: false,
-        submitError: true,
-      });
+      if (!API_URL) {
+        set({
+          isSubmitting: false,
+          submitError: true,
+        });
 
-      throw new Error("Recipe description is required before submitting.");
-    }
+        throw new Error("EXPO_PUBLIC_API_URL is missing.");
+      }
 
-    const profileState = useCustomizeProfileStore.getState();
+      if (!userID) {
+        set({
+          isSubmitting: false,
+          submitError: true,
+        });
 
-    const userProfile = {
-      difficulty: profileState.cookingExperienceIndex,
-      diets: profileState.dietOptions
-        .filter((diet) => diet.isChecked)
-        .map((diet) => diet.id),
-      tools: profileState.kitchenTools
-        .filter((tool) => tool.isChecked)
-        .map((tool) => tool.id),
-      dietDescription: profileState.dietDescription,
-      allergyDescription: profileState.allergyDescription,
-      lovedIngredientsDescription: profileState.lovedIngredientsDescription,
-      hatedIngredientsDescription: profileState.hatedIngredientsDescription,
-    };
+        throw new Error("Cannot submit recipe: userID is missing.");
+      }
 
-    const payload = {
+      if (!state.recipeDescription.trim()) {
+        set({
+          isSubmitting: false,
+          submitError: true,
+        });
+
+        throw new Error("Recipe description is required before submitting.");
+      }
+
+      const profileState = useCustomizeProfileStore.getState();
+
+      const userProfile = {
+        difficulty: profileState.cookingExperienceIndex,
+
+        diets: profileState.dietOptions
+          .filter((diet) => diet.isChecked)
+          .map((diet) => diet.id),
+
+        tools: profileState.kitchenTools
+          .filter((tool) => tool.isChecked)
+          .map((tool) => tool.id),
+
+        dietDescription: profileState.dietDescription,
+        allergyDescription: profileState.allergyDescription,
+        lovedIngredientsDescription: profileState.lovedIngredientsDescription,
+        hatedIngredientsDescription: profileState.hatedIngredientsDescription,
+      };
+
+      const payload = {
         creator_id: userID,
 
         recipe_types: state.recipeTypeOptions
@@ -222,81 +227,68 @@ export const useCreateNewRecipeStore = create<CreateNewRecipeState>((set, get) =
         description: state.recipeDescription.trim(),
 
         user_profile: userProfile,
-    };
+      };
 
-    console.log("CREATE RECIPE PAYLOAD:", JSON.stringify(payload, null, 2));
-    console.log("DESCRIPTION VALUE:", state.recipeDescription);
-    console.log("API URL:", API_URL);
+      console.log("CREATE RECIPE PAYLOAD:", JSON.stringify(payload, null, 2));
+      console.log("API URL:", API_URL);
 
-    try {
-      const response = await fetch(`${API_URL}/ai/chat/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      try {
+        const response = await fetch(`${API_URL}/ai/chat/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || "Error making new recipe!");
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText || "Error making new recipe.");
+        }
+
+        const data = await response.json();
+
+        set({
+          isSubmitting: false,
+          submitError: false,
+        });
+
+        get().reset();
+
+        return data.recipe_id;
+      } catch (error) {
+        set({
+          isSubmitting: false,
+          submitError: true,
+        });
+
+        console.error("Error submitting new recipe:", error);
+
+        throw error;
       }
+    },
 
-      const data = await response.json();
-
+    reset: () => {
       set({
+        ...createFreshCheckListData(),
+
+        spiceLevelValue: "Mild",
+        spiceLevelIndex: 2,
+
+        sweetnessLevelValue: "Some",
+        sweetnessLevelIndex: 2,
+
+        recipeComplexityValue: "Average",
+        recipeComplexityIndex: 1,
+
+        recipeTimeValue: "45 min",
+        recipeTimeIndex: 2,
+
+        recipeDescription: "",
+
         isSubmitting: false,
         submitError: false,
       });
-
-      state.reset();
-
-      return data.recipe_id;
-    } catch (error) {
-      set({
-        isSubmitting: false,
-        submitError: true,
-      });
-
-      console.error("Error submitting new recipe:", error);
-
-      throw error;
-    }
-  },
-
-  reset: () => {
-    set({
-      recipeTypeOptions: initialCheckListData.recipeOptions.map((opt) => ({
-        ...opt,
-        isChecked: false,
-      })),
-
-      cuisineTypeOptions: initialCheckListData.cuisineOptions.map((opt) => ({
-        ...opt,
-        isChecked: false,
-      })),
-
-      seasonTypeOptions: initialCheckListData.seasonOptions.map((opt) => ({
-        ...opt,
-        isChecked: false,
-      })),
-
-      spiceLevelValue: "Mild",
-      spiceLevelIndex: 2,
-
-      sweetnessLevelValue: "Some",
-      sweetnessLevelIndex: 2,
-
-      recipeComplexityValue: "Average",
-      recipeComplexityIndex: 1,
-
-      recipeTimeValue: "45 min",
-      recipeTimeIndex: 2,
-
-      recipeDescription: "",
-
-      isSubmitting: false,
-      submitError: false,
-    });
-  },
-}));
+    },
+  })
+);

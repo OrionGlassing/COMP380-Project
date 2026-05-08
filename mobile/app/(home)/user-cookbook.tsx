@@ -10,7 +10,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import RecipeCard from "@/src/components/recipe-cards/recipeCard";
 import { useRecipeStore } from "@/utils/data-stores/recipeStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const CARD_GAP = 20;
 const HORIZONTAL_PADDING_PERCENT = 0.05;
@@ -20,12 +20,13 @@ export default function UserCookbook() {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
 
-  const saved_recipes = useRecipeStore((state) => state.saved_recipes);
-  const fetchSavedRecipes = useRecipeStore((state) => state.fetchSavedRecipes);
+  const userRecipeIds = useRecipeStore((state) => state.user_recipe_ids);
+  const fetchUserRecipes = useRecipeStore((state) => state.fetchUserRecipes);
+  const isFetchingRecipes = useRecipeStore((state) => state.isFetchingRecipes);
 
   useEffect(() => {
-    fetchSavedRecipes();
-  }, [fetchSavedRecipes]);
+    fetchUserRecipes();
+  }, [fetchUserRecipes]);
 
   const horizontalPadding = width * HORIZONTAL_PADDING_PERCENT;
   const availableWidth = width - horizontalPadding * 2;
@@ -50,7 +51,7 @@ export default function UserCookbook() {
       </View>
 
       <FlatList
-        data={saved_recipes}
+        data={userRecipeIds}
         key={numColumns}
         keyExtractor={(item) => String(item)}
         numColumns={numColumns}

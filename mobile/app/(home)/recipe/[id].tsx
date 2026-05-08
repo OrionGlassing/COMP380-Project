@@ -2,10 +2,11 @@ import { router, useLocalSearchParams } from "expo-router";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Image } from "expo-image";
+import { useEffect, useState } from "react";
+
 import textStyles from "@/src/constants/textstyles";
 import { useRecipeStore } from "@/utils/data-stores/recipeStore";
 import CheckableItem from "@/src/components/checklist/checkableItem";
-import { useEffect, useState } from "react";
 import PageHeader from "@/src/components/ui/PageHeader";
 import { theme } from "@/src/constants/theme";
 import Button from "@/src/components/ui/Button";
@@ -19,17 +20,16 @@ export default function ID() {
 
   const fetchRecipeById = useRecipeStore((state) => state.fetchRecipeById);
   const saveRecipe = useRecipeStore((state) => state.saveRecipe);
-  const saved_recipes = useRecipeStore((state) => state.saved_recipes);
 
-  const isFetchingRecipe = useRecipeStore(
-    (state) => state.isFetchingRecipe
+  const userRecipeIds = useRecipeStore((state) => state.user_recipe_ids);
+  const isFetchingRecipes = useRecipeStore(
+    (state) => state.isFetchingRecipes
+  );
+  const fetchRecipesError = useRecipeStore(
+    (state) => state.fetchRecipesError
   );
 
-  const fetchRecipeError = useRecipeStore(
-    (state) => state.fetchRecipeError
-  );
-
-  const isSaved = id ? saved_recipes.includes(id) : false;
+  const isSaved = id ? userRecipeIds.includes(id) : false;
 
   const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
 
@@ -68,7 +68,7 @@ export default function ID() {
     );
   }
 
-  if (fetchRecipeError) {
+  if (fetchRecipesError) {
     return (
       <View style={styles.screen}>
         <PageHeader
@@ -83,14 +83,14 @@ export default function ID() {
 
           <Button
             label="Go Back"
-            onPress={() => router.replace("/create-new-recipe")}
+            onPress={() => router.back()}
           />
         </View>
       </View>
     );
   }
 
-  if (!recipe || isFetchingRecipe) {
+  if (!recipe || isFetchingRecipes) {
     return (
       <View style={styles.screen}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
@@ -135,15 +135,10 @@ export default function ID() {
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={
-                recipe.imageURL
-                  ? { uri: recipe.imageURL }
-                  : undefined
-              }
+              source={recipe.imageURL ? { uri: recipe.imageURL } : undefined}
               contentFit="cover"
               transition={500}
             />
-            <View/>
           </View>
 
           <Text
@@ -203,10 +198,7 @@ export default function ID() {
           <Button
             label={isSaved ? "Saved" : "Save Recipe"}
             onPress={() => {
-              if (isSaved) {
-                return;
-              }
-
+              if (isSaved) return;
               saveRecipe(id);
             }}
           />
@@ -221,6 +213,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F0EBD8",
   },
+
   contentContainer: {
     flex: 1,
     flexDirection: "column",
@@ -229,36 +222,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: "10%",
     paddingTop: 20,
   },
+
   imageContainer: {
     width: "100%",
     height: 200,
     borderRadius: 12,
     overflow: "hidden",
+    backgroundColor: "darkgrey",
   },
+
   image: {
     width: "100%",
     height: "100%",
-    borderRadius: 12,
-    backgroundColor: "darkgrey",
   },
-  imageShadow: {
-    ...StyleSheet.absoluteFillObject,
-    borderRadius: 12,
-    boxShadow: [
-      {
-        offsetX: 0,
-        offsetY: 0,
-        blurRadius: 15,
-        spreadDistance: 0,
-        color: "rgba(0,0,0,0.9)",
-        inset: true,
-      },
-    ],
-  },
+
   ingredientsContainer: {
     alignSelf: "stretch",
     gap: 0,
   },
+
   directionsContainer: {
     alignSelf: "stretch",
     gap: 10,

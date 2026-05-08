@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { router } from "expo-router";
-import { ScrollView, Text, KeyboardAvoidingView, StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
+import { router, useNavigation } from "expo-router";
+import { ScrollView, Text, KeyboardAvoidingView, StyleSheet, View, Modal } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import LabeledSlider from "@/src/components/sliders/LabeledSlider";
 import { useCustomizeProfileStore } from "@/utils/data-stores/customizeProfileStore";
@@ -11,16 +11,22 @@ import textstyles from "@/src/constants/textstyles";
 import Button from "@/src/components/ui/Button";
 import { theme } from "@/src/constants/theme";
 import PageHeader from "@/src/components/ui/PageHeader";
+import { useAuthStore } from "@/utils/authStore";
 //Cesar: have not centralized theme.
 //Work in progress?
 
 export default function CustomizeProfile() {
   const fetchUserProfile = useCustomizeProfileStore((state) => state.fetchUserProfile);
   const updateUserProfile = useCustomizeProfileStore((state) => state.updateUserProfile);
+  const hasCompletedTutorial = useAuthStore((state) => state.hasCompletedTutorial);
+  const completeTutorial = useAuthStore((state) => state.completeTutorial);
 
   useEffect(() => {
     fetchUserProfile();
     }, [fetchUserProfile]);
+
+  //Modal
+  const [modalVisible, setModalVisible] = useState(!hasCompletedTutorial);
 
   //Import customize profile store data (one-by-one for efficient rendering)
   const dietDescription = useCustomizeProfileStore(
@@ -60,6 +66,9 @@ export default function CustomizeProfile() {
 
   //ui
   const insets = useSafeAreaInsets();
+
+  //router
+  const navigation = useNavigation();
 
   return (
     <View
@@ -170,6 +179,45 @@ export default function CustomizeProfile() {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+
+      <Modal 
+        visible={modalVisible}
+        onRequestClose={() => {
+          completeTutorial();
+          setModalVisible(false);
+        }}
+        animationType="fade"
+      >
+
+        <View style={styles.modalContainer}>
+          <PageHeader
+            logoText={"CoKitchen"}
+            backButtonEnabled={false}
+            profileButtonEnabled={false}
+            transparent={true}
+          />
+          <View style={styles.modalTextBox}>
+            <Text style={[textstyles.header, {marginTop: -10, marginBottom: 10}]} >
+              Welcome to CoKitchen!
+            </Text>
+            <Text style={[textstyles.body, {textAlign: 'center'}]} >
+              {"To get started, let's build your custom profile!\n\n"}
+              {"Tell us about how you like to eat and cook so we can build an experience tailored to you!\n\n"}
+              {"You can return to this page at any time. Find this page in your account settings."}
+            </Text>
+          </View>
+          <Button
+              label="Continue"
+              onPress={() => {
+                completeTutorial();
+                setModalVisible(false);
+              }}
+              style={{backgroundColor: theme.colors.card}}
+            />
+        </View>
+
+      </Modal>
+
     </View>
   );
 }
@@ -183,5 +231,24 @@ const styles = StyleSheet.create({
       alignItems: "center",
       paddingHorizontal: '5%',
       paddingTop: '5%',
+    },
+    modalContainer: {
+      flex: 1,
+      paddingHorizontal: '10%',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: theme.colors.background,
+    },
+    modalTextBox: {
+      width: '100%',
+      height: 250,
+      borderRadius: 12,
+      borderWidth: 2,
+      borderColor: 'white',
+      backgroundColor: theme.colors.lightinput,
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 15,
+      marginBottom: 15,
     },
 });

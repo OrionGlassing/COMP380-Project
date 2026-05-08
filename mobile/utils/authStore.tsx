@@ -59,9 +59,6 @@ export const useAuthStore = create<UserState>()(
       setHydrated: (value) => set({ hydrated: value }),
 
       logIn: async (email, password) => {
-          console.log("AUTH STORE logIn started");
-          console.log("API_URL in authStore:", API_URL);
-
           console.log("Calling Firebase signInWithEmailAndPassword...");
           const credential = await signInWithEmailAndPassword(auth, email, password);
           console.log("Firebase sign-in succeeded");
@@ -136,6 +133,7 @@ export const useAuthStore = create<UserState>()(
 
         set({
           isLoggedIn: false,
+          hasCompletedTutorial: false,
           userID: null,
           token: null,
         });

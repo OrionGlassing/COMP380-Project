@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { Text, View, ActivityIndicator } from "react-native";
+import { Text, View, ActivityIndicator, Alert } from "react-native";
 import { theme } from "@/src/constants/theme";
 import { useEffect, useRef } from "react";
 import { useCreateNewRecipeStore } from "@/utils/data-stores/createNewRecipeStore";
@@ -45,11 +45,12 @@ export default function LoadingRecipe() {
       handleCreateNewRecipe();
     }, []);
 
+  //Waiting on backend / database
   return (
     <View
       style={[
         theme.container.page,
-        { backgroundColor: theme.colors.background },
+        { backgroundColor: theme.colors.background, alignItems: 'center', gap: 25, },
       ]}
     >
       <Arrow

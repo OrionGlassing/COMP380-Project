@@ -1,189 +1,207 @@
-import { StyleSheet } from "react-native";
-import { theme } from "@/src/constants/theme";
-import { Text, View, Pressable } from "react-native";
-import { useRecipeStore } from "@/utils/data-stores/recipeStore";
-import { useEffect, useState } from "react";
-import { router } from "expo-router";
-import { ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, Pressable, ActivityIndicator } from "react-native";
 import { Image } from "expo-image";
+import { router } from "expo-router";
+import { useEffect } from "react";
 
-/*  Notes:
-
-This component is set up to be initialized with a recipe ID.
-
-It then asks the recipeStore for the recipe
-*/
+import { theme } from "@/src/constants/theme";
+import { useRecipeStore } from "@/utils/data-stores/recipeStore";
 
 interface Props {
-    ID: string;
+  ID: string;
 }
 
+const RecipeCard = ({ ID }: Props) => {
+  const recipe = useRecipeStore((state) => state.recipes[ID]);
+  const fetchRecipeById = useRecipeStore((state) => state.fetchRecipeById);
 
-const RecipeCard = ({ID, }: Props) => {
+  useEffect(() => {
+    fetchRecipeById(ID);
+  }, [ID, fetchRecipeById]);
 
-    //Global state from zustand store
-    const recipe = useRecipeStore((state) => state.recipes[ID]);
-    const fetchRecipeById = useRecipeStore((state) => state.fetchRecipeById);
-
-    //As soon as the component is rendered, get the recipe data from the zustand store
-    useEffect(() => {
-        fetchRecipeById(ID);
-    }, [ID]);
-
-    //The loading version of the card
-    if (!recipe) {
-        return (
-            <View style={styles.cardContainer}>
-                <View style={styles.imageContainer} >
-                    <ActivityIndicator size="large" color={theme.colors.text} />
-                </View>
-                <View style={[{flex: 1, backgroundColor: '#111111',}]} >
-                    <View style={[styles.textContainer, {gap: 5, paddingTop: 8, }]} >
-                        <View style={[styles.textPlaceHolder, {width: '100%'}]} />
-                        <View style={[styles.textPlaceHolder, {width: '100%'}]} />
-                        <View style={[styles.textPlaceHolder, {width: '69%'}]} />
-                    </View>
-                    <View style={[styles.textContainer, {gap: 8, paddingBottom: 8}]} >
-                        <View style={[styles.textPlaceHolder, {width: '50%', backgroundColor: theme.colors.primary}]} />
-                        <View style={[styles.textPlaceHolder, {width: '50%', backgroundColor: theme.colors.primary}]} />
-                    </View>
-                </View>
-            </View>
-        );
-    }
-
-    //The real version of the card
+  if (!recipe) {
     return (
-        <View style={styles.cardContainer}>
-            <Pressable
-                onPress={() => {
-                    //Function to execute when card is clicked
-                    router.push(`/recipe/${ID}`);
-                }}
-                style={[{flex: 1, }]}
-            >
-                    <View style={styles.imageContainer} >
-                        <Image
-                        style={styles.image}
-                        source={recipe.imageURL}
-                        contentFit="cover"
-                        transition={300}
-                        />
-                        <View style={styles.imageShadow} />
-                    </View>
-
-                    <View style={styles.centerDivider} />
-
-                    <View style={[{flex: 1, backgroundColor: '#111111',}]} >
-
-                        <View style={[styles.textContainer, {paddingTop: 4, }]} >
-                            <Text style={styles.textTitle} numberOfLines={2} adjustsFontSizeToFit>
-                                {recipe.title}
-                            </Text>
-                        </View>
-                        
-                        <View style={[styles.textContainer, {flex: 1.5, paddingBottom: 4, }]} >
-                            <Text style={styles.textSub} >
-                                {recipe.recipe_id}
-                            </Text>
-                            <Text style={styles.textSub} >
-                                {recipe.cook_time}
-                            </Text>
-
-                            {/*MORE RECIPE DATA HERE */}
-
-                        </View>
-
-                    </View>
-                    <View style={styles.cardHighlight} />
-            </Pressable>
+      <View style={styles.cardContainer}>
+        <View style={styles.imageContainer}>
+          <ActivityIndicator size="large" color={theme.colors.text} />
         </View>
+
+        <View style={styles.bodyContainer}>
+          <View style={[styles.textContainer, styles.loadingTitleSection]}>
+            <View style={[styles.textPlaceholder, { width: "100%" }]} />
+            <View style={[styles.textPlaceholder, { width: "100%" }]} />
+            <View style={[styles.textPlaceholder, { width: "70%" }]} />
+          </View>
+
+          <View style={[styles.textContainer, styles.loadingMetaSection]}>
+            <View style={[styles.textPlaceholderPrimary, { width: "50%" }]} />
+            <View style={[styles.textPlaceholderPrimary, { width: "50%" }]} />
+          </View>
+        </View>
+      </View>
     );
+  }
+
+  return (
+    <View style={styles.cardContainer}>
+      <Pressable
+        onPress={() => router.push(`/recipe/${ID}`)}
+        style={({ pressed }) => [
+          styles.pressable,
+          pressed && styles.pressed,
+        ]}
+      >
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.image}
+            source={recipe.imageURL ? { uri: recipe.imageURL } : undefined}
+            contentFit="cover"
+            transition={300}
+          />
+
+          <View style={styles.imageOverlay} />
+        </View>
+
+        <View style={styles.centerDivider} />
+
+        <View style={styles.bodyContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.textTitle} numberOfLines={2}>
+              {recipe.title}
+            </Text>
+          </View>
+
+          <View style={styles.metaContainer}>
+            <Text style={styles.textSub} numberOfLines={1}>
+              Recipe #{recipe.recipe_id}
+            </Text>
+
+            <Text style={styles.textSub} numberOfLines={1}>
+              {recipe.cook_time || "Cook time unavailable"}
+            </Text>
+          </View>
+        </View>
+      </Pressable>
+    </View>
+  );
 };
 
 export default RecipeCard;
 
 const styles = StyleSheet.create({
-    cardContainer: {
-        height: 250,
-        width: 175,
-        backgroundColor: 'white',
-        borderRadius: 15,
-        overflow: 'hidden',
-        outlineColor: 'white',
-        outlineWidth: 4,
-        flexDirection: 'column',
-        boxShadow: [{
-            offsetX: 1,
-            offsetY: 4,
-            blurRadius: 10,
-            spreadDistance: 0,
-            color: 'rgba(0,0,0,0.9)',
-            //inset: true, 
-        }],
-    },
-    cardHighlight: {
-        ...StyleSheet.absoluteFillObject,
-        boxShadow: [{
-            offsetX: -25,
-            offsetY: 10,
-            blurRadius: 40,
-            spreadDistance: 0,
-            color: 'rgba(255, 255, 255, 0.25)',
-            inset: true, 
-        }],
-    },
-    imageContainer: {
-        flex: 1,
-        //width: '100%',
-        //height: 125,
-        backgroundColor: 'darkgrey',
-        flexDirection: 'column',
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    image: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: 'darkgrey',
-    },
-    imageShadow: {
-      ...StyleSheet.absoluteFillObject,
-      boxShadow: [{
-          offsetX: 0,
-          offsetY: 0,
-          blurRadius: 8,
-          spreadDistance: 0,
-          color: 'rgba(0,0,0,0.75)',
-          inset: true,
-      }],
-    },
-    centerDivider: {
-        width: '100%',
-        height: 3,
-        backgroundColor: 'white',
-    },
-    textContainer: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        paddingHorizontal: 8,
-    },
-    textPlaceHolder: {
-        height: 10,
-        backgroundColor: 'white',
-        borderRadius: 999,
-    },
-    textTitle: {
-        color: 'white',
-        fontSize: 18,
-        fontWeight: 'bold',
-        textAlign: 'left',
-    },
-    textSub: {
-        color: theme.colors.primary,
-        fontSize: 14,
-        fontWeight: 'normal',
-        textAlign: 'left',
-    },
+  cardContainer: {
+    height: 250,
+    width: 175,
+    backgroundColor: "#111111",
+    borderRadius: 15,
+    overflow: "hidden",
 
+    borderWidth: 3,
+    borderColor: "white",
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 4,
+    },
+    shadowOpacity: 0.35,
+    shadowRadius: 8,
+
+    elevation: 8,
+  },
+
+  pressable: {
+    flex: 1,
+    backgroundColor: "#111111",
+  },
+
+  pressed: {
+    opacity: 0.85,
+  },
+
+  imageContainer: {
+    flex: 1,
+    backgroundColor: "darkgrey",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "darkgrey",
+  },
+
+  imageOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.12)",
+  },
+
+  centerDivider: {
+    width: "100%",
+    height: 3,
+    backgroundColor: "white",
+  },
+
+  bodyContainer: {
+    flex: 1,
+    backgroundColor: "#111111",
+  },
+
+  textContainer: {
+    paddingHorizontal: 8,
+    alignItems: "flex-start",
+  },
+
+  titleContainer: {
+    flex: 1,
+    paddingHorizontal: 8,
+    paddingTop: 6,
+    justifyContent: "center",
+  },
+
+  metaContainer: {
+    flex: 1,
+    paddingHorizontal: 8,
+    paddingBottom: 8,
+    justifyContent: "center",
+    gap: 4,
+  },
+
+  loadingTitleSection: {
+    flex: 1,
+    paddingTop: 10,
+    gap: 6,
+  },
+
+  loadingMetaSection: {
+    flex: 1,
+    paddingBottom: 10,
+    justifyContent: "center",
+    gap: 8,
+  },
+
+  textPlaceholder: {
+    height: 10,
+    backgroundColor: "white",
+    borderRadius: 999,
+  },
+
+  textPlaceholderPrimary: {
+    height: 10,
+    backgroundColor: theme.colors.primary,
+    borderRadius: 999,
+  },
+
+  textTitle: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "left",
+  },
+
+  textSub: {
+    color: theme.colors.primary,
+    fontSize: 14,
+    fontWeight: "400",
+    textAlign: "left",
+  },
 });
