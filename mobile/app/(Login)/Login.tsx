@@ -1,0 +1,39 @@
+import LoginForm from "@/src/components/Login/LoginForm";
+import Divider from "@/src/components/ui/Divider";
+import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, View } from "react-native";
+import Button from "@/src/components/ui/Button";
+import { useRouter } from "expo-router";
+import { theme } from "@/src/constants/theme";
+import PageHeader from "@/src/components/ui/PageHeader";
+
+export default function Login() {
+  const router = useRouter();
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        behavior='padding'
+        style={{flex:1}}
+      >
+        <View style={theme.container.page}>
+          <PageHeader
+            logoText={"CoKitchen"}
+            backButtonEnabled={false}
+            profileButtonEnabled={false}
+            transparent={true}
+          />
+          <LoginForm />
+          <Divider />
+          <Button
+            label={"Create Account"}
+            onPress={() => {
+              router.push("/SignUp");
+            }}
+            style={{ width: "90%", alignSelf: "center"}}
+          />
+          <Divider />
+          <Button label={"Help"} onPress={() => router.push("/Help")} style={{ width: "90%", alignSelf: "center"}} />
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
+  );
+}
