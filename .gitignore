@@ -5,3 +5,100 @@ db.sqlite3
 .env
 .DS_Store
 .vscode/
+.secrets/
+
+# macOS
+.DS_Store
+
+# Xcode
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.xccheckout
+*.moved-aside
+DerivedData/
+*.hmap
+*.ipa
+*.xcuserstate
+ios/.xcode.env.local
+
+# Android / IntelliJ / Gradle
+build/
+.gradle/
+local.properties
+*.iml
+.idea/
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+android/captures/
+
+# Node / JavaScript
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+pnpm-lock.yaml
+
+# Keep ONE lockfile only if your team uses it
+# If you use npm, remove package-lock.json from this ignore file
+# If you use pnpm, remove pnpm-lock.yaml from this ignore file
+
+# Metro / React Native
+.metro-health-check*
+.metro/
+.expo/
+.expo-shared/
+
+# Bundles / artifacts
+*.bundle
+*.jsbundle
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Testing
+coverage/
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# VS Code
+.vscode/
+
+# TypeScript
+*.tsbuildinfo
+
+# CocoaPods
+ios/Pods/
+
+# Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots/
+**/fastlane/test_output/
+
+# Ruby / Bundler
+/vendor/bundle/
+
+# Firebase / Google services generated files if not meant to be committed
+# Uncomment only if your setup should ignore them
+# ios/GoogleService-Info.plist
+# android/app/google-services.json

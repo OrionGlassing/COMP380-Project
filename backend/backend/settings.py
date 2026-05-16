@@ -12,13 +12,11 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
+load_dotenv(BASE_DIR / ".env")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
@@ -30,11 +28,16 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 CORS_ALLOW_ALL_ORIGINS = os.environ.get("CORS_ALLOW_ALL_ORIGINS", "False") == "True"
 CORS_ALLOW_CREDENTIALS = os.environ.get("CORS_ALLOW_CREDENTIALS", "False") == "True"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-# CORS_ALLOWED_ORIGINS = [ # Section will be enabled down the line during production.
-#    "http://localhost:8081",  # Expo
-#    "http://localhost:3000",  # If Web App
-# ]
+# Firebase config #
+
+FIREBASE_CREDENTIALS = BASE_DIR / ".secrets" / "cokitchen-2dea8-firebase-adminsdk-fbsvc-84cae184e5.json"
+FIREBSASE_STORAGE_BUCKET = "cokitchen-2dea.firebasestorage.app"
+FIREBASE_DATABASE_URL = None
+FIREBASE_USE_ADC = False
+
 
 # Application definition
 
@@ -122,8 +125,13 @@ USE_I18N = True
 
 USE_TZ = True
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+APPEND_SLASH=False
