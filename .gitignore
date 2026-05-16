@@ -5,3 +5,24 @@ db.sqlite3
 .env
 .DS_Store
 .vscode/
+# Firebase/admin secrets
+backend/Secrets/
+backend/secrets/
+Secrets/
+secrets/
+.env
+*.env
+firebase-service-account.json
+*service-account*.json
+
+# Python
+.venv/
+backend/.venv/
+__pycache__/
+*.pyc
+
+# Windows shortcuts
+*.lnk
+
+# Local databases
+db.sqlite3
