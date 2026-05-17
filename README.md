@@ -14,9 +14,10 @@
 
 # | Main Branch |
 
-    Kerge your work here from editing branches accordingly as to 
-    not overlap each others work and fuck up progress, don't force merge.
-
+    This is the final code for the CoKitchen application. The app will not run because it is missing 
+    crucial sensitive information (LLM and database keys). Also Firebase services are set to shutdown 
+    due to the use of the limited time free service. 
+    
 # Additional Queries
 
     Features, instructions, and communication about changes should be delegated here.
